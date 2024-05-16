@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import com.shrutipandit.cardprintsmart.card.MarriageBioData
 import com.shrutipandit.cardprintsmart.databinding.ActivityMainBinding
@@ -33,31 +34,36 @@ class MainActivity : AppCompatActivity() {
         // Set the main linear layout as the content view
         scrollView.addView(linearLayout)
 
+        val bioDatatv = TextView(this)
+        bioDatatv.text= "MarriageBioData"
+        linearLayout.addView(bioDatatv)
+
+
         val marriageArrayList = arrayListOf(
             "Name             :",
-            "Date Of Birth    :",
-            "Birth Place      :",
-            "Religion         :",
-            "Caste            :",
-            "Height           :",
-            "Blood Group      :",
-            "Complexion       :",
-            "Education        :",
-            "10 Marks         :",
-            "12 Marks         :",
-            "Post             :",
-            "District         :",
-            "State            :",
-            "Fimaly Information",
-            "Father Name      :",
-            "Occupation       :",
-            "Mother Name      :",
-            "Occupation       :",
-            "Sister           :",
-            "Brother          :",
-            "Contact Information",
-            "Address          :",
-            "Contact No-      :"
+//           " "Date Of Birth    :",
+//            "Birth Place      :",
+//            "Religion         :",
+//            "Caste            :","
+//            "Height           :",
+//            "Blood Group      :",
+//            "Complexion       :",
+//            "Education        :",
+//            "10 Marks         :",
+//            "12 Marks         :",
+//            "Post             :"
+//            "District         :",
+//            "State            :",
+//            "Fimaly Information",
+//            "Father Name      :",
+//            "Occupation       :",
+//            "Mother Name      :",
+//            "Occupation       :",
+//            "Sister           :",
+//            "Brother          :",
+//            "Contact Information",
+//            "Address          :",
+//            "Contact No-      :"
         )
 
         val editTextList = mutableListOf<EditText>()
