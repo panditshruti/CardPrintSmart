@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.shrutipandit.cardprintsmart.R
@@ -17,6 +18,10 @@ import java.io.IOException
 class MarriageBioData : ViewModel() {
 
     private var data: MutableList<String> = mutableListOf()
+
+    fun setData(data: MutableList<String>) {
+        this.data = data
+    }
 
     fun templet1(context: Context) {
         val myPdfDocument = PdfDocument()
@@ -74,7 +79,7 @@ class MarriageBioData : ViewModel() {
             "State            :"
         )
         val lineHeight = 26
-        drawTextList(canvas, marriagePersonalInfoArrayList, personalStartX, personalStartY + lineHeight, textPaint)
+        drawTextList(canvas, marriagePersonalInfoArrayList, data, personalStartX, personalStartY + lineHeight, textPaint)
 
         // Draw Heading "Family Information" with reduced gap
         val familyHeading = "Family Information"
@@ -95,7 +100,7 @@ class MarriageBioData : ViewModel() {
             "Sister           :",
             "Brother          :"
         )
-        drawTextList(canvas, marriageFamilyInfoArrayList, personalStartX, familyStartY + lineHeight, textPaint)
+        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY + lineHeight, textPaint)
 
         // Draw Heading "Contact Information" with gap
         val contactHeading = "Contact Information"
@@ -112,7 +117,7 @@ class MarriageBioData : ViewModel() {
             "Address          :",
             "Contact No-      :"
         )
-        drawTextList(canvas, marriageContactInfoArrayList, personalStartX, contactStartY + lineHeight, textPaint)
+        drawTextList(canvas, marriageContactInfoArrayList, data.subList(marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size, data.size), personalStartX, contactStartY + lineHeight, textPaint)
 
         myPdfDocument.finishPage(page)
 
@@ -128,11 +133,19 @@ class MarriageBioData : ViewModel() {
         }
     }
 
-    private fun drawTextList(canvas: android.graphics.Canvas, textList: List<String>, x: Float, y: Float, paint: Paint) {
+    private fun drawTextList(canvas: android.graphics.Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Float, paint: Paint) {
         var yPoint = y
-        for (text in textList) {
+        for (i in labelList.indices) {
+            val text = "${labelList[i]} ${dataList.getOrNull(i) ?: ""}"
             canvas.drawText(text, x, yPoint, paint)
             yPoint += 25 // Adjust line height
+        }
+    }
+
+    fun populateDataFromEditTexts(editTexts: List<EditText>) {
+        data.clear()
+        for (editText in editTexts) {
+            data.add(editText.text.toString())
         }
     }
 }
