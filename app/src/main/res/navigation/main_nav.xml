@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_marriageBioDataFragment"
+            app:destination="@id/marriageBioDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/marriageBioDataFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.MarriageBioDataFragment"
+        android:label="fragment_marriage_bio_data"
+        tools:layout="@layout/fragment_marriage_bio_data" />
+</navigation>

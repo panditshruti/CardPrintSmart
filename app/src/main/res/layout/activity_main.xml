@@ -1,81 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/white"
+    android:gravity="center"
     android:orientation="vertical"
-    android:id="@+id/linearLayout"
     tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/viewbgmain"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/bg_main" />
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="match_parent"
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/viewbgmain"
-        android:layout_marginTop="16dp"
-        android:columnCount="2"
-        android:rowCount="2"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
+        android:background="#540081"
+        android:id="@+id/toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fragmentContainerView"
+        android:elevation="10dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        tools:ignore="MissingConstraints" />
 
-        <!-- Example items, replace or add more as needed -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_gravity="fill"
-            android:text="Item 1"
-            android:gravity="center"
-            android:backgroundTint="#C80000"
-            android:padding="16dp" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:navGraph="@navigation/main_nav"
+        tools:ignore="UnknownId" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:backgroundTint="@color/black"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:textColor="@color/white"
-            android:layout_gravity="fill"
-            android:text="Marriage bio data"
-            android:gravity="center"
-            android:background="#C0C0C0"
-            android:padding="16dp" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:backgroundTint="@color/teal_700"
-            android:layout_gravity="fill"
-            android:text="Item 3"
-            android:gravity="center"
-            android:background="#A0A0A0"
-            android:padding="16dp" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="100dp"
-            android:layout_height="200dp"
-            android:layout_columnWeight="1"
-            android:layout_rowWeight="1"
-            android:layout_gravity="fill"
-            android:backgroundTint="@color/purple_500"
-            android:text="Item 4"
-            android:gravity="center"
-            android:background="#E0E0E0"
-            android:padding="16dp" />
-
-    </GridLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
