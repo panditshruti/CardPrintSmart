@@ -15,14 +15,14 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#540081"
+        android:background="#440068"
+        android:visibility="gone"
         android:id="@+id/toolbar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/fragmentContainerView"
-        android:elevation="10dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         tools:ignore="MissingConstraints" />
 
