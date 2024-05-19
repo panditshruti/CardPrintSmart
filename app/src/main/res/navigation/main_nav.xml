@@ -17,5 +17,14 @@
         android:id="@+id/marriageBioDataFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.MarriageBioDataFragment"
         android:label="fragment_marriage_bio_data"
-        tools:layout="@layout/fragment_marriage_bio_data" />
+        tools:layout="@layout/fragment_marriage_bio_data" >
+        <action
+            android:id="@+id/action_marriageBioDataFragment_to_demoMarriageCardFragment"
+            app:destination="@id/demoMarriageCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoMarriageCardFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoMarriageCardFragment"
+        android:label="fragment_demo_marriage_card"
+        tools:layout="@layout/fragment_demo_marriage_card" />
 </navigation>
