@@ -6,13 +6,10 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.pdf.PdfDocument
-import android.os.Environment
 import android.widget.EditText
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import com.shrutipandit.cardprintsmart.R
-import java.io.File
-import java.io.FileOutputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 class MarriageBioData : ViewModel() {
@@ -23,7 +20,14 @@ class MarriageBioData : ViewModel() {
         this.data = data
     }
 
-    fun templet1(context: Context) {
+    fun populateDataFromEditTexts(editTexts: List<EditText>) {
+        data.clear()
+        for (editText in editTexts) {
+            data.add(editText.text.toString())
+        }
+    }
+
+    fun generatePdf(context: Context): ByteArray {
         val myPdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
         val page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
@@ -121,16 +125,16 @@ class MarriageBioData : ViewModel() {
 
         myPdfDocument.finishPage(page)
 
-        val file2: File = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "e_marriage_card.pdf"
-        )
+        val outputStream = ByteArrayOutputStream()
         try {
-            myPdfDocument.writeTo(FileOutputStream(file2))
-            Toast.makeText(context, "Ready to Print", Toast.LENGTH_SHORT).show()
+            myPdfDocument.writeTo(outputStream)
         } catch (e: IOException) {
             e.printStackTrace()
+        } finally {
+            myPdfDocument.close()
         }
+
+        return outputStream.toByteArray()
     }
 
     private fun drawTextList(canvas: android.graphics.Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Float, paint: Paint) {
@@ -139,13 +143,6 @@ class MarriageBioData : ViewModel() {
             val text = "${labelList[i]} ${dataList.getOrNull(i) ?: ""}"
             canvas.drawText(text, x, yPoint, paint)
             yPoint += 25 // Adjust line height
-        }
-    }
-
-    fun populateDataFromEditTexts(editTexts: List<EditText>) {
-        data.clear()
-        for (editText in editTexts) {
-            data.add(editText.text.toString())
         }
     }
 }

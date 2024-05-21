@@ -57,7 +57,7 @@ dependencies {
 
     implementation ("com.google.android.material:material:1.5.0")
 
-
+        implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 
 
 }

@@ -8,13 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.shrutipandit.cardprintsmart.R
-import com.shrutipandit.cardprintsmart.card.MarriageBioData
 import com.shrutipandit.cardprintsmart.databinding.FragmentMarriageBioDataBinding
 
 class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
     private lateinit var binding: FragmentMarriageBioDataBinding
-
-    private val marriageBioData = MarriageBioData()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,11 +61,9 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
         val submitButton = Button(requireContext())
         submitButton.text = "Submit"
         submitButton.setOnClickListener {
-            val  action = MarriageBioDataFragmentDirections.actionMarriageBioDataFragmentToDemoMarriageCardFragment()
+            val data = editTexts.joinToString(",") { it.text.toString() }
+            val action = MarriageBioDataFragmentDirections.actionMarriageBioDataFragmentToDemoMarriageCardFragment()
             findNavController().navigate(action)
-
-            marriageBioData.populateDataFromEditTexts(editTexts)
-            marriageBioData.templet1(requireContext())
         }
         linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
