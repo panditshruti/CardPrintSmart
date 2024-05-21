@@ -6,25 +6,14 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.pdf.PdfDocument
-import android.widget.EditText
-import androidx.lifecycle.ViewModel
 import com.shrutipandit.cardprintsmart.R
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 
-class MarriageBioData : ViewModel() {
-
+class MarriageBioData {
     private var data: MutableList<String> = mutableListOf()
 
     fun setData(data: MutableList<String>) {
         this.data = data
-    }
-
-    fun populateDataFromEditTexts(editTexts: List<EditText>) {
-        data.clear()
-        for (editText in editTexts) {
-            data.add(editText.text.toString())
-        }
     }
 
     fun generatePdf(context: Context): ByteArray {
@@ -104,16 +93,16 @@ class MarriageBioData : ViewModel() {
             "Sister           :",
             "Brother          :"
         )
-        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY + lineHeight, textPaint)
+        drawTextList(canvas, marriageFamilyInfoArrayList, data.drop(marriagePersonalInfoArrayList.size).toMutableList(), personalStartX, familyStartY + lineHeight, textPaint)
 
-        // Draw Heading "Contact Information" with gap
+        // Draw Heading "Contact Information" with reduced gap
         val contactHeading = "Contact Information"
         val contactHeadingPaint = Paint().apply {
             color = Color.RED
             isFakeBoldText = true
             textSize = 23.0f // Adjust size as needed
         }
-        val contactStartY = familyStartY + lineHeight * (marriageFamilyInfoArrayList.size + 1) + margin // Adjust Y position with margin
+        val contactStartY = familyStartY + lineHeight * (marriageFamilyInfoArrayList.size + 1) + margin * 0.5F // Adjust Y position with reduced margin
         canvas.drawText(contactHeading, personalStartX, contactStartY, contactHeadingPaint)
 
         // Draw Contact Information
@@ -121,28 +110,23 @@ class MarriageBioData : ViewModel() {
             "Address          :",
             "Contact No-      :"
         )
-        drawTextList(canvas, marriageContactInfoArrayList, data.subList(marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size, data.size), personalStartX, contactStartY + lineHeight, textPaint)
+        drawTextList(canvas, marriageContactInfoArrayList, data.drop(marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size).toMutableList(), personalStartX, contactStartY + lineHeight, textPaint)
 
         myPdfDocument.finishPage(page)
 
         val outputStream = ByteArrayOutputStream()
-        try {
-            myPdfDocument.writeTo(outputStream)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            myPdfDocument.close()
-        }
+        myPdfDocument.writeTo(outputStream)
+        myPdfDocument.close()
 
         return outputStream.toByteArray()
     }
 
-    private fun drawTextList(canvas: android.graphics.Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Float, paint: Paint) {
-        var yPoint = y
-        for (i in labelList.indices) {
-            val text = "${labelList[i]} ${dataList.getOrNull(i) ?: ""}"
-            canvas.drawText(text, x, yPoint, paint)
-            yPoint += 25 // Adjust line height
+    private fun drawTextList(canvas: android.graphics.Canvas, labels: List<String>, values: List<String>, startX: Float, startY: Float, paint: Paint) {
+        var y = startY
+        for ((index, label) in labels.withIndex()) {
+            val value = if (index < values.size) values[index] else ""
+            canvas.drawText("$label $value", startX, y, paint)
+            y += 26
         }
     }
 }

@@ -26,5 +26,11 @@
         android:id="@+id/demoMarriageCardFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoMarriageCardFragment"
         android:label="fragment_demo_marriage_card"
-        tools:layout="@layout/fragment_demo_marriage_card" />
+        tools:layout="@layout/fragment_demo_marriage_card" >
+
+        <argument
+            android:name="editTextData"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

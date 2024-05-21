@@ -62,7 +62,7 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
         submitButton.text = "Submit"
         submitButton.setOnClickListener {
             val data = editTexts.joinToString(",") { it.text.toString() }
-            val action = MarriageBioDataFragmentDirections.actionMarriageBioDataFragmentToDemoMarriageCardFragment()
+            val action = MarriageBioDataFragmentDirections.actionMarriageBioDataFragmentToDemoMarriageCardFragment(data)
             findNavController().navigate(action)
         }
         linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
