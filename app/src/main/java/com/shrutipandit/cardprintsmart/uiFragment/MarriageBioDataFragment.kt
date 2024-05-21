@@ -65,6 +65,7 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
             val action = MarriageBioDataFragmentDirections.actionMarriageBioDataFragmentToDemoMarriageCardFragment(data)
             findNavController().navigate(action)
         }
+
         linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

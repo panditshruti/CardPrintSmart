@@ -32,5 +32,6 @@
             android:name="editTextData"
             app:argType="string" />
 
+
     </fragment>
 </navigation>
