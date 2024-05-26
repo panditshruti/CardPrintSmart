@@ -23,6 +23,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(action)
 
         }
+        binding.omrSheet.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToOMRSheetFragment()
+            findNavController().navigate(action)
+
+        }
 
     }
 

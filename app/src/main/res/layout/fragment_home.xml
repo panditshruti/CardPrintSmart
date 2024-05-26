@@ -10,7 +10,7 @@
     <View
         android:id="@+id/viewbgmain"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_main" />
 
@@ -33,7 +33,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/form"
+                    android:id="@+id/omrSheet"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
