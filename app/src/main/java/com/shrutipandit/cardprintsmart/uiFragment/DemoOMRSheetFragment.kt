@@ -1,15 +1,13 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
-import OMRSheet
+import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.shrutipandit.cardprintsmart.R
+import com.shrutipandit.cardprintsmart.card.OMRSheet
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoOMRSheetBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -19,50 +17,31 @@ class DemoOMRSheetFragment : Fragment(R.layout.fragment_demo_o_m_r_sheet) {
 
     private lateinit var binding: FragmentDemoOMRSheetBinding
     private val args: DemoOMRSheetFragmentArgs by navArgs()
-    private  var omrSheet = OMRSheet()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDemoOMRSheetBinding.bind(view)
 
         val numberOfQuestions = args.numberOfQuestions
-        generateOMRSheet(numberOfQuestions)
+        val paperSize = args.paperSize
 
-        omrSheet.omrSheetDetails(requireContext(),"shruti","2","11","7739717389")
+        val pdfBytes = generatePdf(requireContext(), numberOfQuestions, paperSize)
+        binding.pdfView.fromBytes(pdfBytes).load()
 
-
+        binding.savePdfButton.setOnClickListener {
+            savePdf(pdfBytes)
+        }
     }
 
-    private fun generateOMRSheet(numberOfQuestions: Int) {
-        binding.questionsContainer.removeAllViews()
-
-        for (i in 1..numberOfQuestions) {
-            val questionTextView = TextView(requireContext()).apply {
-                text = "Question $i:"
-                textSize = 18f
-                setPadding(0, 10, 0, 10)
-            }
-            binding.questionsContainer.addView(questionTextView)
-
-            val radioGroup = RadioGroup(requireContext()).apply {
-                orientation = RadioGroup.HORIZONTAL
-            }
-
-            val options = arrayOf("A", "B", "C", "D")
-            for (option in options) {
-                val radioButton = RadioButton(requireContext()).apply {
-                    text = option
-                    id = View.generateViewId()
-                }
-                radioGroup.addView(radioButton)
-            }
-            binding.questionsContainer.addView(radioGroup)
-        }
+    private fun generatePdf(context: Context, numberOfQuestions: Int, paperSize: String): ByteArray {
+        val omrSheet = OMRSheet()
+        return omrSheet.generatePdf(context, numberOfQuestions, paperSize)
     }
 
     private fun savePdf(pdfBytes: ByteArray) {
         val directory = File(requireContext().getExternalFilesDir(null), "PDFs")
         if (!directory.exists() && !directory.mkdirs()) {
+            Toast.makeText(requireContext(), "Failed to create directory", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -74,9 +53,7 @@ class DemoOMRSheetFragment : Fragment(R.layout.fragment_demo_o_m_r_sheet) {
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Toast.makeText(requireContext(), "PDF failed successfully", Toast.LENGTH_SHORT).show()
-
+            Toast.makeText(requireContext(), "PDF failed to save", Toast.LENGTH_SHORT).show()
         }
     }
-
 }

@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_marriageBioDataFragment"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/marriageBioDataFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.MarriageBioDataFragment"
-        android:label="fragment_marriage_bio_data"
+        android:label="Marriage Bio Data"
         tools:layout="@layout/fragment_marriage_bio_data">
         <action
             android:id="@+id/action_marriageBioDataFragment_to_demoMarriageCardFragment"
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/demoMarriageCardFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoMarriageCardFragment"
-        android:label="fragment_demo_marriage_card"
+        android:label="Demo Marriage Card"
         tools:layout="@layout/fragment_demo_marriage_card">
         <argument
             android:name="editTextData"
@@ -41,21 +41,32 @@
     <fragment
         android:id="@+id/OMRSheetFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.OMRSheetFragment"
-        android:label="fragment_o_m_r_sheet"
+        android:label="OMR Sheet"
         tools:layout="@layout/fragment_o_m_r_sheet">
         <action
             android:id="@+id/action_OMRSheetFragment_to_demoOMRSheetFragment"
-            app:destination="@id/demoOMRSheetFragment" />
+            app:destination="@id/demoOMRSheetFragment" >
+
+            <argument
+                android:name="numberOfQuestions"
+                app:argType="integer" />
+            <argument
+                android:name="paperSize"
+                app:argType="string" />
+
+        </action>
     </fragment>
 
     <fragment
         android:id="@+id/demoOMRSheetFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoOMRSheetFragment"
-        android:label="fragment_demo_o_m_r_sheet"
-        tools:layout="@layout/fragment_demo_o_m_r_sheet">
+        android:label="Demo OMR Sheet"
+        tools:layout="@layout/fragment_demo_o_m_r_sheet" >
         <argument
             android:name="numberOfQuestions"
             app:argType="integer" />
+        <argument
+            android:name="paperSize"
+            app:argType="string" />
     </fragment>
-
 </navigation>

@@ -2,6 +2,7 @@ package com.shrutipandit.cardprintsmart.uiFragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -16,12 +17,20 @@ class OMRSheetFragment : Fragment(R.layout.fragment_o_m_r_sheet) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentOMRSheetBinding.bind(view)
 
-        binding.btnGenerateOMRSheet.setOnClickListener {
-            val numberOfQuestions = binding.etNumberOfQuestions.text.toString().toIntOrNull()
+        // Setting up spinner for paper sizes
+        val paperSizes = arrayOf("A4", "A3", "A5")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, paperSizes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.paperSizeSpinner.adapter = adapter
 
-            if (numberOfQuestions != null && numberOfQuestions > 0) {
+        binding.generateButton.setOnClickListener {
+            val numberOfQuestions = binding.numberOfQuestionsInput.text.toString().toIntOrNull()
+            val paperSize = binding.paperSizeSpinner.selectedItem.toString()
+
+            if (numberOfQuestions != null) {
                 val action = OMRSheetFragmentDirections.actionOMRSheetFragmentToDemoOMRSheetFragment(
-                    numberOfQuestions
+                    numberOfQuestions,
+                    paperSize
                 )
                 findNavController().navigate(action)
             } else {

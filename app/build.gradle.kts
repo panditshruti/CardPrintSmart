@@ -1,7 +1,10 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id ("androidx.navigation.safeargs")
+    id("androidx.navigation.safeargs")
+
+
+
 }
 
 android {
@@ -42,6 +45,8 @@ android {
 
 dependencies {
 
+
+
     implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -60,6 +65,8 @@ dependencies {
         implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 
     implementation ("com.itextpdf:itext7-core:7.1.15")
+
+
 
 
 }
