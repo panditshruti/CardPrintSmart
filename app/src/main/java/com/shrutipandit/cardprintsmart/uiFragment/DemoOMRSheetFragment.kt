@@ -1,5 +1,6 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
+import OMRSheet
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -7,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.shrutipandit.cardprintsmart.R
-import com.shrutipandit.cardprintsmart.card.OMRSheet
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoOMRSheetBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -28,7 +28,7 @@ class DemoOMRSheetFragment : Fragment(R.layout.fragment_demo_o_m_r_sheet) {
         val pdfBytes = generatePdf(requireContext(), numberOfQuestions, paperSize)
         binding.pdfView.fromBytes(pdfBytes).load()
 
-        binding.savePdfButton.setOnClickListener {
+        binding.pdfBtn.setOnClickListener {
             savePdf(pdfBytes)
         }
     }

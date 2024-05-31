@@ -23,6 +23,7 @@ class MarriageBioData : ViewModel() {
         val myPdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
         val page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
+
         val canvas = page.canvas
 
         val image = BitmapFactory.decodeResource(context.resources, R.drawable.shadicard)
