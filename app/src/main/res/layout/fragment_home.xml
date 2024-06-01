@@ -30,26 +30,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_margin="10dp"
                 android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/omrSheet"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="10dp">
+
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_margin="10dp"
+                        android:id="@+id/omrsheet"
+                        android:padding="10dp"
+                        android:background="@drawable/common_card"
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
                             android:padding="10dp"
@@ -68,27 +66,21 @@
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/result"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="10dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:layout_margin="10dp"
+                        android:padding="10dp"
+                        android:background="@drawable/common_card"
                         android:orientation="vertical"
                        >
 
                         <ImageView
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
                             android:padding="10dp"
                             android:layout_gravity="center"
                             android:layout_margin="10dp"
@@ -107,7 +99,81 @@
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/common_card"
+                    android:orientation="vertical"
+                    >
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:padding="10dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/idcard" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="ID Card"
+                        android:textColor="#410051"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/common_card"
+                    android:orientation="vertical"
+                    >
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:padding="10dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/biodata" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text="BioData"
+                        android:textColor="#410051"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -117,169 +183,68 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/notice"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="10dp">
+                    android:padding="10dp"
+                    android:id="@+id/marriage"
+                    android:background="@drawable/common_card"
+                    android:orientation="vertical"
+                    >
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:padding="10dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/marraige" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                       >
+                        android:text="Marriage Data"
+                        android:textColor="#410051"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
 
-                        <ImageView
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:padding="10dp"
-                            android:src="@drawable/idcard" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="Id Card"
-                            android:textColor="#410051"
-                            android:textSize="15dp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/bnt"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="10dp">
+                    android:padding="10dp"
+                    android:background="@drawable/common_card"
+                    android:orientation="vertical"
+                    >
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:padding="10dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/resume" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        >
+                        android:text="Resume"
+                        android:textColor="#410051"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
 
-                        <ImageView
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_gravity="center"
-                            android:padding="10dp"
-                            android:layout_margin="10dp"
-                            android:src="@drawable/biodata" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="BioDetails"
-                            android:textColor="#410051"
-                            android:textSize="15dp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/marriageBtn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="10dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        >
-
-                        <ImageView
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:padding="10dp"
-                            android:src="@drawable/marraige" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="Marriage BD"
-                            android:textColor="#410051"
-                            android:textSize="15dp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/m"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="10dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        >
-
-                        <ImageView
-                            android:layout_width="130dp"
-                            android:layout_height="130dp"
-                            android:layout_gravity="center"
-                            android:layout_margin="10dp"
-                            android:padding="10dp"
-                            android:src="@drawable/resume" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:text="Resume"
-                            android:textColor="#410051"
-                            android:textSize="15dp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
             </LinearLayout>
 

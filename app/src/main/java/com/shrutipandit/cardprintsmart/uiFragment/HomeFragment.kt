@@ -18,12 +18,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
 
-        binding.marriageBtn.setOnClickListener {
+        binding.marriage.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToMarriageBioDataFragment()
             findNavController().navigate(action)
 
         }
-        binding.omrSheet.setOnClickListener {
+        binding.omrsheet.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToOMRSheetFragment()
             findNavController().navigate(action)
 

@@ -1,5 +1,6 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -38,8 +39,8 @@ class DemoMarriageCardFragment : Fragment(R.layout.fragment_demo_marriage_card) 
 
         binding.pdfBtn.setOnClickListener {
             pdfBytes?.let { bytes ->
-                if (savePdf(requireContext(), bytes)) {
-                    showToast("PDF saved successfully")
+                if (savePdfToDownloads(requireContext(), bytes)) {
+                    showToast("PDF saved successfully in Downloads")
                 } else {
                     showToast("Failed to save PDF")
                 }
@@ -47,13 +48,13 @@ class DemoMarriageCardFragment : Fragment(R.layout.fragment_demo_marriage_card) 
         }
     }
 
-    private fun savePdf(context: Context, pdfBytes: ByteArray): Boolean {
-        val directory = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "PDFs")
-        if (!directory.exists() && !directory.mkdirs()) {
+    private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray): Boolean {
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        if (!downloadsDir.exists() && !downloadsDir.mkdirs()) {
             return false
         }
 
-        val file = File(directory, "e_marriage_card.pdf")
+        val file = File(downloadsDir, "e_marriage_card.pdf")
         return try {
             FileOutputStream(file).use { fos ->
                 fos.write(pdfBytes)
@@ -71,8 +72,8 @@ class DemoMarriageCardFragment : Fragment(R.layout.fragment_demo_marriage_card) 
 
     private fun checkAndRequestPermissions() {
         val permissions = arrayOf(
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
 
         val permissionsToRequest = permissions.filter {
@@ -83,6 +84,7 @@ class DemoMarriageCardFragment : Fragment(R.layout.fragment_demo_marriage_card) 
             ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), REQUEST_CODE_PERMISSIONS)
         }
     }
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1
     }

@@ -1,10 +1,12 @@
 package com.shrutipandit.cardprintsmart
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -12,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.shrutipandit.cardprintsmart.databinding.ActivityMainBinding
+import com.shrutipandit.cardprintsmart.uiFragment.DemoOMRSheetFragment
 import com.shrutipandit.cardprintsmart.uiFragment.MarriageBioDataFragment
 
 class MainActivity : AppCompatActivity() {

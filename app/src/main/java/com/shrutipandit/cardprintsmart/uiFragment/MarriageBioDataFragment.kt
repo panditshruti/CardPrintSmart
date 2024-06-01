@@ -1,5 +1,6 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,7 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
         // Add the submit button at the end of the linear layout
         val submitButton = Button(requireContext())
         submitButton.text = "Submit"
+        submitButton.setBackgroundColor(Color.RED)
         submitButton.setOnClickListener {
             val data = editTexts.joinToString(",") { it.text.toString() }
             val action = MarriageBioDataFragmentDirections.actionMarriageBioDataFragmentToDemoMarriageCardFragment(data)
