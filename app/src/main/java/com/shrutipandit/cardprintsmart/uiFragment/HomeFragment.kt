@@ -28,6 +28,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(action)
 
         }
+        binding.idCard.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToIDCardFragment()
+            findNavController().navigate(action)
+
+        }
+    binding.resume.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToResumeFragment()
+            findNavController().navigate(action)
+
+        }
+        binding.bioDetails.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToBioDetailsFragment()
+            findNavController().navigate(action)
+
+        }
 
     }
 

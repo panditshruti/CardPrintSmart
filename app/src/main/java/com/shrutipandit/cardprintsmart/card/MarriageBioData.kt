@@ -42,6 +42,7 @@ class MarriageBioData : ViewModel() {
             isFakeBoldText = true
             textSize = 30.0f // Adjust size as needed
         }
+
         val textWidth = headingPaint.measureText(headingText)
         val startX = (canvas.width - textWidth) / 2 // Center horizontally
         val startY = 50F + margin // Adjust Y position with margin
@@ -54,6 +55,7 @@ class MarriageBioData : ViewModel() {
             isFakeBoldText = true
             textSize = 23.0f // Adjust size as needed
         }
+
         val personalStartX = 80F // Align to left
         val personalStartY = startY + 30 + margin // Adjust Y position with margin
         canvas.drawText(personalHeading, personalStartX, personalStartY, personalHeadingPaint)
@@ -133,4 +135,5 @@ class MarriageBioData : ViewModel() {
             yPoint += 25 // Adjust line height
         }
     }
+
 }

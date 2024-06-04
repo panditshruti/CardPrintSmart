@@ -69,5 +69,6 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
         }
 
         linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
     }
 }

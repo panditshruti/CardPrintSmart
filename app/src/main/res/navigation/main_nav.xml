@@ -16,6 +16,15 @@
         <action
             android:id="@+id/action_homeFragment_to_OMRSheetFragment"
             app:destination="@id/OMRSheetFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_IDCardFragment"
+            app:destination="@id/IDCardFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_resumeFragment"
+            app:destination="@id/resumeFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_bioDetailsFragment"
+            app:destination="@id/bioDetailsFragment" />
     </fragment>
 
     <fragment
@@ -69,4 +78,19 @@
             android:name="paperSize"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/IDCardFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.IDCardFragment"
+        android:label="fragment_i_d_card"
+        tools:layout="@layout/fragment_i_d_card" />
+    <fragment
+        android:id="@+id/resumeFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.ResumeFragment"
+        android:label="fragment_resume"
+        tools:layout="@layout/fragment_resume" />
+    <fragment
+        android:id="@+id/bioDetailsFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.BioDetailsFragment"
+        android:label="fragment_bio_details"
+        tools:layout="@layout/fragment_bio_details" />
 </navigation>
