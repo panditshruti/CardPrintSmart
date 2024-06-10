@@ -92,5 +92,18 @@
         android:id="@+id/bioDetailsFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.BioDetailsFragment"
         android:label="fragment_bio_details"
-        tools:layout="@layout/fragment_bio_details" />
+        tools:layout="@layout/fragment_bio_details" >
+        <action
+            android:id="@+id/action_bioDetailsFragment_to_demoBioDataFragment"
+            app:destination="@id/demoBioDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoBioDataFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoBioDataFragment"
+        android:label="fragment_demo_bio_data"
+        tools:layout="@layout/fragment_demo_bio_data" >
+        <argument
+            android:name="editTextData"
+            app:argType="string" />
+    </fragment>
 </navigation>
