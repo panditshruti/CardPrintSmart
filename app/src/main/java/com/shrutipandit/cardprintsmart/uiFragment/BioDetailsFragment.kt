@@ -1,6 +1,9 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,8 @@ import com.shrutipandit.cardprintsmart.databinding.FragmentBioDetailsBinding
 
 class BioDetailsFragment : Fragment(R.layout.fragment_bio_details) {
     private lateinit var binding: FragmentBioDetailsBinding
+    private var selectedImageUri: Uri? = null
+    private val IMAGE_PICK_CODE = 1000
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,16 +59,39 @@ class BioDetailsFragment : Fragment(R.layout.fragment_bio_details) {
             editTexts.add(textInputEditText)
         }
 
+        // Add button to choose an image
+        val chooseImageButton = Button(requireContext())
+        chooseImageButton.text = "Choose Image"
+        chooseImageButton.setBackgroundColor(Color.BLUE)
+        chooseImageButton.setOnClickListener {
+            pickImageFromGallery()
+        }
+        linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
         // Add the submit button at the end of the linear layout
         val submitButton = Button(requireContext())
         submitButton.text = "Submit"
         submitButton.setBackgroundColor(Color.RED)
         submitButton.setOnClickListener {
             val data = editTexts.joinToString(",") { it.text.toString() }
-            val action = BioDetailsFragmentDirections.actionBioDetailsFragmentToDemoBioDataFragment(data)
+            val imageUriString = selectedImageUri?.toString() ?: ""
+            val action = BioDetailsFragmentDirections.actionBioDetailsFragmentToDemoBioDataFragment(data, imageUriString)
             findNavController().navigate(action)
         }
 
         linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            selectedImageUri = data?.data
+        }
     }
 }

@@ -95,7 +95,9 @@
         tools:layout="@layout/fragment_bio_details" >
         <action
             android:id="@+id/action_bioDetailsFragment_to_demoBioDataFragment"
-            app:destination="@id/demoBioDataFragment" />
+            app:destination="@id/demoBioDataFragment" >
+
+        </action>
     </fragment>
     <fragment
         android:id="@+id/demoBioDataFragment"
@@ -104,6 +106,9 @@
         tools:layout="@layout/fragment_demo_bio_data" >
         <argument
             android:name="editTextData"
+            app:argType="string" />
+        <argument
+            android:name="image"
             app:argType="string" />
     </fragment>
 </navigation>

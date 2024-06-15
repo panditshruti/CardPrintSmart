@@ -1,6 +1,7 @@
 package com.shrutipandit.cardprintsmart.card
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -17,7 +18,7 @@ class BioData : ViewModel() {
         this.data = data
     }
 
-    fun generatePdf(context: Context): ByteArray {
+    fun generatePdf(context: Context, bitmap: Bitmap): ByteArray {
         val myPdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
         val page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
@@ -34,6 +35,11 @@ class BioData : ViewModel() {
         val borderRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, canvas.height - borderMargin)
         canvas.drawRect(borderRect, borderPaint)
 
+        // Draw the image at the top
+        val imagePaint = Paint()
+        val imageRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, 300) // Adjust height as needed
+        canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
+
         val textPaint = Paint().apply {
             color = Color.BLACK
             textSize = 20.5f
@@ -48,7 +54,7 @@ class BioData : ViewModel() {
         val headingText = "BIO DATA"
         val textWidth = headingPaint.measureText(headingText)
         val headingStartX = (canvas.width - textWidth) / 2
-        val headingStartY = borderMargin + 30
+        val headingStartY = imageRect.bottom + 30
         canvas.drawText(headingText, headingStartX, headingStartY.toFloat(), headingPaint)
 
         val marriagePersonalInfoArrayList = arrayListOf(
