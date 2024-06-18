@@ -44,10 +44,10 @@ class OMRSheet {
         val startY = padding.toFloat()
 
         // Fixed text
-        canvas.drawText("Name: John Doe", startX, startY, fixedTextPaint)
-        canvas.drawText("Class: 10th Grade", startX, startY + 20, fixedTextPaint)
-        canvas.drawText("Roll Number: 123456", startX, startY + 40, fixedTextPaint)
-        canvas.drawText("Mobile Number: +1234567890", startX, startY + 60, fixedTextPaint)
+        canvas.drawText("Name:_____________________", startX, startY, fixedTextPaint)
+        canvas.drawText("Class:_____________________", startX, startY + 20, fixedTextPaint)
+        canvas.drawText("Roll Number:_____________________", startX, startY + 40, fixedTextPaint)
+        canvas.drawText("Mobile Number:_____________________", startX, startY + 60, fixedTextPaint)
 
         // Paint for questions and bubbles
         val textPaint = Paint().apply {

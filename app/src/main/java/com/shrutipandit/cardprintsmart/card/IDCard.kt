@@ -36,7 +36,7 @@ class IDCard :ViewModel(){
 
             // Draw the image at the top
             val imagePaint = Paint()
-            val imageRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, 300) // Adjust height as needed
+            val imageRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, 100) // Adjust height as needed
             canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
 
             val textPaint = Paint().apply {
