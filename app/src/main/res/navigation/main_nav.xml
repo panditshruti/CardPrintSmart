@@ -91,7 +91,11 @@
         android:id="@+id/resumeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.ResumeFragment"
         android:label="fragment_resume"
-        tools:layout="@layout/fragment_resume" />
+        tools:layout="@layout/fragment_resume" >
+        <action
+            android:id="@+id/action_resumeFragment_to_demoResumeFragment"
+            app:destination="@id/demoResumeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bioDetailsFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.BioDetailsFragment"
@@ -120,6 +124,18 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoIdCardFragment"
         android:label="fragment_demo_id_card"
         tools:layout="@layout/fragment_demo_id_card" >
+        <argument
+            android:name="editTextData"
+            app:argType="string" />
+        <argument
+            android:name="image"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoResumeFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoResumeFragment"
+        android:label="fragment_demo_resume"
+        tools:layout="@layout/fragment_demo_resume" >
         <argument
             android:name="editTextData"
             app:argType="string" />
