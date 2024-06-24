@@ -8,17 +8,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.shrutipandit.cardprintsmart.R
-import com.shrutipandit.cardprintsmart.card.BioData
 import com.shrutipandit.cardprintsmart.card.ResumeCard
-import com.shrutipandit.cardprintsmart.databinding.FragmentDemoBioDataBinding
-import com.shrutipandit.cardprintsmart.databinding.FragmentDemoIdCardBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoResumeBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -37,7 +32,7 @@ class DemoResumeFragment : Fragment(R.layout.fragment_demo_resume) {
 
         checkAndRequestPermissions()
 
-        val args = arguments?.let { DemoBioDataFragmentArgs.fromBundle(it) }
+        val args = arguments?.let { DemoResumeFragmentArgs.fromBundle(it) }
         val editTextData = args?.editTextData?.split(",")?.toMutableList()
         val imageUriString = args?.image
         selectedImageUri = if (imageUriString.isNullOrEmpty()) null else Uri.parse(imageUriString)
@@ -50,23 +45,24 @@ class DemoResumeFragment : Fragment(R.layout.fragment_demo_resume) {
             val inputStream = requireContext().contentResolver.openInputStream(uri)
             val bitmap = BitmapFactory.decodeStream(inputStream)
             pdfBytes = resumeCard.generatePdf(requireContext(), bitmap)
-            binding.pdfView.fromBytes(pdfBytes).load()
+            pdfBytes?.let { bytes ->
+                binding.pdfView.fromBytes(bytes).load()
+            } ?: showToast("Failed to generate PDF")
         }
 
         binding.pdfBtn.setOnClickListener {
-            selectedImageUri?.let { uri ->
-                if (savePdfToDownloads(requireContext(), pdfBytes!!)) {
+            pdfBytes?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes)) {
                     showToast("PDF saved successfully in Downloads")
                 } else {
                     showToast("Failed to save PDF")
                 }
-            } ?: showToast("No image selected")
+            } ?: showToast("No PDF to save")
         }
     }
 
     private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray): Boolean {
-        val downloadsDir =
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (!downloadsDir.exists() && !downloadsDir.mkdirs()) {
             return false
         }
@@ -92,15 +88,31 @@ class DemoResumeFragment : Fragment(R.layout.fragment_demo_resume) {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
-        val permissionsToRequest =
-            permissions.filter { ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED }
+        val permissionsToRequest = permissions.filter {
+            ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
+        }
 
         if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                permissionsToRequest.toTypedArray(),
-                0
-            )
+            ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), REQUEST_CODE_PERMISSIONS)
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 1
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                showToast("Permissions granted")
+            } else {
+                showToast("Permissions denied")
+            }
         }
     }
 }
