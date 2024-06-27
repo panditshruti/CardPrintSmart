@@ -96,7 +96,6 @@ class DemoResumeFragment : Fragment(R.layout.fragment_demo_resume) {
             ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), REQUEST_CODE_PERMISSIONS)
         }
     }
-
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1
     }

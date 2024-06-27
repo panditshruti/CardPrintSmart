@@ -35,9 +35,12 @@ class BioData : ViewModel() {
         val borderRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, canvas.height - borderMargin)
         canvas.drawRect(borderRect, borderPaint)
 
-        // Draw the image at the top
+        // Draw the image at the top right
         val imagePaint = Paint()
-        val imageRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, 300) // Adjust height as needed
+        val passportWidth = 132 // Passport photo width in pixels
+        val passportHeight = 170 // Passport photo height in pixels
+        val imageLeft = canvas.width - borderMargin - passportWidth // Align the image to the right
+        val imageRect = Rect(imageLeft, borderMargin, imageLeft + passportWidth, borderMargin + passportHeight)
         canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
 
         val textPaint = Paint().apply {
