@@ -35,30 +35,21 @@ class BioData : ViewModel() {
         val borderRect = Rect(borderMargin, borderMargin, canvas.width - borderMargin, canvas.height - borderMargin)
         canvas.drawRect(borderRect, borderPaint)
 
-        // Draw the image at the top right
-        val imagePaint = Paint()
-        val passportWidth = 132 // Passport photo width in pixels
-        val passportHeight = 170 // Passport photo height in pixels
-        val imageLeft = canvas.width - borderMargin - passportWidth // Align the image to the right
-        val imageRect = Rect(imageLeft, borderMargin, imageLeft + passportWidth, borderMargin + passportHeight)
-        canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
-
-        val textPaint = Paint().apply {
-            color = Color.BLACK
-            textSize = 20.5f
-        }
-
+        // Draw the heading at the top
         val headingPaint = Paint().apply {
             color = Color.RED
             isFakeBoldText = true
             textSize = 30.0f
         }
-
         val headingText = "BIO DATA"
         val textWidth = headingPaint.measureText(headingText)
         val headingStartX = (canvas.width - textWidth) / 2
-        val headingStartY = imageRect.bottom + 30
+        val headingStartY = borderMargin + 30
         canvas.drawText(headingText, headingStartX, headingStartY.toFloat(), headingPaint)
+
+        // Position for personal information
+        val personalStartX = borderMargin.toFloat() + 10
+        val personalStartY = headingStartY + 40 // Starts below the heading
 
         val marriagePersonalInfoArrayList = arrayListOf(
             "Name    :",
@@ -81,18 +72,28 @@ class BioData : ViewModel() {
             "Work Experience    :"
         )
 
-        val personalStartX = borderMargin.toFloat() + 10
-        val personalStartY = headingStartY + 40
+        // Draw the personal information
+        drawTextList(canvas, marriagePersonalInfoArrayList, data.subList(0, marriagePersonalInfoArrayList.size), personalStartX, personalStartY, Paint().apply {
+            color = Color.BLACK
+            textSize = 20.5f
+        })
 
-        drawTextList(canvas, marriagePersonalInfoArrayList, data.subList(0, marriagePersonalInfoArrayList.size), personalStartX, personalStartY, textPaint)
+        // Draw the image parallel to the personal information
+        val imagePaint = Paint()
+        val passportWidth = 132
+        val passportHeight = 170
+        val imageLeft = canvas.width - borderMargin - passportWidth // Align the image to the right
+        val imageTop = personalStartY // Align with the personal info
+        val imageRect = Rect(imageLeft, imageTop, imageLeft + passportWidth, imageTop + passportHeight)
+        canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
 
+        // Draw family declaration section
         val familyHeading = "Declaration-"
         val familyHeadingPaint = Paint().apply {
             color = Color.RED
             isFakeBoldText = true
             textSize = 22.0f
         }
-
         val familyHeadingStartY = personalStartY + marriagePersonalInfoArrayList.size * 26 + 20
         canvas.drawText(familyHeading, personalStartX, familyHeadingStartY.toFloat(), familyHeadingPaint)
 
@@ -103,18 +104,20 @@ class BioData : ViewModel() {
         )
 
         val familyStartY = familyHeadingStartY + 26
-        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY, textPaint)
+        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY, Paint().apply {
+            color = Color.BLACK
+            textSize = 20.5f
+        })
 
+        // Draw signature
         val signatureText = "Signature"
         val signaturePaint = Paint().apply {
             color = Color.BLACK
             isFakeBoldText = true
             textSize = 20.0f
         }
-
-        // Position the signature text slightly higher
-        val signatureStartX = canvas.width - borderMargin - 100f // Adjust as needed
-        val signatureStartY = canvas.height - borderMargin.toFloat() - 60 // Moved up from -30
+        val signatureStartX = canvas.width - borderMargin - 100f
+        val signatureStartY = canvas.height - borderMargin.toFloat() - 60
         canvas.drawText(signatureText, signatureStartX, signatureStartY, signaturePaint)
 
         myPdfDocument.finishPage(page)

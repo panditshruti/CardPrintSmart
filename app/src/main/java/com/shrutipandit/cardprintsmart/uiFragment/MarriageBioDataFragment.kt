@@ -36,14 +36,12 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
             "Post             :",
             "District         :",
             "State            :",
-            "Family Information",
             "Father Name      :",
             "Occupation       :",
             "Mother Name      :",
             "Occupation       :",
             "Sister           :",
             "Brother          :",
-            "Contact Information",
             "Address          :",
             "Contact No-      :"
         )

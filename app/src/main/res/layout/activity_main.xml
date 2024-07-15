@@ -12,18 +12,16 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#440068"
-        android:visibility="gone"
-        android:id="@+id/toolbar"
+        android:background="#41004D"
+        app:menu="@menu/toolbar_menu"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/fragmentContainerView"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:ignore="MissingConstraints" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
@@ -35,7 +33,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:navGraph="@navigation/main_nav"
-        tools:ignore="UnknownId" />
-
+        app:navGraph="@navigation/main_nav" />
 </androidx.constraintlayout.widget.ConstraintLayout>

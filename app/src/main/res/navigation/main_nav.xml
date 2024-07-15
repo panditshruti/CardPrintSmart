@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.HomeFragment"
-        android:label="Home"
+        android:label="CardPrintSmart"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_marriageBioDataFragment"
@@ -81,8 +81,8 @@
     <fragment
         android:id="@+id/IDCardFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.IDCardFragment"
-        android:label="fragment_i_d_card"
-        tools:layout="@layout/fragment_i_d_card" >
+        android:label="ID Card"
+        tools:layout="@layout/fragment_i_d_card">
         <action
             android:id="@+id/action_IDCardFragment_to_demoIdCardFragment"
             app:destination="@id/demoIdCardFragment" />
@@ -90,8 +90,8 @@
     <fragment
         android:id="@+id/resumeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.ResumeFragment"
-        android:label="fragment_resume"
-        tools:layout="@layout/fragment_resume" >
+        android:label="Resume"
+        tools:layout="@layout/fragment_resume">
         <action
             android:id="@+id/action_resumeFragment_to_demoResumeFragment"
             app:destination="@id/demoResumeFragment" />
@@ -99,19 +99,19 @@
     <fragment
         android:id="@+id/bioDetailsFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.BioDetailsFragment"
-        android:label="fragment_bio_details"
-        tools:layout="@layout/fragment_bio_details" >
+        android:label="Bio Details"
+        tools:layout="@layout/fragment_bio_details">
         <action
             android:id="@+id/action_bioDetailsFragment_to_demoBioDataFragment"
-            app:destination="@id/demoBioDataFragment" >
+            app:destination="@id/demoBioDataFragment">
 
         </action>
     </fragment>
     <fragment
         android:id="@+id/demoBioDataFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoBioDataFragment"
-        android:label="fragment_demo_bio_data"
-        tools:layout="@layout/fragment_demo_bio_data" >
+        android:label="Demo Bio Details"
+        tools:layout="@layout/fragment_demo_bio_data">
         <argument
             android:name="editTextData"
             app:argType="string" />
@@ -122,8 +122,8 @@
     <fragment
         android:id="@+id/demoIdCardFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoIdCardFragment"
-        android:label="fragment_demo_id_card"
-        tools:layout="@layout/fragment_demo_id_card" >
+        android:label="DemoIdCard"
+        tools:layout="@layout/fragment_demo_id_card">
         <argument
             android:name="editTextData"
             app:argType="string" />
@@ -134,8 +134,8 @@
     <fragment
         android:id="@+id/demoResumeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoResumeFragment"
-        android:label="fragment_demo_resume"
-        tools:layout="@layout/fragment_demo_resume" >
+        android:label="Demo Resume"
+        tools:layout="@layout/fragment_demo_resume">
         <argument
             android:name="editTextData"
             app:argType="string" />

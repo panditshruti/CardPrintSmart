@@ -42,6 +42,11 @@ class MainActivity : AppCompatActivity() {
             )
         )
 
+        // Update the toolbar title when the fragment changes
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.toolbar.title = destination.label
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
