@@ -13,18 +13,25 @@
         <action
             android:id="@+id/action_homeFragment_to_marriageBioDataFragment"
             app:destination="@id/marriageBioDataFragment" />
+
         <action
             android:id="@+id/action_homeFragment_to_OMRSheetFragment"
             app:destination="@id/OMRSheetFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_IDCardFragment"
-            app:destination="@id/IDCardFragment" />
         <action
             android:id="@+id/action_homeFragment_to_resumeFragment"
             app:destination="@id/resumeFragment" />
         <action
             android:id="@+id/action_homeFragment_to_bioDetailsFragment"
             app:destination="@id/bioDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_IDCardFragment"
+            app:destination="@id/IDCardFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutUsragment"
+            app:destination="@id/aboutUsragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_helpUsFragment"
+            app:destination="@id/helpUsFragment" />
     </fragment>
 
     <fragment
@@ -143,4 +150,14 @@
             android:name="image"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutUsragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.AboutUsragment"
+        android:label="fragment_about_usragment"
+        tools:layout="@layout/fragment_about_usragment" />
+    <fragment
+        android:id="@+id/helpUsFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.HelpUsFragment"
+        android:label="fragment_help_us"
+        tools:layout="@layout/fragment_help_us" />
 </navigation>

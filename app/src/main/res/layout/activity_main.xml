@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/white"
+    android:background="#C3E3FB"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -15,7 +15,7 @@
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#41004D"
+        android:background="#003C6B"
         app:menu="@menu/toolbar_menu"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintStart_toStartOf="parent"

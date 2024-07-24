@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
         android:id="@+id/aboutUsFragment"
-        android:menuCategory="secondary"
         android:title="About Us" />
     <item
-        android:id="@+id/helpCenterFragment"
-        android:menuCategory="secondary"
-        android:title="Help Us" />
+        android:id="@+id/helpUsFragment"
+        android:title="Help Center" />
     <item
-        android:menuCategory="secondary"
-        android:onClick="shareAppLink"
-        android:title="Invite a friend" />
-
+        android:id="@+id/rateus"
+        android:title="Rate Us" />
+    <item
+        android:id="@+id/shareAppLink"
+        android:title="Share App Link" />
 </menu>

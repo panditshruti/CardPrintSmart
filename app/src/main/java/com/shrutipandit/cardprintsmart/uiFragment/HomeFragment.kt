@@ -30,7 +30,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val action = HomeFragmentDirections.actionHomeFragmentToIDCardFragment()
             findNavController().navigate(action)
         }
-    binding.resume.setOnClickListener {
+        binding.resume.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToResumeFragment()
             findNavController().navigate(action)
 
