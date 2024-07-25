@@ -78,12 +78,13 @@ class BioData : ViewModel() {
             textSize = 20.5f
         })
 
-        // Draw the image parallel to the personal information
+        // Draw the image parallel to the personal information with 10 pixel margin
+        val imageMargin = 10
         val imagePaint = Paint()
-        val passportWidth = 132
-        val passportHeight = 170
-        val imageLeft = canvas.width - borderMargin - passportWidth // Align the image to the right
-        val imageTop = personalStartY // Align with the personal info
+        val passportWidth = 132 - 2 * imageMargin
+        val passportHeight = 170 - 2 * imageMargin
+        val imageLeft = canvas.width - borderMargin - passportWidth - 2 * imageMargin // Align the image to the right with margin
+        val imageTop = personalStartY + imageMargin // Align with the personal info and margin
         val imageRect = Rect(imageLeft, imageTop, imageLeft + passportWidth, imageTop + passportHeight)
         canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
 
