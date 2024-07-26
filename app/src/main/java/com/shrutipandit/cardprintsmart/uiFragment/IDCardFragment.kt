@@ -28,27 +28,15 @@ private lateinit var binding: FragmentIDCardBinding
                 val linearLayout = binding.linearLayout
 
                 val marriageArrayList = arrayListOf(
-                    "Name                 :",
-                    "Father's Name        :",
-                    "Gender               :",
-                    "Caste                :",
-                    "Height               :",
-                    "Blood Group          :",
-                    "Date Of Birth        :",
-                    "Mobile No-           :",
-                    "Marital Status       :",
-                    "Email Id             :",
-                    "Religion             :",
-                    "Nationality          :",
-                    "Address              :",
-                    "Languages Knows      :",
-                    "Education            :",
-                    "Computer Knowledge   :",
-                    "Work                 :",
-                    "Work Experience      :",
-                    "Declaration          :",
-                    "Place                :",
-                    "Date                 :"
+                    "Tittle    :",
+                    "Name    :",
+                    "Description    :",
+                    "Class    :",
+                    "Roll NO.    :",
+                    "DOB    :",
+                    "Phone no.    :",
+                    "Email    :",
+                    "Address    :",
                 )
 
                 val editTexts = mutableListOf<TextInputEditText>()

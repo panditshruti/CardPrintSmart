@@ -41,7 +41,7 @@ class IDCard :ViewModel(){
             isFakeBoldText = true
             textSize = 30.0f
         }
-        val headingText = "BIO DATA"
+        val headingText = "ID Card"
         val textWidth = headingPaint.measureText(headingText)
         val headingStartX = (canvas.width - textWidth) / 2
         val headingStartY = borderMargin + 30
@@ -52,24 +52,15 @@ class IDCard :ViewModel(){
         val personalStartY = headingStartY + 40 // Starts below the heading
 
         val marriagePersonalInfoArrayList = arrayListOf(
+            "Tittle    :",
             "Name    :",
-            "Father's Name    :",
-            "Gender    :",
-            "Caste    :",
-            "Height    :",
-            "Blood Group    :",
-            "Date Of Birth    :",
-            "Mobile No-    :",
-            "Marital Status    :",
-            "Email Id    :",
-            "Religion    :",
-            "Nationality    :",
+            "Description    :",
+            "Class    :",
+            "Roll NO.    :",
+            "DOB    :",
+            "Phone no.    :",
+            "Email    :",
             "Address    :",
-            "Languages Knows    :",
-            "Education    :",
-            "Computer Knowledge    :",
-            "Work    :",
-            "Work Experience    :"
         )
 
         // Draw the personal information
@@ -88,27 +79,27 @@ class IDCard :ViewModel(){
         val imageRect = Rect(imageLeft, imageTop, imageLeft + passportWidth, imageTop + passportHeight)
         canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
 
-        // Draw family declaration section
-        val familyHeading = "Declaration-"
-        val familyHeadingPaint = Paint().apply {
-            color = Color.RED
-            isFakeBoldText = true
-            textSize = 22.0f
-        }
-        val familyHeadingStartY = personalStartY + marriagePersonalInfoArrayList.size * 26 + 20
-        canvas.drawText(familyHeading, personalStartX, familyHeadingStartY.toFloat(), familyHeadingPaint)
+//        // Draw family declaration section
+//        val familyHeading = "Declaration-"
+//        val familyHeadingPaint = Paint().apply {
+//            color = Color.RED
+//            isFakeBoldText = true
+//            textSize = 22.0f
+//        }
+//        val familyHeadingStartY = personalStartY + marriagePersonalInfoArrayList.size * 26 + 20
+//        canvas.drawText(familyHeading, personalStartX, familyHeadingStartY.toFloat(), familyHeadingPaint)
 
-        val marriageFamilyInfoArrayList = arrayListOf(
-            "Declaration     :",
-            "Place    :",
-            "Date    :"
-        )
+//        val marriageFamilyInfoArrayList = arrayListOf(
+//            "Declaration     :",
+//            "Place    :",
+//            "Date    :"
+//        )
 
-        val familyStartY = familyHeadingStartY + 26
-        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY, Paint().apply {
-            color = Color.BLACK
-            textSize = 20.5f
-        })
+//        val familyStartY = familyHeadingStartY + 26
+//        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY, Paint().apply {
+//            color = Color.BLACK
+//            textSize = 20.5f
+//        })
 
         // Draw signature
         val signatureText = "Signature"

@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.card.BioData
+import com.shrutipandit.cardprintsmart.card.IDCard
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoBioDataBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoIdCardBinding
 import java.io.File
@@ -25,7 +26,7 @@ import java.io.IOException
 class DemoIdCardFragment : Fragment(R.layout.fragment_demo_id_card) {
 
         private lateinit var binding: FragmentDemoIdCardBinding
-        private val bioData = BioData()
+        private val bioData = IDCard()
         private var pdfBytes: ByteArray? = null
         private var selectedImageUri: Uri? = null
 
