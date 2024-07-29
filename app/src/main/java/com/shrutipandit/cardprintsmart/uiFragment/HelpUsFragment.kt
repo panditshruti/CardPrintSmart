@@ -1,5 +1,7 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,7 +21,21 @@ private lateinit var binding:FragmentHelpUsBinding
         binding = FragmentHelpUsBinding.bind(view)
 
 
+        binding.call.setOnClickListener {
+            helpCenter()
+        }
+
 
     }
+    private fun helpCenter() {
+        val phoneNumber = "+7739717389"
+        val message =
+            "Hello, I there is a problem in ADCA Computer Course. Can you please help me troubleshoot it?"
+        val encodedMessage = Uri.encode(message)
+        val uri = Uri.parse("https://wa.me/$phoneNumber?text=$encodedMessage")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.whatsapp")
+        startActivity(intent)
 
-}
+    }
+    }
