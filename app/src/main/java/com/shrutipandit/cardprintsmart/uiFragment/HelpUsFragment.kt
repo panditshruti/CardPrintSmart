@@ -36,6 +36,5 @@ private lateinit var binding:FragmentHelpUsBinding
         val intent = Intent(Intent.ACTION_VIEW, uri)
         intent.setPackage("com.whatsapp")
         startActivity(intent)
-
     }
     }

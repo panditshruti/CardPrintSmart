@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
+    android:background="@color/white"
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <!-- First LinearLayout with ImageView and TextView -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -66,6 +65,7 @@
             android:drawablePadding="8dp"
             android:text="7739717389"
             android:layout_margin="5dp"
+            android:drawableStart="@drawable/baseline_call_24"
             android:layout_gravity="start"
             android:textColor="#008A06"
             android:textSize="15dp" />

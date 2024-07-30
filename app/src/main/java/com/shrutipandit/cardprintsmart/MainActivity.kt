@@ -51,14 +51,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.aboutUsFragment -> {
-                try {
-                    navController.navigate(R.id.action_homeFragment_to_aboutUsragment)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-                true
-            }
             R.id.helpUsFragment -> {
                 try {
                     navController.navigate(R.id.action_homeFragment_to_helpUsFragment)
