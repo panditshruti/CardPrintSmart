@@ -52,11 +52,12 @@ private lateinit var binding: FragmentIDCardBinding
                 // Add button to choose an image
                 val chooseImageButton = Button(requireContext())
                 chooseImageButton.text = "Choose Image"
+               chooseImageButton.setTextColor(Color.WHITE)
                 chooseImageButton.setBackgroundColor(Color.BLUE)
                 chooseImageButton.setOnClickListener {
                     pickImageFromGallery()
                 }
-                linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
                 // Add the submit button at the end of the linear layout
                 val submitButton = Button(requireContext())

@@ -40,5 +40,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(action)
 
         }
+        binding.examCopy.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToExamCopyFragment()
+            findNavController().navigate(action)
+        }
+        binding.paymentBtn.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToExamCopyFragment()
+            findNavController().navigate(action)
+        }
     }
 }

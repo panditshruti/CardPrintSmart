@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_homeFragment_to_helpUsFragment"
             app:destination="@id/helpUsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_examCopyFragment"
+            app:destination="@id/examCopyFragment" />
     </fragment>
 
     <fragment
@@ -152,4 +155,9 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.HelpUsFragment"
         android:label="fragment_help_us"
         tools:layout="@layout/fragment_help_us" />
+    <fragment
+        android:id="@+id/examCopyFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.ExamCopyFragment"
+        android:label="fragment_exam_copy"
+        tools:layout="@layout/fragment_exam_copy" />
 </navigation>

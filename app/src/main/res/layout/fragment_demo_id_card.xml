@@ -16,7 +16,7 @@
         android:drawableEnd="@drawable/baseline_picture_as_pdf_24"
         android:drawablePadding="5dp"
         android:padding="10dp"
-        android:text="@string/save_pdf"
+        android:text="Print PDF"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-        <com.github.barteksc.pdfviewer.PDFView
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/pdfBtns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/common_pdf"
+        android:drawableEnd="@drawable/baseline_picture_as_pdf_24"
+        android:drawablePadding="5dp"
+        android:padding="10dp"
+        android:text="@string/save_pdf"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/pdfBtn"
+        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.barteksc.pdfviewer.PDFView
             android:id="@+id/pdfView"
             android:layout_width="0dp"
             android:layout_height="0dp"

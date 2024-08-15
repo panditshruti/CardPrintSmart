@@ -13,15 +13,13 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_main" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Payment"
-        android:textStyle="bold"
-        android:textSize="14dp"
-        android:textColor="#480055"
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:backgroundTint="#F3C3FB"
         android:layout_gravity="start"
+        android:layout_margin="10dp"
+        android:src="@drawable/coins"
         android:id="@+id/paymentBtn"
         />
     <ScrollView
@@ -84,6 +82,7 @@
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:padding="10dp"
+                    android:id="@+id/examCopy"
                     android:background="@drawable/common_card"
                     android:orientation="vertical"
                     >
