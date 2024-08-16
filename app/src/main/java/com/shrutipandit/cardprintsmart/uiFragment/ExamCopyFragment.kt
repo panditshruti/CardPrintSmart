@@ -15,72 +15,73 @@ import com.google.android.material.textfield.TextInputEditText
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentBioDetailsBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentExamCopyBinding
-
+import com.shrutipandit.cardprintsmart.databinding.FragmentIDCardBinding
 
 class ExamCopyFragment : Fragment(R.layout.fragment_exam_copy) {
+    private lateinit var binding: FragmentExamCopyBinding
 
-        private lateinit var binding: FragmentExamCopyBinding
-        private var selectedImageUri: Uri? = null
-        private val IMAGE_PICK_CODE = 1000
+    private var selectedImageUri: Uri? = null
+    private val IMAGE_PICK_CODE = 1000
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentExamCopyBinding.bind(view)
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            binding = FragmentExamCopyBinding.bind(view)
+        val linearLayout = binding.linearLayout
 
-            val linearLayout = binding.linearLayout
+        val marriageArrayList = arrayListOf(
+            "Tittle    :",
+            "Name    :",
+            "Description    :",
+            "Class    :",
+            "Roll NO.    :",
+            "DOB    :",
 
-            val marriageArrayList = arrayListOf(
-                "Name                 :",
-                "Father's Name        :",
-                "Gender               :",
-                "Caste                :",
-                "Height               :",
+        )
 
-            )
+        val editTexts = mutableListOf<TextInputEditText>()
 
-            val editTexts = mutableListOf<TextInputEditText>()
-
-            // Add TextInputEditTexts to the layout for each item in the marriageArrayList
-            for (label in marriageArrayList) {
-                val textInputEditText = TextInputEditText(requireContext())
-                textInputEditText.hint = label
-                linearLayout.addView(textInputEditText, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                editTexts.add(textInputEditText)
-            }
-
-            // Add button to choose an image
-            val chooseImageButton = Button(requireContext())
-            chooseImageButton.text = "Choose Image"
-            chooseImageButton.setBackgroundColor(Color.BLUE)
-            chooseImageButton.setOnClickListener {
-                pickImageFromGallery()
-            }
-            linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-            // Add the submit button at the end of the linear layout
-            val submitButton = Button(requireContext())
-            submitButton.text = "Submit"
-            submitButton.setBackgroundColor(Color.RED)
-            submitButton.setOnClickListener {
-                val data = editTexts.joinToString(",") { it.text.toString() }
-                val imageUriString = selectedImageUri?.toString() ?: ""
-                val action = BioDetailsFragmentDirections.actionBioDetailsFragmentToDemoBioDataFragment(data, imageUriString)
-                findNavController().navigate(action)
-            }
-
-            linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        // Add TextInputEditTexts to the layout for each item in the marriageArrayList
+        for (label in marriageArrayList) {
+            val textInputEditText = TextInputEditText(requireContext())
+            textInputEditText.hint = label
+            linearLayout.addView(textInputEditText, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            editTexts.add(textInputEditText)
         }
 
-        private fun pickImageFromGallery() {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, IMAGE_PICK_CODE)
+        // Add button to choose an image
+        val chooseImageButton = Button(requireContext())
+        chooseImageButton.text = "Choose Image"
+        chooseImageButton.setTextColor(Color.WHITE)
+        chooseImageButton.setBackgroundColor(Color.BLUE)
+        chooseImageButton.setOnClickListener {
+            pickImageFromGallery()
+        }
+        linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        // Add the submit button at the end of the linear layout
+        val submitButton = Button(requireContext())
+        submitButton.text = "Submit"
+        submitButton.setBackgroundColor(Color.RED)
+        submitButton.setOnClickListener {
+            val data = editTexts.joinToString(",") { it.text.toString() }
+            val imageUriString = selectedImageUri?.toString() ?: ""
+            val action = ExamCopyFragmentDirections.actionExamCopyFragmentToDemoExamCopyFragment(data, imageUriString)
+            findNavController().navigate(action)
         }
 
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
-            if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-                selectedImageUri = data?.data
-            }
+        linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            selectedImageUri = data?.data
         }
     }
+}

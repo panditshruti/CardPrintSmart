@@ -159,5 +159,22 @@
         android:id="@+id/examCopyFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.ExamCopyFragment"
         android:label="fragment_exam_copy"
-        tools:layout="@layout/fragment_exam_copy" />
+        tools:layout="@layout/fragment_exam_copy" >
+        <action
+            android:id="@+id/action_examCopyFragment_to_demoExamCopyFragment"
+            app:destination="@id/demoExamCopyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoExamCopyFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoExamCopyFragment"
+        android:label="fragment_demo_exam_copy"
+        tools:layout="@layout/fragment_demo_exam_copy" >
+
+        <argument
+            android:name="editTextData"
+            app:argType="string" />
+        <argument
+            android:name="image"
+            app:argType="string" />
+    </fragment>
 </navigation>
