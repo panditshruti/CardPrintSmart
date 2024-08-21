@@ -7,10 +7,9 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.pdf.PdfDocument
-import androidx.lifecycle.ViewModel
 import java.io.ByteArrayOutputStream
 
-class BioData : ViewModel() {
+class BioData {
 
     private var data: MutableList<String> = mutableListOf()
 

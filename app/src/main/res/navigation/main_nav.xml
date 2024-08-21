@@ -61,16 +61,7 @@
         tools:layout="@layout/fragment_o_m_r_sheet">
         <action
             android:id="@+id/action_OMRSheetFragment_to_demoOMRSheetFragment"
-            app:destination="@id/demoOMRSheetFragment" >
-
-            <argument
-                android:name="numberOfQuestions"
-                app:argType="integer" />
-            <argument
-                android:name="paperSize"
-                app:argType="string" />
-
-        </action>
+            app:destination="@id/demoOMRSheetFragment" />
     </fragment>
 
     <fragment
@@ -110,9 +101,7 @@
         tools:layout="@layout/fragment_bio_details">
         <action
             android:id="@+id/action_bioDetailsFragment_to_demoBioDataFragment"
-            app:destination="@id/demoBioDataFragment">
-
-        </action>
+            app:destination="@id/demoBioDataFragment" />
     </fragment>
     <fragment
         android:id="@+id/demoBioDataFragment"
