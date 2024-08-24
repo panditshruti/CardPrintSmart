@@ -10,6 +10,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -78,6 +79,7 @@ class DemoMarriageCardFragment : Fragment(R.layout.fragment_demo_marriage_card) 
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun savePdfToDownloadsScoped(context: Context, pdfBytes: ByteArray): Boolean {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, "e_marriage_card.pdf")
