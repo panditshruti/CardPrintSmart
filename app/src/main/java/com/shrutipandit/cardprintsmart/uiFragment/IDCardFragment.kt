@@ -1,88 +1,57 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.textfield.TextInputEditText
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.shrutipandit.cardprintsmart.R
-import com.shrutipandit.cardprintsmart.databinding.FragmentBioDetailsBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentIDCardBinding
 
-class IDCardFragment : Fragment(R.layout.fragment_i_d_card) {
-private lateinit var binding: FragmentIDCardBinding
 
-    private var selectedImageUri: Uri? = null
-    private val IMAGE_PICK_CODE = 1000
+
+class IDCardFragment : Fragment(R.layout.fragment_i_d_card) {
+    private lateinit var binding: FragmentIDCardBinding
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentIDCardBinding.bind(view)
 
-                val linearLayout = binding.linearLayout
+        // Setup TabLayout with ViewPager
+        val viewPager = binding.viewPager
+        val tabLayout = binding.tabLayout
+        val adapter = ViewPagerAdapter(childFragmentManager) // Use childFragmentManager for fragments within a fragment
 
-                val marriageArrayList = arrayListOf(
-                    "Tittle    :",
-                    "Name    :",
-                    "Description    :",
-                    "Class    :",
-                    "Roll NO.    :",
-                    "DOB    :",
-                    "Phone no.    :",
-                    "Email    :",
-                    "Address    :",
-                )
+        // Add fragments for each tab
+        adapter.addFragment(StudentIdCardFragment(), "Student ID Card")
+        adapter.addFragment(EmployeIdCardFragment(), "Employee")
+        // Add more fragments as needed
 
-                val editTexts = mutableListOf<TextInputEditText>()
+        viewPager.adapter = adapter
+        tabLayout.setupWithViewPager(viewPager)
+    }
 
-                // Add TextInputEditTexts to the layout for each item in the marriageArrayList
-                for (label in marriageArrayList) {
-                    val textInputEditText = TextInputEditText(requireContext())
-                    textInputEditText.hint = label
-                    linearLayout.addView(textInputEditText, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                    editTexts.add(textInputEditText)
-                }
+    internal class ViewPagerAdapter(manager: FragmentManager) :
+        FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-                // Add button to choose an image
-                val chooseImageButton = Button(requireContext())
-                chooseImageButton.text = "Choose Image"
-               chooseImageButton.setTextColor(Color.WHITE)
-                chooseImageButton.setBackgroundColor(Color.BLUE)
-                chooseImageButton.setOnClickListener {
-                    pickImageFromGallery()
-                }
-                linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        private val fragments: MutableList<Fragment> = ArrayList()
+        private val titles: MutableList<String> = ArrayList()
 
-                // Add the submit button at the end of the linear layout
-                val submitButton = Button(requireContext())
-                submitButton.text = "Submit"
-                submitButton.setBackgroundColor(Color.RED)
-                submitButton.setOnClickListener {
-                    val data = editTexts.joinToString(",") { it.text.toString() }
-                    val imageUriString = selectedImageUri?.toString() ?: ""
-                    val action = IDCardFragmentDirections.actionIDCardFragmentToDemoIdCardFragment(data, imageUriString)
-                    findNavController().navigate(action)
-                }
-
-                linearLayout.addView(submitButton, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            }
-
-            private fun pickImageFromGallery() {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "image/*"
-                startActivityForResult(intent, IMAGE_PICK_CODE)
-            }
-
-            override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-                super.onActivityResult(requestCode, resultCode, data)
-                if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-                    selectedImageUri = data?.data
-                }
-            }
+        override fun getItem(position: Int): Fragment {
+            return fragments[position]
         }
+
+        override fun getCount(): Int {
+            return fragments.size
+        }
+
+        fun addFragment(fragment: Fragment, title: String) {
+            fragments.add(fragment)
+            titles.add(title)
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return titles[position]
+        }
+    }
+}

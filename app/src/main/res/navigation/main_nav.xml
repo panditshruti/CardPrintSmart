@@ -82,8 +82,8 @@
         android:label="ID Card"
         tools:layout="@layout/fragment_i_d_card">
         <action
-            android:id="@+id/action_IDCardFragment_to_demoIdCardFragment"
-            app:destination="@id/demoIdCardFragment" />
+            android:id="@+id/action_IDCardFragment_to_studentIdCardFragment"
+            app:destination="@id/studentIdCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/resumeFragment"
@@ -165,5 +165,14 @@
         <argument
             android:name="image"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentIdCardFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.StudentIdCardFragment"
+        android:label="fragment_student_id_card"
+        tools:layout="@layout/fragment_student_id_card" >
+        <action
+            android:id="@+id/action_studentIdCardFragment_to_demoIdCardFragment"
+            app:destination="@id/demoIdCardFragment" />
     </fragment>
 </navigation>
