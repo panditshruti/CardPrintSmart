@@ -29,12 +29,15 @@ class ExamCopyFragment : Fragment(R.layout.fragment_exam_copy) {
         val linearLayout = binding.linearLayout
 
         val marriageArrayList = arrayListOf(
-            "Tittle    :",
+            "School Name   :",
             "Name    :",
-            "Description    :",
             "Class    :",
+            "Section    :",
             "Roll NO.    :",
-            "DOB    :",
+            "Date    :",
+            "Total Marks    :",
+            "Obtain Marks    :",
+            "Signature of Teacher    :"
 
         )
 

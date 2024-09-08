@@ -44,7 +44,6 @@ class IDCardFragment : Fragment(R.layout.fragment_i_d_card) {
         override fun getCount(): Int {
             return fragments.size
         }
-
         fun addFragment(fragment: Fragment, title: String) {
             fragments.add(fragment)
             titles.add(title)

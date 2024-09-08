@@ -24,14 +24,14 @@
             android:id="@+id/action_homeFragment_to_bioDetailsFragment"
             app:destination="@id/bioDetailsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_IDCardFragment"
-            app:destination="@id/IDCardFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_helpUsFragment"
             app:destination="@id/helpUsFragment" />
         <action
             android:id="@+id/action_homeFragment_to_examCopyFragment"
             app:destination="@id/examCopyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_IDCardFragment"
+            app:destination="@id/IDCardFragment" />
     </fragment>
 
     <fragment
@@ -77,15 +77,6 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/IDCardFragment"
-        android:name="com.shrutipandit.cardprintsmart.uiFragment.IDCardFragment"
-        android:label="ID Card"
-        tools:layout="@layout/fragment_i_d_card">
-        <action
-            android:id="@+id/action_IDCardFragment_to_studentIdCardFragment"
-            app:destination="@id/studentIdCardFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/resumeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.ResumeFragment"
         android:label="Resume"
@@ -127,6 +118,7 @@
             android:name="image"
             app:argType="string" />
     </fragment>
+
     <fragment
         android:id="@+id/demoResumeFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoResumeFragment"
@@ -167,6 +159,15 @@
             app:argType="string" />
     </fragment>
     <fragment
+        android:id="@+id/IDCardFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.IDCardFragment"
+        android:label="fragment_i_d_card"
+        tools:layout="@layout/fragment_i_d_card" >
+        <action
+            android:id="@+id/action_IDCardFragment_to_studentIdCardFragment"
+            app:destination="@id/studentIdCardFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/studentIdCardFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.StudentIdCardFragment"
         android:label="fragment_student_id_card"
@@ -175,4 +176,5 @@
             android:id="@+id/action_studentIdCardFragment_to_demoIdCardFragment"
             app:destination="@id/demoIdCardFragment" />
     </fragment>
+
 </navigation>

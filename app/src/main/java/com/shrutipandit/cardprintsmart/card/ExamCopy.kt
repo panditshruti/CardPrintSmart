@@ -52,12 +52,15 @@ class ExamCopy :ViewModel(){
             val personalStartY = headingStartY + 40 // Starts below the heading
 
             val marriagePersonalInfoArrayList = arrayListOf(
-                "Tittle    :",
+                "School Name   :",
                 "Name    :",
-                "Description    :",
                 "Class    :",
+                "Section    :",
                 "Roll NO.    :",
-                "DOB    :",
+                "Date    :",
+                "Total Marks    :",
+                "Obtain Marks    :",
+                "Signature of Teacher    :"
             )
 
             // Draw the personal information
