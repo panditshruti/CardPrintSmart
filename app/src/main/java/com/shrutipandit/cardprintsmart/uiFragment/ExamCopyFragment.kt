@@ -38,7 +38,6 @@ class ExamCopyFragment : Fragment(R.layout.fragment_exam_copy) {
             "Total Marks    :",
             "Obtain Marks    :",
             "Signature of Teacher    :"
-
         )
 
         val editTexts = mutableListOf<TextInputEditText>()

@@ -63,6 +63,7 @@ class MarriageBioData : ViewModel() {
         // Draw Personal Information
         val marriagePersonalInfoArrayList = arrayListOf(
             "Name             :",
+            "Father's Name    :",
             "Date Of Birth    :",
             "Birth Place      :",
             "Religion         :",

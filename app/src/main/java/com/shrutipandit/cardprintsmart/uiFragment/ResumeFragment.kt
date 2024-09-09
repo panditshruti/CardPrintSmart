@@ -29,27 +29,22 @@ class ResumeFragment : Fragment(R.layout.fragment_resume) {
                 val linearLayout = binding.linearLayout
 
                 val marriageArrayList = arrayListOf(
-                    "Name                 :",
-                    "Father's Name        :",
-                    "Gender               :",
-                    "Caste                :",
-                    "Height               :",
-                    "Blood Group          :",
-                    "Date Of Birth        :",
-                    "Mobile No-           :",
-                    "Marital Status       :",
-                    "Email Id             :",
-                    "Religion             :",
-                    "Nationality          :",
-                    "Address              :",
-                    "Languages Knows      :",
-                    "Education            :",
-                    "Computer Knowledge   :",
-                    "Work                 :",
-                    "Work Experience      :",
-                    "Declaration          :",
-                    "Place                :",
-                    "Date                 :"
+                    "Name    :",
+                    "Father's Name    :",
+                    "Gender    :",
+                    "Caste    :",
+                    "Date Of Birth    :",
+                    "Mobile No-    :",
+                    "Marital Status    :",
+                    "Email Id    :",
+                    "Religion    :",
+                    "Nationality    :",
+                    "Address    :",
+                    "Languages Knows    :",
+                    "Education    :",
+                    "Computer Knowledge    :",
+                    "Work    :",
+                    "Work Experience    :"
                 )
 
                 val editTexts = mutableListOf<TextInputEditText>()

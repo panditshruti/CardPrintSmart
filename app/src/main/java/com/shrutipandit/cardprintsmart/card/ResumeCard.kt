@@ -57,8 +57,6 @@ class ResumeCard:ViewModel() {
             "Father's Name    :",
             "Gender    :",
             "Caste    :",
-            "Height    :",
-            "Blood Group    :",
             "Date Of Birth    :",
             "Mobile No-    :",
             "Marital Status    :",
