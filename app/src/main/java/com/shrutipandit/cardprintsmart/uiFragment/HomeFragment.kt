@@ -48,5 +48,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val action = HomeFragmentDirections.actionHomeFragmentToExamCopyFragment()
             findNavController().navigate(action)
         }
+         binding.qmaker.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToQuestionListFragment()
+            findNavController().navigate(action)
+        }
+
     }
 }

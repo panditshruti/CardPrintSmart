@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_homeFragment_to_IDCardFragment"
             app:destination="@id/IDCardFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_questionListFragment"
+            app:destination="@id/questionListFragment" />
     </fragment>
 
     <fragment
@@ -157,6 +160,9 @@
         <argument
             android:name="image"
             app:argType="string" />
+        <argument
+            android:name="numberOfLines"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/IDCardFragment"
@@ -166,6 +172,9 @@
         <action
             android:id="@+id/action_IDCardFragment_to_studentIdCardFragment"
             app:destination="@id/studentIdCardFragment" />
+        <action
+            android:id="@+id/action_IDCardFragment_to_employeIdCardFragment"
+            app:destination="@id/employeIdCardFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentIdCardFragment"
@@ -176,5 +185,28 @@
             android:id="@+id/action_studentIdCardFragment_to_demoIdCardFragment"
             app:destination="@id/demoIdCardFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/employeIdCardFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.EmployeIdCardFragment"
+        android:label="fragment_employe_id_card"
+        tools:layout="@layout/fragment_employe_id_card" >
+        <action
+            android:id="@+id/action_employeIdCardFragment_to_demoIdCardFragment"
+            app:destination="@id/demoIdCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionListFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionListFragment"
+        android:label="fragment_question_list"
+        tools:layout="@layout/fragment_question_list" >
+        <action
+            android:id="@+id/action_questionListFragment_to_questionDetailsFragment"
+            app:destination="@id/questionDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionDetailsFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionDetailsFragment"
+        android:label="fragment_question_details"
+        tools:layout="@layout/fragment_question_details" />
 
 </navigation>

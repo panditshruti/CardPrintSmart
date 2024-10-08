@@ -5,50 +5,46 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.shrutipandit.cardprintsmart.R
-import com.shrutipandit.cardprintsmart.databinding.FragmentBioDetailsBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentExamCopyBinding
-import com.shrutipandit.cardprintsmart.databinding.FragmentIDCardBinding
 
 class ExamCopyFragment : Fragment(R.layout.fragment_exam_copy) {
     private lateinit var binding: FragmentExamCopyBinding
-
     private var selectedImageUri: Uri? = null
     private val IMAGE_PICK_CODE = 1000
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentExamCopyBinding.bind(view)
 
         val linearLayout = binding.linearLayout
 
+        // Fields to add dynamically
         val marriageArrayList = arrayListOf(
             "School Name   :",
-            "Name    :",
-            "Class    :",
-            "Section    :",
-            "Roll NO.    :",
-            "Date    :",
             "Total Marks    :",
-            "Obtain Marks    :",
-            "Signature of Teacher    :"
         )
 
         val editTexts = mutableListOf<TextInputEditText>()
 
-        // Add TextInputEditTexts to the layout for each item in the marriageArrayList
+        // Add TextInputEditTexts for each item in the marriageArrayList
         for (label in marriageArrayList) {
             val textInputEditText = TextInputEditText(requireContext())
             textInputEditText.hint = label
             linearLayout.addView(textInputEditText, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             editTexts.add(textInputEditText)
         }
+
+        // Add TextInputEditText for number of lines
+        val numberOfLinesInput = TextInputEditText(requireContext())
+        numberOfLinesInput.hint = "Enter number of lines"
+        linearLayout.addView(numberOfLinesInput, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         // Add button to choose an image
         val chooseImageButton = Button(requireContext())
@@ -60,14 +56,17 @@ class ExamCopyFragment : Fragment(R.layout.fragment_exam_copy) {
         }
         linearLayout.addView(chooseImageButton, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-        // Add the submit button at the end of the linear layout
+        // Add the submit button
         val submitButton = Button(requireContext())
         submitButton.text = "Submit"
         submitButton.setBackgroundColor(Color.RED)
         submitButton.setOnClickListener {
             val data = editTexts.joinToString(",") { it.text.toString() }
             val imageUriString = selectedImageUri?.toString() ?: ""
-            val action = ExamCopyFragmentDirections.actionExamCopyFragmentToDemoExamCopyFragment(data, imageUriString)
+            val numberOfLines = numberOfLinesInput.text.toString().toIntOrNull() ?: 0
+
+            // Navigate and pass data
+            val action = ExamCopyFragmentDirections.actionExamCopyFragmentToDemoExamCopyFragment(data, imageUriString, numberOfLines)
             findNavController().navigate(action)
         }
 
