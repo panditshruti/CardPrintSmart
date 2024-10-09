@@ -27,7 +27,7 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
 
         // Setup the adapter for the ListView
         adapter = QuestionListAdapter(requireContext(), items)
-        binding.qListview.adapter = adapter
+        binding.qListView.adapter = adapter
 
         loadData()
 
@@ -35,12 +35,12 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
             showAddTitleDialog()
         }
 
-        binding.qListview.setOnItemClickListener { _, _, position, _ ->
+        binding.qListView.setOnItemClickListener { _, _, position, _ ->
             val action = QuestionListFragmentDirections.actionQuestionListFragmentToQuestionDetailsFragment()
             findNavController().navigate(action)
         }
 
-        binding.qListview.setOnItemLongClickListener { _, _, position, _ ->
+        binding.qListView.setOnItemLongClickListener { _, _, position, _ ->
             showEditDeleteDialog(position)
             true
         }
@@ -95,6 +95,7 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
     }
 
     fun showEditDialog(position: Int) {
+        // Inflate the custom dialog layout
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.addtittledialog, null)
 
         // Create the AlertDialog
@@ -125,7 +126,7 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
                 saveData() // Save the updated list to SharedPreferences
                 dialog.dismiss() // Dismiss dialog
             } else {
-                // Show error message (you can add Toast or other UI feedback)
+                Toast.makeText(requireContext(), "Both fields must be filled", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -133,11 +134,19 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
     }
 
     fun deleteItem(position: Int) {
-        items.removeAt(position) // Remove the item from the list
-        adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
-        saveData() // Save the updated list to SharedPreferences
-        Toast.makeText(requireContext(), "Item deleted", Toast.LENGTH_SHORT).show()
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Delete Item")
+            .setMessage("Are you sure you want to delete this item?")
+            .setPositiveButton("Yes") { _, _ ->
+                items.removeAt(position) // Remove the item from the list
+                adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
+                saveData() // Save the updated list to SharedPreferences
+                Toast.makeText(requireContext(), "Item deleted", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
+
 
     private fun saveData() {
         val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)

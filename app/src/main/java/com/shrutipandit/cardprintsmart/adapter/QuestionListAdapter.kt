@@ -22,14 +22,12 @@ class QuestionListAdapter(context: Context, private val items: MutableList<Strin
 
         textViewItem.text = items[position]
 
-        // Handle edit button click
         imageEdit.setOnClickListener {
-            (context as QuestionListFragment).showEditDialog(position)
+            (context as? QuestionListFragment)?.showEditDialog(position)
         }
 
-        // Handle delete button click
         imageDelete.setOnClickListener {
-            (context as QuestionListFragment).deleteItem(position)
+            (context as? QuestionListFragment)?.deleteItem(position)
         }
 
         return view
