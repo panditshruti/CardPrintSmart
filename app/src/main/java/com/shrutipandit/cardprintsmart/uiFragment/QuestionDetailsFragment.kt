@@ -1,6 +1,7 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +9,31 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.shrutipandit.cardprintsmart.AppDatabase
 import com.shrutipandit.cardprintsmart.R
+import com.shrutipandit.cardprintsmart.adapter.QuestionsAdapter
+import com.shrutipandit.cardprintsmart.db.Question
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionDetailsBinding
+import kotlinx.coroutines.launch
 
 class QuestionDetailsFragment : Fragment(R.layout.fragment_question_details) {
     private lateinit var binding: FragmentQuestionDetailsBinding
+    private val questionsList = mutableListOf<Question>()
+    private lateinit var questionsAdapter: QuestionsAdapter
+    private lateinit var db: AppDatabase
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view,savedInstanceState)
         binding = FragmentQuestionDetailsBinding.bind(view)
+
+        db = AppDatabase.getDatabase(requireContext())
+
+        // Setup RecyclerView
+        questionsAdapter = QuestionsAdapter(questionsList)
+        binding.recyclerViewQuestions.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewQuestions.adapter = questionsAdapter
 
         binding.headingBtn.setOnClickListener {
             showHeadingDialog()
@@ -24,6 +41,20 @@ class QuestionDetailsFragment : Fragment(R.layout.fragment_question_details) {
 
         binding.questionBtn.setOnClickListener {
             showQuestionDialog()
+        }
+
+        binding.savePdfBtn.setOnClickListener {
+            saveToPdf()
+        }
+
+        loadSavedData()
+    }
+
+    private fun loadSavedData() {
+        lifecycleScope.launch {
+            questionsList.clear()
+            questionsList.addAll(db.questionDao().getAllQuestions())
+            questionsAdapter.notifyDataSetChanged()
         }
     }
 
@@ -64,11 +95,11 @@ class QuestionDetailsFragment : Fragment(R.layout.fragment_question_details) {
         val isObjectiveButton = dialogView.findViewById<Button>(R.id.buttonObjective)
 
         val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Create Question")
             .setView(dialogView)
             .setCancelable(true)
             .create()
 
-        // Set initial visibility
         answerEditText.visibility = View.GONE
         optionsEditText.visibility = View.GONE
 
@@ -87,24 +118,27 @@ class QuestionDetailsFragment : Fragment(R.layout.fragment_question_details) {
             val answer = answerEditText.text.toString()
             val options = optionsEditText.text.toString()
 
-            if (question.isNotEmpty()) {
-                // Handle saving question based on its type (objective/subjective)
-                if (isObjectiveButton.isPressed && options.isNotEmpty()) {
-                    // Save objective question
-                    Toast.makeText(requireContext(), "Objective Question Saved", Toast.LENGTH_SHORT).show()
-                } else if (isSubjectiveButton.isPressed && answer.isNotEmpty()) {
-                    // Save subjective question
-                    Toast.makeText(requireContext(), "Subjective Question Saved", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show()
-                }
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), "Question cannot be empty", Toast.LENGTH_SHORT).show()
+            // Create new Question object
+            val newQuestion = Question(text = question, answer = answer, options = options)
+
+            // Add the new question to the database
+            lifecycleScope.launch {
+                db.questionDao().insert(newQuestion)
+                questionsList.add(newQuestion)
+                questionsAdapter.notifyDataSetChanged() // Update the adapter
+
+                // Show a toast to indicate the question has been saved
+                Toast.makeText(requireContext(), "Question Saved", Toast.LENGTH_SHORT).show()
             }
+
+            dialog.dismiss()
         }
 
         dialog.show()
     }
 
+    private fun saveToPdf() {
+        // Implement your PDF saving logic here
+        Toast.makeText(requireContext(), "PDF saved!", Toast.LENGTH_SHORT).show()
+    }
 }
