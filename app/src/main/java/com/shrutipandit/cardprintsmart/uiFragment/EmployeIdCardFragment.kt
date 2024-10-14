@@ -8,12 +8,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentEmployeIdCardBinding
-import com.shrutipandit.cardprintsmart.databinding.FragmentStudentIdCardBinding
 
 class EmployeIdCardFragment : Fragment(R.layout.fragment_employe_id_card) {
     private lateinit var binding: FragmentEmployeIdCardBinding
@@ -73,9 +73,14 @@ class EmployeIdCardFragment : Fragment(R.layout.fragment_employe_id_card) {
                 val data = editTexts.joinToString(",") { it.text.toString() }
                 val imageUriString = selectedImageUri?.toString() ?: ""
 
-                val action = EmployeIdCardFragmentDirections.actionEmployeIdCardFragmentToDemoIdCardFragment(data, imageUriString)
-                findNavController().navigate(action)
-
+                // Ensure the action ID is correctly referenced in the directions
+                try {
+                    val action = EmployeIdCardFragmentDirections.actionEmployeIdCardFragmentToDemoIdCardFragment(data, imageUriString)
+                    findNavController().navigate(action)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Navigation Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

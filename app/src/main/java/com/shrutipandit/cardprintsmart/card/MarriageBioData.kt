@@ -34,33 +34,31 @@ class MarriageBioData : ViewModel() {
         textPaint.color = Color.BLACK
         textPaint.textSize = 20.5f
 
-        // Draw Heading "MarriageBioData" with margin
-        val margin = 20 // Margin value
+        // Draw Heading "MarriageBioData"
+        val margin = 20
         val headingText = "MarriageBioData"
         val headingPaint = Paint().apply {
             color = Color.RED
             isFakeBoldText = true
-            textSize = 30.0f // Adjust size as needed
+            textSize = 30.0f
         }
-
         val textWidth = headingPaint.measureText(headingText)
-        val startX = (canvas.width - textWidth) / 2 // Center horizontally
-        val startY = 50F + margin // Adjust Y position with margin
+        val startX = (canvas.width - textWidth) / 2
+        val startY = 50F + margin
         canvas.drawText(headingText, startX, startY, headingPaint)
 
-        // Draw Heading "Personal Information" with gap
+        // Draw Heading "Personal Information"
         val personalHeading = "Personal Information"
         val personalHeadingPaint = Paint().apply {
             color = Color.RED
             isFakeBoldText = true
-            textSize = 23.0f // Adjust size as needed
+            textSize = 23.0f
         }
-
-        val personalStartX = 80F // Align to left
-        val personalStartY = startY + 30 + margin // Adjust Y position with margin
+        val personalStartX = 80F
+        val personalStartY = startY + 30 + margin
         canvas.drawText(personalHeading, personalStartX, personalStartY, personalHeadingPaint)
 
-        // Draw Personal Information
+        // Define personal and family information lists
         val marriagePersonalInfoArrayList = arrayListOf(
             "Name             :",
             "Father's Name    :",
@@ -78,20 +76,6 @@ class MarriageBioData : ViewModel() {
             "District         :",
             "State            :"
         )
-        val lineHeight = 26
-        drawTextList(canvas, marriagePersonalInfoArrayList, data, personalStartX, personalStartY + lineHeight, textPaint)
-
-        // Draw Heading "Family Information" with reduced gap
-        val familyHeading = "Family Information"
-        val familyHeadingPaint = Paint().apply {
-            color = Color.RED
-            isFakeBoldText = true
-            textSize = 23.0f // Adjust size as needed
-        }
-        val familyStartY = personalStartY + lineHeight * (marriagePersonalInfoArrayList.size + 1) + margin * 0.5F // Adjust Y position with reduced margin
-        canvas.drawText(familyHeading, personalStartX, familyStartY, familyHeadingPaint)
-
-        // Draw Family Information
         val marriageFamilyInfoArrayList = arrayListOf(
             "Father Name      :",
             "Occupation       :",
@@ -100,16 +84,59 @@ class MarriageBioData : ViewModel() {
             "Sister           :",
             "Brother          :"
         )
-        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY + lineHeight, textPaint)
 
-        // Draw Heading "Contact Information" with gap
+        val lineHeight = 26
+
+        // Draw Personal Information
+        drawTextList(
+            canvas,
+            marriagePersonalInfoArrayList,
+            data.take(marriagePersonalInfoArrayList.size), // Safely take only available data
+            personalStartX,
+            personalStartY + lineHeight,
+            textPaint
+        )
+
+        // Draw Heading "Family Information"
+        val familyHeading = "Family Information"
+        val familyHeadingPaint = Paint().apply {
+            color = Color.RED
+            isFakeBoldText = true
+            textSize = 23.0f
+        }
+        val familyStartY = personalStartY + lineHeight * (marriagePersonalInfoArrayList.size + 1) + margin * 0.5F
+        canvas.drawText(familyHeading, personalStartX, familyStartY, familyHeadingPaint)
+
+        // Draw Family Information
+        if (data.size >= marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size) {
+            drawTextList(
+                canvas,
+                marriageFamilyInfoArrayList,
+                data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size),
+                personalStartX,
+                familyStartY + lineHeight,
+                textPaint
+            )
+        } else {
+            // Handle case where family information data is insufficient (e.g., skip or fill with placeholders)
+            drawTextList(
+                canvas,
+                marriageFamilyInfoArrayList,
+                List(marriageFamilyInfoArrayList.size) { "" }, // Placeholder empty data
+                personalStartX,
+                familyStartY + lineHeight,
+                textPaint
+            )
+        }
+
+        // Draw Heading "Contact Information"
         val contactHeading = "Contact Information"
         val contactHeadingPaint = Paint().apply {
             color = Color.RED
             isFakeBoldText = true
-            textSize = 23.0f // Adjust size as needed
+            textSize = 23.0f
         }
-        val contactStartY = familyStartY + lineHeight * (marriageFamilyInfoArrayList.size + 1) + margin // Adjust Y position with margin
+        val contactStartY = familyStartY + lineHeight * (marriageFamilyInfoArrayList.size + 1) + margin
         canvas.drawText(contactHeading, personalStartX, contactStartY, contactHeadingPaint)
 
         // Draw Contact Information
@@ -117,7 +144,26 @@ class MarriageBioData : ViewModel() {
             "Address          :",
             "Contact No-      :"
         )
-        drawTextList(canvas, marriageContactInfoArrayList, data.subList(marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size, data.size), personalStartX, contactStartY + lineHeight, textPaint)
+        if (data.size >= marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size + marriageContactInfoArrayList.size) {
+            drawTextList(
+                canvas,
+                marriageContactInfoArrayList,
+                data.subList(marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size, data.size),
+                personalStartX,
+                contactStartY + lineHeight,
+                textPaint
+            )
+        } else {
+            // Handle case where contact information data is insufficient (e.g., skip or fill with placeholders)
+            drawTextList(
+                canvas,
+                marriageContactInfoArrayList,
+                List(marriageContactInfoArrayList.size) { "" }, // Placeholder empty data
+                personalStartX,
+                contactStartY + lineHeight,
+                textPaint
+            )
+        }
 
         myPdfDocument.finishPage(page)
 
@@ -127,6 +173,7 @@ class MarriageBioData : ViewModel() {
 
         return outputStream.toByteArray()
     }
+
 
     private fun drawTextList(canvas: android.graphics.Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Float, paint: Paint) {
         var yPoint = y

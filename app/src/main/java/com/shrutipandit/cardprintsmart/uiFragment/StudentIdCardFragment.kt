@@ -72,9 +72,9 @@ class StudentIdCardFragment : Fragment(R.layout.fragment_student_id_card) {
                 val data = editTexts.joinToString(",") { it.text.toString() }
                 val imageUriString = selectedImageUri?.toString() ?: ""
 
+                // Ensure the navigation action is defined in your navigation graph
                 val action = StudentIdCardFragmentDirections.actionStudentIdCardFragmentToDemoIdCardFragment(data, imageUriString)
                 findNavController().navigate(action)
-
             }
         }
 

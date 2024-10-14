@@ -1,3 +1,4 @@
+
 package com.shrutipandit.cardprintsmart.db
 
 import androidx.room.Entity

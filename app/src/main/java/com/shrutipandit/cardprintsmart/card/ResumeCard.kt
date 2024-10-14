@@ -71,8 +71,14 @@ class ResumeCard:ViewModel() {
             "Work Experience    :"
         )
 
+        // Ensure that the data list is large enough to cover all elements
+        val personalDataList = data.take(marriagePersonalInfoArrayList.size).toMutableList()
+        while (personalDataList.size < marriagePersonalInfoArrayList.size) {
+            personalDataList.add("") // Pad with empty strings if necessary
+        }
+
         // Draw the personal information
-        drawTextList(canvas, marriagePersonalInfoArrayList, data.subList(0, marriagePersonalInfoArrayList.size), personalStartX, personalStartY, Paint().apply {
+        drawTextList(canvas, marriagePersonalInfoArrayList, personalDataList, personalStartX, personalStartY, Paint().apply {
             color = Color.BLACK
             textSize = 20.5f
         })
@@ -103,8 +109,14 @@ class ResumeCard:ViewModel() {
             "Date    :"
         )
 
+        // Ensure that the family data list is large enough
+        val familyDataList = data.drop(marriagePersonalInfoArrayList.size).take(marriageFamilyInfoArrayList.size).toMutableList()
+        while (familyDataList.size < marriageFamilyInfoArrayList.size) {
+            familyDataList.add("") // Pad with empty strings if necessary
+        }
+
         val familyStartY = familyHeadingStartY + 26
-        drawTextList(canvas, marriageFamilyInfoArrayList, data.subList(marriagePersonalInfoArrayList.size, marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size), personalStartX, familyStartY, Paint().apply {
+        drawTextList(canvas, marriageFamilyInfoArrayList, familyDataList, personalStartX, familyStartY, Paint().apply {
             color = Color.BLACK
             textSize = 20.5f
         })
@@ -156,4 +168,4 @@ class ResumeCard:ViewModel() {
             yPoint += lineHeight
         }
     }
-    }
+}

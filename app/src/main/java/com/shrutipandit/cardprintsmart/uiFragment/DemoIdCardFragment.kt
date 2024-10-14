@@ -34,8 +34,7 @@ class DemoIdCardFragment : Fragment(R.layout.fragment_demo_id_card) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDemoIdCardBinding.bind(view)
 
-        checkAndRequestPermissions()
-
+        // Receive arguments passed through the navigation
         val args = arguments?.let { DemoIdCardFragmentArgs.fromBundle(it) }
         val editTextData = args?.editTextData?.split(",")?.toMutableList()
         val imageUriString = args?.image

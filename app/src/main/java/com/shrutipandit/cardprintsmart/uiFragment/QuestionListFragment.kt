@@ -147,7 +147,6 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
             .show()
     }
 
-
     private fun saveData() {
         val sharedPreferences = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
