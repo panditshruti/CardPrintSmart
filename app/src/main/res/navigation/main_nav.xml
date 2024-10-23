@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_homeFragment_to_questionListFragment"
             app:destination="@id/questionListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_questionMakerListFragment2"
+            app:destination="@id/questionMakerListFragment" />
     </fragment>
 
     <fragment
@@ -214,5 +217,19 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionDetailsFragment"
         android:label="fragment_question_details"
         tools:layout="@layout/fragment_question_details" />
+    <fragment
+        android:id="@+id/questionMakerListFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionMakerListFragment"
+        android:label="fragment_question_maker_list"
+        tools:layout="@layout/fragment_question_maker_list" >
+        <action
+            android:id="@+id/action_questionMakerListFragment_to_questionMakerDetailsFragment"
+            app:destination="@id/questionMakerDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionMakerDetailsFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionMakerDetailsFragment"
+        android:label="fragment_question_maker_details"
+        tools:layout="@layout/fragment_question_maker_details" />
 
 </navigation>

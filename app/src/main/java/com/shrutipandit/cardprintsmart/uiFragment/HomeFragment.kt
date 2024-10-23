@@ -52,6 +52,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val action = HomeFragmentDirections.actionHomeFragmentToQuestionListFragment()
             findNavController().navigate(action)
         }
+        binding.questionMaker.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToQuestionMakerListFragment2()
+            findNavController().navigate(action)
+        }
 
     }
 }
