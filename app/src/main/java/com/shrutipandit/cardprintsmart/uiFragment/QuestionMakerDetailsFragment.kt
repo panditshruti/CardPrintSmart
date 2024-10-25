@@ -4,12 +4,15 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
@@ -31,18 +34,12 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
 
-        // Check and request necessary permissions
         checkAndRequestPermissions()
-
-        // Generate the PDF
-        pdfBytes = generatePdf() // Actual PDF generation
-
-        // Display the PDF in the PDFView
+        pdfBytes = generatePdf()
         pdfBytes?.let { bytes ->
             binding.pdfView.fromBytes(bytes).load()
         } ?: showToast("Failed to generate PDF")
 
-        // Save PDF button click handler
         binding.pdfBtn.setOnClickListener {
             pdfBytes?.let { bytes ->
                 if (savePdfToDownloads(requireContext(), bytes)) {
@@ -52,9 +49,13 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                 }
             } ?: showToast("No PDF to save")
         }
+
+        binding.addQuestionBtn.setOnClickListener {
+            showAddQuestionDialog()
+        }
     }
 
-    private fun generatePdf(): ByteArray {
+    private fun generatePdf(heading: String = "", question: String = "", option: String = ""): ByteArray {
         // Create a new PDF document
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
@@ -62,7 +63,29 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         // Draw text on the page
         val canvas = page.canvas
+        val paint = Paint()
 
+
+        var yPos = 40f
+
+        // Draw the heading
+        if (heading.isNotEmpty()) {
+
+            canvas.drawText("Heading: $heading", 10f, yPos, paint)
+            yPos += 20f
+
+        }
+
+        // Draw the question
+        if (question.isNotEmpty()) {
+            canvas.drawText("Question: $question", 10f, yPos, paint)
+            yPos += 20f
+        }
+
+        // Draw the option
+        if (option.isNotEmpty()) {
+            canvas.drawText("Option: $option", 10f, yPos, paint)
+        }
 
         // Finish the page
         pdfDocument.finishPage(page)
@@ -74,6 +97,45 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         return stream.toByteArray()
     }
+
+    private fun showAddQuestionDialog() {
+        // Inflate the dialog layout
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_question, null)
+
+        // Create an AlertDialog
+        val dialog = android.app.AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setTitle("Add Question")
+            .create()
+
+        // Find the EditText and Button views
+        val etHeading = dialogView.findViewById<EditText>(R.id.etHeading)
+        val etQuestion = dialogView.findViewById<EditText>(R.id.etQuestion)
+        val etOption = dialogView.findViewById<EditText>(R.id.etOption)
+        val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmit)
+
+        // Set the submit button click listener
+        btnSubmit.setOnClickListener {
+            // Get the entered text
+            val heading = etHeading.text.toString()
+            val question = etQuestion.text.toString()
+            val option = etOption.text.toString()
+
+            // Validate inputs
+            if (heading.isNotEmpty() && question.isNotEmpty() && option.isNotEmpty()) {
+                // Update the PDF with the new data
+                pdfBytes = generatePdf(heading, question, option)
+                binding.pdfView.fromBytes(pdfBytes).load()
+                dialog.dismiss()
+            } else {
+                showToast("Please enter all fields")
+            }
+        }
+
+        // Show the dialog
+        dialog.show()
+    }
+
 
     private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -152,7 +214,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
