@@ -58,40 +58,51 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
     private fun generatePdf(): ByteArray {
         val pdfDocument = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
+        val pageWidth = 300
+        val pageHeight = 600
+        val margin = 10f
+
+        var pageNumber = 1
+        var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
         var page = pdfDocument.startPage(pageInfo)
 
-        val canvas = page.canvas
         val paint = Paint()
+        var yPos = margin + 30f // Initial Y position with a top margin
 
-        var yPos = 40f
-
-        // Loop through the question list and draw each question on the page
-        for (questionData in questionList) {
-            if (yPos + 60f > pageInfo.pageHeight) {
-                // If we're running out of space, add a new page
+        for ((index, questionData) in questionList.withIndex()) {
+            // Check if there's enough space for the next question block, if not create a new page
+            if (yPos + 80f > pageHeight - margin) { // 80f is an estimated height per question block
                 pdfDocument.finishPage(page)
-                val newPageInfo = PdfDocument.PageInfo.Builder(300, 600, questionList.size).create()
-                page = pdfDocument.startPage(newPageInfo)
-                canvas.drawColor(255) // White background for the new page
-                yPos = 40f
+                pageNumber++
+                pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
+                page = pdfDocument.startPage(pageInfo)
+                yPos = margin + 30f // Reset Y position for the new page
             }
-            canvas.drawText("Heading: ${questionData.heading}", 10f, yPos, paint)
+
+            val canvas = page.canvas
+            canvas.drawText("Heading: ${questionData.heading}", margin, yPos, paint)
             yPos += 20f
-            canvas.drawText("Question: ${questionData.question}", 10f, yPos, paint)
+            canvas.drawText("Question: ${questionData.question}", margin, yPos, paint)
             yPos += 20f
-            canvas.drawText("Option: ${questionData.option}", 10f, yPos, paint)
-            yPos += 40f
+            canvas.drawText("Option: ${questionData.option}", margin, yPos, paint)
+            yPos += 40f // Extra space before the next question block
         }
 
+        // Finish the last page
         pdfDocument.finishPage(page)
 
+        // Write the document to a byte array
         val stream = ByteArrayOutputStream()
-        pdfDocument.writeTo(stream)
-        pdfDocument.close()
+        try {
+            pdfDocument.writeTo(stream)
+        } finally {
+            pdfDocument.close()
+        }
 
         return stream.toByteArray()
     }
+
+
 
     // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
