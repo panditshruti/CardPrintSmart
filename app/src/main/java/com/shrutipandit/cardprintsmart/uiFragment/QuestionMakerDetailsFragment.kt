@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -101,8 +102,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         return stream.toByteArray()
     }
-
-
 
     // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
