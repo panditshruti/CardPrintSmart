@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionMakerDetailsBinding
+import com.shrutipandit.cardprintsmart.db.QuestionData
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -29,16 +30,16 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
     private lateinit var binding: FragmentQuestionMakerDetailsBinding
     private var pdfBytes: ByteArray? = null
+    private val questionList = mutableListOf<QuestionData>()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
 
+
         checkAndRequestPermissions()
-        pdfBytes = generatePdf()
-        pdfBytes?.let { bytes ->
-            binding.pdfView.fromBytes(bytes).load()
-        } ?: showToast("Failed to generate PDF")
+        updatePdfView()
 
         binding.pdfBtn.setOnClickListener {
             pdfBytes?.let { bytes ->
@@ -55,42 +56,36 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         }
     }
 
-    private fun generatePdf(heading: String = "", question: String = "", option: String = ""): ByteArray {
-        // Create a new PDF document
+    private fun generatePdf(): ByteArray {
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
-        val page = pdfDocument.startPage(pageInfo)
+        var page = pdfDocument.startPage(pageInfo)
 
-        // Draw text on the page
         val canvas = page.canvas
         val paint = Paint()
 
-
         var yPos = 40f
 
-        // Draw the heading
-        if (heading.isNotEmpty()) {
-
-            canvas.drawText("Heading: $heading", 10f, yPos, paint)
+        // Loop through the question list and draw each question on the page
+        for (questionData in questionList) {
+            if (yPos + 60f > pageInfo.pageHeight) {
+                // If we're running out of space, add a new page
+                pdfDocument.finishPage(page)
+                val newPageInfo = PdfDocument.PageInfo.Builder(300, 600, questionList.size).create()
+                page = pdfDocument.startPage(newPageInfo)
+                canvas.drawColor(255) // White background for the new page
+                yPos = 40f
+            }
+            canvas.drawText("Heading: ${questionData.heading}", 10f, yPos, paint)
             yPos += 20f
-
-        }
-
-        // Draw the question
-        if (question.isNotEmpty()) {
-            canvas.drawText("Question: $question", 10f, yPos, paint)
+            canvas.drawText("Question: ${questionData.question}", 10f, yPos, paint)
             yPos += 20f
+            canvas.drawText("Option: ${questionData.option}", 10f, yPos, paint)
+            yPos += 40f
         }
 
-        // Draw the option
-        if (option.isNotEmpty()) {
-            canvas.drawText("Option: $option", 10f, yPos, paint)
-        }
-
-        // Finish the page
         pdfDocument.finishPage(page)
 
-        // Write the document to a byte array
         val stream = ByteArrayOutputStream()
         pdfDocument.writeTo(stream)
         pdfDocument.close()
@@ -98,45 +93,45 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         return stream.toByteArray()
     }
 
+    // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
-        // Inflate the dialog layout
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_question, null)
 
-        // Create an AlertDialog
         val dialog = android.app.AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setTitle("Add Question")
             .create()
 
-        // Find the EditText and Button views
         val etHeading = dialogView.findViewById<EditText>(R.id.etHeading)
         val etQuestion = dialogView.findViewById<EditText>(R.id.etQuestion)
         val etOption = dialogView.findViewById<EditText>(R.id.etOption)
         val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmit)
 
-        // Set the submit button click listener
         btnSubmit.setOnClickListener {
-            // Get the entered text
             val heading = etHeading.text.toString()
             val question = etQuestion.text.toString()
             val option = etOption.text.toString()
 
-            // Validate inputs
             if (heading.isNotEmpty() && question.isNotEmpty() && option.isNotEmpty()) {
-                // Update the PDF with the new data
-                pdfBytes = generatePdf(heading, question, option)
-                binding.pdfView.fromBytes(pdfBytes).load()
+                // Add the new question to the list
+                questionList.add(QuestionData(heading, question, option))
+                updatePdfView()
                 dialog.dismiss()
             } else {
                 showToast("Please enter all fields")
             }
         }
 
-        // Show the dialog
         dialog.show()
     }
 
-
+    // Update the PDF view with the current list of questions
+    private fun updatePdfView() {
+        pdfBytes = generatePdf()
+        pdfBytes?.let { bytes ->
+            binding.pdfView.fromBytes(bytes).load()
+        } ?: showToast("Failed to generate PDF")
+    }
     private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             savePdfToDownloadsScoped(context, pdfBytes)
