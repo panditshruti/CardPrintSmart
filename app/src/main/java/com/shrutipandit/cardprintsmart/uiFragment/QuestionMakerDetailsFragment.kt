@@ -35,7 +35,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private var pdfBytes: ByteArray? = null
     private val questionList = mutableListOf<QuestionData>()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
@@ -56,6 +55,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             showAddQuestionDialog()
         }
     }
+
     private fun generatePdf(): ByteArray {
         val pdfDocument = PdfDocument()
         val pageWidth = 300
@@ -76,10 +76,10 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         // Loop through each question and draw on the page
         for ((index, questionData) in questionList.withIndex()) {
-            // Function to draw wrapped text
-            fun drawWrappedText(text: String, yPos: Float): Float {
+            // Function to draw wrapped text with minimum line spacing
+            fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth.toInt())
-                    .setLineSpacing(1f, 1f)
+                    .setLineSpacing(0f, 1f) // Minimum line spacing between wrapped lines
                     .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
                     .build()
 
@@ -110,13 +110,13 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                     currentYPos += staticLayout.getLineBottom(i) - staticLayout.getLineBottom(0)
                 }
 
-                return currentYPos // Return updated Y position
+                return currentYPos + additionalGap // Return updated Y position with additional gap
             }
 
-            // Draw each section of the question with wrapped text
+            // Draw each section of the question with the appropriate gaps
             yPos = drawWrappedText("Heading: ${questionData.heading}", yPos) + 10f
-            yPos = drawWrappedText("Question: ${questionData.question}", yPos) + 10f
-            yPos = drawWrappedText("Option: ${questionData.option}", yPos) + 40f
+            yPos = drawWrappedText("Question: ${questionData.question}", yPos) + 20f
+            yPos = drawWrappedText("Option: ${questionData.option}", yPos) + 30f // Gap after option to separate questions
         }
 
         // Finish the last page
@@ -132,6 +132,8 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         return stream.toByteArray()
     }
+
+
 
     // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
@@ -172,6 +174,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             binding.pdfView.fromBytes(bytes).load()
         } ?: showToast("Failed to generate PDF")
     }
+
     private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             savePdfToDownloadsScoped(context, pdfBytes)
@@ -249,6 +252,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -256,10 +260,10 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                showToast("Permissions granted")
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showToast("Permission granted")
             } else {
-                showToast("Permissions denied")
+                showToast("Permission denied")
             }
         }
     }
