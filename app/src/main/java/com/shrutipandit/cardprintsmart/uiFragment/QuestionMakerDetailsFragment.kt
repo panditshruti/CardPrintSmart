@@ -77,9 +77,10 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         // Loop through each question and draw on the page
         for ((index, questionData) in questionList.withIndex()) {
             // Function to draw wrapped text with minimum line spacing
+            // Function to draw wrapped text with minimum line spacing
             fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth.toInt())
-                    .setLineSpacing(0f, 1f) // Minimum line spacing between wrapped lines
+                    .setLineSpacing(0f, 1f) // Keep default line spacing
                     .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
                     .build()
 
@@ -104,10 +105,12 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                     canvas.drawText(
                         text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
                         margin,
-                        currentYPos + lineBottom - staticLayout.getLineBottom(0),
+                        currentYPos,
                         textPaint
                     )
-                    currentYPos += staticLayout.getLineBottom(i) - staticLayout.getLineBottom(0)
+
+                    // Update currentYPos based on the height of the line
+                    currentYPos += textPaint.fontMetrics.bottom - textPaint.fontMetrics.top // Use font metrics to calculate line height
                 }
 
                 return currentYPos + additionalGap // Return updated Y position with additional gap
