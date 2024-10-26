@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -37,8 +39,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
-
-
         checkAndRequestPermissions()
         updatePdfView()
 
@@ -56,37 +56,67 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             showAddQuestionDialog()
         }
     }
-
     private fun generatePdf(): ByteArray {
         val pdfDocument = PdfDocument()
         val pageWidth = 300
         val pageHeight = 600
         val margin = 10f
+        val textWidth = pageWidth - (2 * margin) // Available width for text after margins
 
+        val paint = Paint().apply {
+            textSize = 12f // Set the text size as needed
+        }
+
+        val textPaint = TextPaint(paint)
         var pageNumber = 1
+        var yPos = margin + 30f // Initial Y position with a top margin
         var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
         var page = pdfDocument.startPage(pageInfo)
+        var canvas = page.canvas
 
-        val paint = Paint()
-        var yPos = margin + 30f // Initial Y position with a top margin
-
+        // Loop through each question and draw on the page
         for ((index, questionData) in questionList.withIndex()) {
-            // Check if there's enough space for the next question block, if not create a new page
-            if (yPos + 80f > pageHeight - margin) { // 80f is an estimated height per question block
-                pdfDocument.finishPage(page)
-                pageNumber++
-                pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
-                page = pdfDocument.startPage(pageInfo)
-                yPos = margin + 30f // Reset Y position for the new page
+            // Function to draw wrapped text
+            fun drawWrappedText(text: String, yPos: Float): Float {
+                val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth.toInt())
+                    .setLineSpacing(1f, 1f)
+                    .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
+                    .build()
+
+                var currentYPos = yPos
+
+                for (i in 0 until staticLayout.lineCount) {
+                    val lineBottom = staticLayout.getLineBottom(i)
+
+                    // Check if the current line fits in the remaining space on the page
+                    if (currentYPos + lineBottom > pageHeight - margin) {
+                        // Finish the current page and start a new one
+                        pdfDocument.finishPage(page)
+                        pageNumber++
+                        pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
+                        page = pdfDocument.startPage(pageInfo)
+                        canvas = page.canvas
+
+                        currentYPos = margin + 30f // Reset Y position for the new page
+                    }
+
+                    // Draw the current line on the page
+                    canvas.drawText(
+                        text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
+                        margin,
+                        currentYPos + lineBottom - staticLayout.getLineBottom(0),
+                        textPaint
+                    )
+                    currentYPos += staticLayout.getLineBottom(i) - staticLayout.getLineBottom(0)
+                }
+
+                return currentYPos // Return updated Y position
             }
 
-            val canvas = page.canvas
-            canvas.drawText("Heading: ${questionData.heading}", margin, yPos, paint)
-            yPos += 20f
-            canvas.drawText("Question: ${questionData.question}", margin, yPos, paint)
-            yPos += 20f
-            canvas.drawText("Option: ${questionData.option}", margin, yPos, paint)
-            yPos += 40f // Extra space before the next question block
+            // Draw each section of the question with wrapped text
+            yPos = drawWrappedText("Heading: ${questionData.heading}", yPos) + 10f
+            yPos = drawWrappedText("Question: ${questionData.question}", yPos) + 10f
+            yPos = drawWrappedText("Option: ${questionData.option}", yPos) + 40f
         }
 
         // Finish the last page
