@@ -63,11 +63,21 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val margin = 10f
         val textWidth = pageWidth - (2 * margin) // Available width for text after margins
 
+        // Paint for normal text (question and option)
         val paint = Paint().apply {
-            textSize = 12f // Set the text size as needed
+            textSize = 12f // Set the text size for questions and options
         }
 
         val textPaint = TextPaint(paint)
+
+        // Paint for heading (bold and larger text)
+        val headingPaint = Paint().apply {
+            isFakeBoldText = true // Make text bold
+            textSize = 14f // Set a larger text size for heading
+        }
+
+        val headingTextPaint = TextPaint(headingPaint)
+
         var pageNumber = 1
         var yPos = margin + 30f // Initial Y position with a top margin
         var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
@@ -80,8 +90,8 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         // Loop through each question and draw on the page
         for ((index, questionData) in questionList.withIndex()) {
             // Function to draw wrapped text with minimum line spacing
-            fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f): Float {
-                val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth.toInt())
+            fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f, paint: TextPaint): Float {
+                val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, textWidth.toInt())
                     .setLineSpacing(0f, 1f) // Keep default line spacing
                     .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
                     .build()
@@ -108,36 +118,41 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                         text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
                         margin,
                         currentYPos,
-                        textPaint
+                        paint
                     )
 
                     // Update currentYPos based on the height of the line
-                    currentYPos += textPaint.fontMetrics.bottom - textPaint.fontMetrics.top // Use font metrics to calculate line height
+                    currentYPos += paint.fontMetrics.bottom - paint.fontMetrics.top // Use font metrics to calculate line height
                 }
 
                 return currentYPos + additionalGap // Return updated Y position with additional gap
             }
 
-            // Draw the heading centered
+            // Draw the heading centered if it exists
             val headingText = questionData.heading
-            val headingWidth = textPaint.measureText(headingText)
-            val headingX = (pageWidth - headingWidth) / 2 // Calculate X position for centering
+            if (headingText.isNotEmpty()) {
+                val headingWidth = headingTextPaint.measureText(headingText)
+                val headingX = (pageWidth - headingWidth) / 2 // Calculate X position for centering
 
-            // Draw heading at the calculated X position
-            canvas.drawText(headingText, headingX, yPos, textPaint)
+                // Draw heading at the calculated X position
+                canvas.drawText(headingText, headingX, yPos, headingTextPaint)
 
-            // Update yPos after drawing the heading
-            yPos += textPaint.fontMetrics.bottom - textPaint.fontMetrics.top + 10f // Adjust Y position for the next section
+                // Update yPos after drawing the heading
+                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 5f // Adjust Y position for the next section
+            } else {
+                // If no heading, don't increase yPos, but still leave a small gap
+                yPos += 5f // Small gap when there's no heading
+            }
 
-            // Ensure the question ends with a question mark
+            // Add the question number dynamically
             val questionText = if (questionData.question.trimEnd().endsWith("?")) {
                 "Q$questionCounter: ${questionData.question}"
             } else {
                 "Q$questionCounter: ${questionData.question}?"
             }
+            yPos = drawWrappedText(questionText, yPos, 5f, textPaint) // Use textPaint for question text with minimal gap
 
-            yPos = drawWrappedText(questionText, yPos) + 20f
-            yPos = drawWrappedText(questionData.option, yPos) + 30f // Gap after option to separate questions
+            yPos = drawWrappedText(questionData.option, yPos, 5f, textPaint) // Use textPaint for option text with minimal gap
 
             // Increment the question counter
             questionCounter++
