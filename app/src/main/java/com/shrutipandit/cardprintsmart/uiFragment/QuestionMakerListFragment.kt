@@ -53,7 +53,6 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
             true
         }
     }
-
     private fun showAddTitleDialog() {
         // Inflate the custom dialog layout
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.addtittledialog, null)
