@@ -118,13 +118,25 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                 return currentYPos + additionalGap // Return updated Y position with additional gap
             }
 
-            // Draw each section of the question with the appropriate gaps
-            yPos = drawWrappedText(questionData.heading, yPos) + 10f
+            // Draw the heading centered
+            val headingText = questionData.heading
+            val headingWidth = textPaint.measureText(headingText)
+            val headingX = (pageWidth - headingWidth) / 2 // Calculate X position for centering
 
-            // Add the question number dynamically
-            val questionText = "Q$questionCounter: ${questionData.question}"
+            // Draw heading at the calculated X position
+            canvas.drawText(headingText, headingX, yPos, textPaint)
+
+            // Update yPos after drawing the heading
+            yPos += textPaint.fontMetrics.bottom - textPaint.fontMetrics.top + 10f // Adjust Y position for the next section
+
+            // Ensure the question ends with a question mark
+            val questionText = if (questionData.question.trimEnd().endsWith("?")) {
+                "Q$questionCounter: ${questionData.question}"
+            } else {
+                "Q$questionCounter: ${questionData.question}?"
+            }
+
             yPos = drawWrappedText(questionText, yPos) + 20f
-
             yPos = drawWrappedText(questionData.option, yPos) + 30f // Gap after option to separate questions
 
             // Increment the question counter
@@ -145,7 +157,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         return stream.toByteArray()
     }
 
-
     // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_question, null)
@@ -165,7 +176,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             val question = etQuestion.text.toString()
             val option = etOption.text.toString()
 
-            if (heading.isNotEmpty() && question.isNotEmpty() && option.isNotEmpty()) {
+            if (question.isNotEmpty() && option.isNotEmpty()) {
                 // Add the new question to the list
                 questionList.add(QuestionData(heading, question, option))
                 updatePdfView()
