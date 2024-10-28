@@ -37,7 +37,14 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
         }
 
         binding.qListView.setOnItemClickListener { _, _, position, _ ->
-            val action = QuestionMakerListFragmentDirections.actionQuestionMakerListFragmentToQuestionMakerDetailsFragment()
+            val selectedItem = items[position]
+            val title = selectedItem.split(": ")[0] // Extract title
+            val description = selectedItem.split(": ")[1] // Extract description
+
+            // Navigate to the details fragment with arguments
+            val action = QuestionMakerListFragmentDirections.actionQuestionMakerListFragmentToQuestionMakerDetailsFragment(
+             title,description
+            )
             findNavController().navigate(action)
         }
 

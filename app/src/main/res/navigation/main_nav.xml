@@ -230,6 +230,13 @@
         android:id="@+id/questionMakerDetailsFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionMakerDetailsFragment"
         android:label="fragment_question_maker_details"
-        tools:layout="@layout/fragment_question_maker_details" />
+        tools:layout="@layout/fragment_question_maker_details" >
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="description"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

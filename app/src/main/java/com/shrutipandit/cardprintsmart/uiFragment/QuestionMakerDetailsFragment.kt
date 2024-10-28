@@ -35,10 +35,30 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private var pdfBytes: ByteArray? = null
     private val questionList = mutableListOf<QuestionData>()
 
+    // Variables to hold the passed arguments
+    private var title: String? = null
+    private var description: String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            title = it.getString("title")
+            description = it.getString("description")
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
         checkAndRequestPermissions()
+
+        // If title and description are not null, create a QuestionData object
+        title?.let { t ->
+            description?.let { d ->
+                questionList.add(QuestionData(t, d, ""))
+            }
+        }
+
         updatePdfView()
 
         binding.pdfBtn.setOnClickListener {
