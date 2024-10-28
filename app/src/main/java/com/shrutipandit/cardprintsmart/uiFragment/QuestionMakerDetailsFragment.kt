@@ -74,9 +74,11 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         var page = pdfDocument.startPage(pageInfo)
         var canvas = page.canvas
 
+        // Initialize a counter for question numbering
+        var questionCounter = 1
+
         // Loop through each question and draw on the page
         for ((index, questionData) in questionList.withIndex()) {
-            // Function to draw wrapped text with minimum line spacing
             // Function to draw wrapped text with minimum line spacing
             fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, textPaint, textWidth.toInt())
@@ -117,9 +119,16 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             }
 
             // Draw each section of the question with the appropriate gaps
-            yPos = drawWrappedText("Heading: ${questionData.heading}", yPos) + 10f
-            yPos = drawWrappedText("Question: ${questionData.question}", yPos) + 20f
-            yPos = drawWrappedText("Option: ${questionData.option}", yPos) + 30f // Gap after option to separate questions
+            yPos = drawWrappedText(questionData.heading, yPos) + 10f
+
+            // Add the question number dynamically
+            val questionText = "Q$questionCounter: ${questionData.question}"
+            yPos = drawWrappedText(questionText, yPos) + 20f
+
+            yPos = drawWrappedText(questionData.option, yPos) + 30f // Gap after option to separate questions
+
+            // Increment the question counter
+            questionCounter++
         }
 
         // Finish the last page
@@ -135,7 +144,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         return stream.toByteArray()
     }
-
 
 
     // Show the dialog to add a new question
