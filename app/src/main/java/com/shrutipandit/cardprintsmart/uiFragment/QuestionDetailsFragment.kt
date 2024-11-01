@@ -53,7 +53,7 @@ class QuestionDetailsFragment : Fragment(R.layout.fragment_question_details) {
     private fun loadSavedData() {
         lifecycleScope.launch {
             questionsList.clear()
-            questionsList.addAll(db.questionDao().getAllQuestions())
+//            questionsList.addAll(db.questionDao().getAllQuestions())
             questionsAdapter.notifyDataSetChanged()
         }
     }
@@ -123,7 +123,7 @@ class QuestionDetailsFragment : Fragment(R.layout.fragment_question_details) {
 
             // Add the new question to the database
             lifecycleScope.launch {
-                db.questionDao().insert(newQuestion)
+//                db.questionDao().insert(newQuestion)
                 questionsList.add(newQuestion)
                 questionsAdapter.notifyDataSetChanged() // Update the adapter
 

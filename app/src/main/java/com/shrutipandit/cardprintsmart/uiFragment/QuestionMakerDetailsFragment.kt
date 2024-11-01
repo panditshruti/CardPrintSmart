@@ -12,7 +12,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.StaticLayout
 import android.text.TextPaint
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -21,9 +20,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.shrutipandit.cardprintsmart.AppDatabase
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionMakerDetailsBinding
 import com.shrutipandit.cardprintsmart.db.QuestionData
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -34,7 +36,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private lateinit var binding: FragmentQuestionMakerDetailsBinding
     private var pdfBytes: ByteArray? = null
     private val questionList = mutableListOf<QuestionData>()
-
     private var title: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +50,8 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
         checkAndRequestPermissions()
 
-        // Add the title to the question list as the first entry
-        title?.let { t -> questionList.add(QuestionData(t, "", "")) }
-
-        updatePdfView()
+        // Load questions from the Room database
+        loadQuestionsFromDatabase()
 
         binding.pdfBtn.setOnClickListener {
             pdfBytes?.let { bytes ->
@@ -66,6 +65,16 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
         binding.addQuestionBtn.setOnClickListener {
             showAddQuestionDialog()
+        }
+    }
+
+    private fun loadQuestionsFromDatabase() {
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(requireContext())
+            val questions = db.questionDao().getAllQuestions()
+            questionList.clear()
+            questionList.addAll(questions)
+            updatePdfView()
         }
     }
 
@@ -98,7 +107,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             if (titleText.isNotEmpty()) {
                 val titleWidth = headingTextPaint.measureText(titleText) // Measure the title width
                 val titleX = (pageWidth - titleWidth) / 2 // Center the title horizontally
-                // Draw the title at a specific Y position
                 canvas.drawText(titleText, titleX, yPos, headingTextPaint) // Draw the title
                 yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f // Increase spacing after title
             }
@@ -180,14 +188,23 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmit)
 
         btnSubmit.setOnClickListener {
-            val heading = etHeading.text.toString().trim() // Trim to avoid leading/trailing spaces
+            val heading = etHeading.text.toString().trim()
             val question = etQuestion.text.toString().trim()
             val option = etOption.text.toString().trim()
 
             if (question.isNotEmpty() && option.isNotEmpty()) {
-                // Add the new question to the list
-                questionList.add(QuestionData(heading, question, option)) // Maintain heading with the question
-                updatePdfView() // Update PDF view with the new data
+                // Create QuestionData object
+                val newQuestion = QuestionData(heading = heading, question = question, option = option)
+
+                // Save to Room Database
+                lifecycleScope.launch {
+                    val db = AppDatabase.getDatabase(requireContext())
+                    db.questionDao().insert(newQuestion)
+
+                    // Update local list and PDF view
+                    questionList.add(newQuestion)
+                    updatePdfView()
+                }
                 dialog.dismiss()
             } else {
                 showToast("Please enter all fields")
@@ -239,13 +256,17 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
 
-        val resolver = context.contentResolver
-        val uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
-
+        val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
         return if (uri != null) {
-            resolver.openOutputStream(uri).use { outputStream ->
-                outputStream?.write(pdfBytes)
-            } != null
+            try {
+                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    outputStream.write(pdfBytes)
+                }
+                true
+            } catch (e: IOException) {
+                e.printStackTrace()
+                false
+            }
         } else {
             false
         }
@@ -256,10 +277,8 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     }
 
     private fun checkAndRequestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
-            }
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
     }
 }

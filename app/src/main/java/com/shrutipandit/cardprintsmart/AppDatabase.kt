@@ -1,13 +1,12 @@
 
 package com.shrutipandit.cardprintsmart
-
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import android.content.Context
-import com.shrutipandit.cardprintsmart.db.Question
+import com.shrutipandit.cardprintsmart.db.QuestionData
 
-@Database(entities = [Question::class], version = 1, exportSchema = false)
+@Database(entities = [QuestionData::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun questionDao(): QuestionDao
 
@@ -20,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
+                    "app_database_question"
                 ).build()
                 INSTANCE = instance
                 instance

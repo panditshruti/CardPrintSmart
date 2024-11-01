@@ -1,4 +1,4 @@
-package com.shrutipandit.cardprintsmart
+package com.shrutipandit.cardprintsmart.adapter
 
 import android.graphics.Bitmap
 import android.view.LayoutInflater
