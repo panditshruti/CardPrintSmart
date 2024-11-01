@@ -35,15 +35,12 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private var pdfBytes: ByteArray? = null
     private val questionList = mutableListOf<QuestionData>()
 
-    // Variables to hold the passed arguments
     private var title: String? = null
-    private var description: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             title = it.getString("title")
-            description = it.getString("description")
         }
     }
 
@@ -52,12 +49,8 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
         checkAndRequestPermissions()
 
-        // If title and description are not null, create a QuestionData object
-        title?.let { t ->
-            description?.let { d ->
-                questionList.add(QuestionData(t, d, ""))
-            }
-        }
+        // Add the title to the question list as the first entry
+        title?.let { t -> questionList.add(QuestionData(t, "", "")) }
 
         updatePdfView()
 
@@ -81,104 +74,86 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val pageWidth = 300
         val pageHeight = 600
         val margin = 10f
-        val textWidth = pageWidth - (2 * margin) // Available width for text after margins
+        val textWidth = pageWidth - (2 * margin)
 
-        // Paint for normal text (question and option)
-        val paint = Paint().apply {
-            textSize = 12f // Set the text size for questions and options
-        }
-
+        // Paint setup
+        val paint = Paint().apply { textSize = 12f }
         val textPaint = TextPaint(paint)
 
-        // Paint for heading (bold and larger text)
         val headingPaint = Paint().apply {
-            isFakeBoldText = true // Make text bold
-            textSize = 14f // Set a larger text size for heading
+            isFakeBoldText = true
+            textSize = 14f
         }
-
         val headingTextPaint = TextPaint(headingPaint)
 
         var pageNumber = 1
-        var yPos = margin + 30f // Initial Y position with a top margin
+        var yPos = margin + 30f // Start position for content
         var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
         var page = pdfDocument.startPage(pageInfo)
         var canvas = page.canvas
 
-        // Initialize a counter for question numbering
-        var questionCounter = 1
+        // Draw title only once at the beginning
+        if (questionList.isNotEmpty()) {
+            val titleText = questionList[0].heading
+            if (titleText.isNotEmpty()) {
+                val titleWidth = headingTextPaint.measureText(titleText) // Measure the title width
+                val titleX = (pageWidth - titleWidth) / 2 // Center the title horizontally
+                // Draw the title at a specific Y position
+                canvas.drawText(titleText, titleX, yPos, headingTextPaint) // Draw the title
+                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f // Increase spacing after title
+            }
+        }
 
-        // Loop through each question and draw on the page
-        for ((index, questionData) in questionList.withIndex()) {
-            // Function to draw wrapped text with minimum line spacing
+        // Loop through each question starting from index 1 (to skip the title)
+        for (index in 1 until questionList.size) {
+            val questionData = questionList[index]
+
+            // Function to draw wrapped text
             fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f, paint: TextPaint): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, textWidth.toInt())
-                    .setLineSpacing(0f, 1f) // Keep default line spacing
+                    .setLineSpacing(0f, 1f)
                     .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
                     .build()
 
                 var currentYPos = yPos
-
                 for (i in 0 until staticLayout.lineCount) {
                     val lineBottom = staticLayout.getLineBottom(i)
-
-                    // Check if the current line fits in the remaining space on the page
                     if (currentYPos + lineBottom > pageHeight - margin) {
-                        // Finish the current page and start a new one
                         pdfDocument.finishPage(page)
                         pageNumber++
                         pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
                         page = pdfDocument.startPage(pageInfo)
                         canvas = page.canvas
-
-                        currentYPos = margin + 30f // Reset Y position for the new page
+                        currentYPos = margin + 30f // Reset Y position for new page
                     }
-
-                    // Draw the current line on the page
                     canvas.drawText(
                         text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
                         margin,
                         currentYPos,
                         paint
                     )
-
-                    // Update currentYPos based on the height of the line
-                    currentYPos += paint.fontMetrics.bottom - paint.fontMetrics.top // Use font metrics to calculate line height
+                    currentYPos += paint.fontMetrics.bottom - paint.fontMetrics.top
                 }
-
-                return currentYPos + additionalGap // Return updated Y position with additional gap
+                return currentYPos + additionalGap
             }
 
-            // Draw the heading centered if it exists
+            // Center the heading for each question
             val headingText = questionData.heading
             if (headingText.isNotEmpty()) {
-                val headingWidth = headingTextPaint.measureText(headingText)
-                val headingX = (pageWidth - headingWidth) / 2 // Calculate X position for centering
-
-                // Draw heading at the calculated X position
-                canvas.drawText(headingText, headingX, yPos, headingTextPaint)
-
-                // Update yPos after drawing the heading
-                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 5f // Adjust Y position for the next section
-            } else {
-                // If no heading, don't increase yPos, but still leave a small gap
-                yPos += 5f // Small gap when there's no heading
+                val headingWidth = headingTextPaint.measureText(headingText) // Measure the heading width
+                val headingX = (pageWidth - headingWidth) / 2 // Center the heading horizontally
+                canvas.drawText(headingText, headingX, yPos, headingTextPaint) // Draw the heading
+                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 10f // Increase spacing after heading
             }
 
-            // Add the question number dynamically
-            val questionText = if (questionData.question.trimEnd().endsWith("?")) {
-                "Q$questionCounter: ${questionData.question}"
-            } else {
-                "Q$questionCounter: ${questionData.question}?"
-            }
-            yPos = drawWrappedText(questionText, yPos, 5f, textPaint) // Use textPaint for question text with minimal gap
+            // Add the question number based on its position in the list
+            val questionText = "Q${index}: ${questionData.question}?"
+            yPos = drawWrappedText(questionText, yPos, 5f, textPaint)
 
-            yPos = drawWrappedText(questionData.option, yPos, 5f, textPaint) // Use textPaint for option text with minimal gap
-
-            // Increment the question counter
-            questionCounter++
+            // Draw options (if any)
+            yPos = drawWrappedText(questionData.option, yPos, 5f, textPaint)
         }
 
-        // Finish the last page
         pdfDocument.finishPage(page)
 
         // Write the document to a byte array
@@ -188,14 +163,12 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         } finally {
             pdfDocument.close()
         }
-
         return stream.toByteArray()
     }
 
     // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_question, null)
-
         val dialog = android.app.AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setTitle("Add Question")
@@ -207,14 +180,14 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmit)
 
         btnSubmit.setOnClickListener {
-            val heading = etHeading.text.toString()
-            val question = etQuestion.text.toString()
-            val option = etOption.text.toString()
+            val heading = etHeading.text.toString().trim() // Trim to avoid leading/trailing spaces
+            val question = etQuestion.text.toString().trim()
+            val option = etOption.text.toString().trim()
 
             if (question.isNotEmpty() && option.isNotEmpty()) {
                 // Add the new question to the list
-                questionList.add(QuestionData(heading, question, option))
-                updatePdfView()
+                questionList.add(QuestionData(heading, question, option)) // Maintain heading with the question
+                updatePdfView() // Update PDF view with the new data
                 dialog.dismiss()
             } else {
                 showToast("Please enter all fields")
@@ -267,20 +240,15 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         }
 
         val resolver = context.contentResolver
-        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
-        uri?.let {
-            return try {
-                resolver.openOutputStream(it)?.use { outputStream ->
-                    outputStream.write(pdfBytes)
-                    outputStream.close()
-                    true
-                } ?: false
-            } catch (e: IOException) {
-                e.printStackTrace()
-                false
-            }
+        val uri = resolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
+
+        return if (uri != null) {
+            resolver.openOutputStream(uri).use { outputStream ->
+                outputStream?.write(pdfBytes)
+            } != null
+        } else {
+            false
         }
-        return false
     }
 
     private fun showToast(message: String) {
@@ -288,39 +256,9 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     }
 
     private fun checkAndRequestPermissions() {
-        val permissions = mutableListOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-
-        // Add WRITE_EXTERNAL_STORAGE permission for versions below Android Q
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        val permissionsToRequest = permissions.filter {
-            ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
-        }
-
-        if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), REQUEST_CODE_PERMISSIONS)
-        }
-    }
-
-    companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 1
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showToast("Permission granted")
-            } else {
-                showToast("Permission denied")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
             }
         }
     }
