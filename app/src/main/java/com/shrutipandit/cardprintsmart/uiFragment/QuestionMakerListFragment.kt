@@ -120,7 +120,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
         // Populate the dialog with the existing data
         val currentEntry = items[position].split(": ")
         editTextTitle.setText(currentEntry[0])
-        editTextDescription.setText(currentEntry[1])
+        editTextDescription.setText(currentEntry.getOrNull(1) ?: "") // Avoid IndexOutOfBoundsException
 
         // Handle the submit button click
         submitButton.setOnClickListener {
@@ -128,7 +128,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
             val description = editTextDescription.text.toString()
 
             if (title.isNotEmpty() && description.isNotEmpty()) {
-                items[position] = "$title: $description" // Update the entry
+                items[position] = "$title: $description" // Update the entry in the correct position
                 adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
                 saveData() // Save the updated list to SharedPreferences
                 dialog.dismiss() // Dismiss dialog
@@ -153,6 +153,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
             .setNegativeButton("No", null)
             .show()
     }
+
 
     private fun saveData() {
         val sharedPreferences = requireContext().getSharedPreferences("MyPres", Context.MODE_PRIVATE)

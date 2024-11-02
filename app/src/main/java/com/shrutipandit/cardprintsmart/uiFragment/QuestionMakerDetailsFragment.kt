@@ -37,11 +37,13 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private var pdfBytes: ByteArray? = null
     private val questionList = mutableListOf<QuestionData>()
     private var title: String? = null
+//    private var description: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             title = it.getString("title")
+//            description = it.getString("description")
         }
     }
 
@@ -49,7 +51,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
         checkAndRequestPermissions()
-
         // Load questions from the Room database
         loadQuestionsFromDatabase()
 
@@ -85,7 +86,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val margin = 10f
         val textWidth = pageWidth - (2 * margin)
 
-        // Paint setup
         val paint = Paint().apply { textSize = 12f }
         val textPaint = TextPaint(paint)
 
@@ -96,7 +96,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val headingTextPaint = TextPaint(headingPaint)
 
         var pageNumber = 1
-        var yPos = margin + 30f // Start position for content
+        var yPos = margin + 30f
         var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
         var page = pdfDocument.startPage(pageInfo)
         var canvas = page.canvas
@@ -105,10 +105,10 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         if (questionList.isNotEmpty()) {
             val titleText = questionList[0].heading
             if (titleText.isNotEmpty()) {
-                val titleWidth = headingTextPaint.measureText(titleText) // Measure the title width
-                val titleX = (pageWidth - titleWidth) / 2 // Center the title horizontally
-                canvas.drawText(titleText, titleX, yPos, headingTextPaint) // Draw the title
-                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f // Increase spacing after title
+                val titleWidth = headingTextPaint.measureText(titleText)
+                val titleX = (pageWidth - titleWidth) / 2
+                canvas.drawText(titleText, titleX, yPos, headingTextPaint)
+                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f
             }
         }
 
@@ -132,7 +132,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                         pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
                         page = pdfDocument.startPage(pageInfo)
                         canvas = page.canvas
-                        currentYPos = margin + 30f // Reset Y position for new page
+                        currentYPos = margin + 30f
                     }
                     canvas.drawText(
                         text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
@@ -148,18 +148,18 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             // Center the heading for each question
             val headingText = questionData.heading
             if (headingText.isNotEmpty()) {
-                val headingWidth = headingTextPaint.measureText(headingText) // Measure the heading width
-                val headingX = (pageWidth - headingWidth) / 2 // Center the heading horizontally
-                canvas.drawText(headingText, headingX, yPos, headingTextPaint) // Draw the heading
-                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 10f // Increase spacing after heading
+                val headingWidth = headingTextPaint.measureText(headingText)
+                val headingX = (pageWidth - headingWidth) / 2
+                canvas.drawText(headingText, headingX, yPos, headingTextPaint)
+                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 5f // Adjusted for smaller gap
             }
 
-            // Add the question number based on its position in the list
+            // Draw question text with minimal gap after it
             val questionText = "Q${index}: ${questionData.question}?"
-            yPos = drawWrappedText(questionText, yPos, 5f, textPaint)
+            yPos = drawWrappedText(questionText, yPos, 3f, textPaint) // Reduced additionalGap to 3f
 
-            // Draw options (if any)
-            yPos = drawWrappedText(questionData.option, yPos, 5f, textPaint)
+            // Draw options with minimal gap after it
+            yPos = drawWrappedText(questionData.option, yPos, 3f, textPaint) // Reduced additionalGap to 3f
         }
 
         pdfDocument.finishPage(page)
@@ -173,6 +173,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         }
         return stream.toByteArray()
     }
+
 
     // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
