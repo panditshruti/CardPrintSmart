@@ -1,9 +1,7 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
-import android.Manifest
 import android.content.ContentValues
 import android.content.Context
-import android.content.pm.PackageManager
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Build
@@ -17,8 +15,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.shrutipandit.cardprintsmart.AppDatabase
@@ -53,8 +49,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val args = QuestionMakerDetailsFragmentArgs.fromBundle(requireArguments())
         val title = args.title
         val description = args.description
-
-
 
         checkAndRequestPermissions()
         loadQuestionsFromDatabase()
@@ -94,9 +88,11 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val margin = 10f
         val textWidth = pageWidth - (2 * margin)
 
+        // Paint setup
         val paint = Paint().apply { textSize = 12f }
         val textPaint = TextPaint(paint)
 
+        // Heading Paint setup for centering and bolding
         val headingPaint = Paint().apply {
             isFakeBoldText = true
             textSize = 14f
@@ -104,23 +100,28 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val headingTextPaint = TextPaint(headingPaint)
 
         var pageNumber = 1
-        var yPos = margin + 30f
+        var yPos = margin + 30f // Start position for content
         var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
         var page = pdfDocument.startPage(pageInfo)
         var canvas = page.canvas
 
-        if (questionList.isNotEmpty()) {
-            val titleText = title ?: "Question List"
-            val titleWidth = headingTextPaint.measureText(titleText)
-            val titleX = (pageWidth - titleWidth) / 2
-            canvas.drawText(titleText, titleX, yPos, headingTextPaint)
-            yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f
-        }
+        // Title text centered at the top of the page
+        val titleText = title ?: "Question List" // Default title if null
+        val titleWidth = headingTextPaint.measureText(titleText)
+        val titleX = (pageWidth - titleWidth) / 2 // Center the title horizontally
+        canvas.drawText(titleText, titleX, yPos, headingTextPaint)
 
+        // Update yPos for the next content, leaving space after title
+        yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f // Added space after title
+
+        // Define a minimal gap between questions
+        val questionGap = 5f  // Reduce this value to minimize gap
+
+        // Loop through each question
         questionList.forEachIndexed { index, questionData ->
             fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f, paint: TextPaint): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, textWidth.toInt())
-                    .setLineSpacing(0f, 1f)
+                    .setLineSpacing(0f, 1f)  // No additional line spacing
                     .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
                     .build()
 
@@ -133,7 +134,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                         pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
                         page = pdfDocument.startPage(pageInfo)
                         canvas = page.canvas
-                        currentYPos = margin + 30f
+                        currentYPos = margin + 30f // Reset Y position for new page
                     }
                     canvas.drawText(
                         text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
@@ -146,11 +147,22 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                 return currentYPos + additionalGap
             }
 
-            val headingText = questionData.text
-            val questionText = "Q${index + 1}: ${questionData.text}?"
-            yPos = drawWrappedText(headingText, yPos, 3f, headingTextPaint)
-            yPos = drawWrappedText(questionText, yPos, 3f, textPaint)
-            yPos = drawWrappedText("Options: ${questionData.options}", yPos, 5f, textPaint)
+            // Draw the question heading and the question itself
+            val headingText = questionData.text // This should ideally be the heading
+            val questionText = "Q${index + 1}: ${questionData.answer}?" // This should be the main question
+
+            // Center the heading text on the page
+            val headingWidth = headingTextPaint.measureText(headingText) // Measure the width of the heading
+            val headingX = (pageWidth - headingWidth) / 2 // Calculate the X position to center the heading
+            canvas.drawText(headingText, headingX, yPos, headingTextPaint)
+            yPos = drawWrappedText("", yPos, 0f, headingTextPaint)
+            yPos = drawWrappedText(questionText, yPos, 0f, textPaint)
+
+            // Draw options if any
+            yPos = drawWrappedText("Options: ${questionData.options}", yPos, 0f, textPaint)
+
+            // Add a minimal gap between questions
+            yPos += questionGap
         }
 
         pdfDocument.finishPage(page)
@@ -171,18 +183,19 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             .setTitle("Add Question")
             .create()
 
-        val etQuestion = dialogView.findViewById<EditText>(R.id.etQuestion)
-        val etAnswer = dialogView.findViewById<EditText>(R.id.etHeading)
+        val etheading = dialogView.findViewById<EditText>(R.id.etHeading)
+        val etquestion = dialogView.findViewById<EditText>(R.id.etQuestion)
         val etOptions = dialogView.findViewById<EditText>(R.id.etOption)
         val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmit)
 
         btnSubmit.setOnClickListener {
-            val questionText = etQuestion.text.toString().trim()
-            val answer = etAnswer.text.toString().trim()
+            val headingtext = etheading.text.toString().trim()
+            val questiontext = etquestion.text.toString().trim()
             val options = etOptions.text.toString().trim()
 
-            if (questionText.isNotEmpty() && options.isNotEmpty()) {
-                val newQuestion = Question(text = questionText, answer = answer, options = options)
+            if (questiontext.isNotEmpty() && options.isNotEmpty()) {
+                val newQuestion = Question(text = headingtext, answer = questiontext, options = options)
+
                 val newPageContent = PageContent(question = listOf(newQuestion))
 
                 lifecycleScope.launch {
@@ -237,27 +250,19 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun savePdfToDownloadsScoped(context: Context, pdfBytes: ByteArray): Boolean {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "e_question_card.pdf")
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-        }
-
         val resolver = context.contentResolver
-        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
-
-        return try {
-            uri?.let {
-                resolver.openOutputStream(it)?.use { outputStream ->
-                    outputStream.write(pdfBytes)
-                    return true
-                }
-            }
-            false
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Downloads.DISPLAY_NAME, "e_question_card.pdf")
+            put(MediaStore.Downloads.MIME_TYPE, "application/pdf")
+            put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+        return uri?.let {
+            resolver.openOutputStream(it)?.use { outputStream ->
+                outputStream.write(pdfBytes)
+                true
+            }
+        } ?: false
     }
 
     private fun showToast(message: String) {
@@ -265,13 +270,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     }
 
     private fun checkAndRequestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-            permissions.forEach { permission ->
-                if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(requireActivity(), permissions, 0)
-                }
-            }
-        }
+        // Permission handling logic here
     }
 }

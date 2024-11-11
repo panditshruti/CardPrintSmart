@@ -43,7 +43,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
 
             // Navigate to the details fragment with arguments
             val action = QuestionMakerListFragmentDirections.actionQuestionMakerListFragmentToQuestionMakerDetailsFragment(
-             title,description
+                title,description
             )
             findNavController().navigate(action)
         }
