@@ -24,7 +24,8 @@ import androidx.lifecycle.lifecycleScope
 import com.shrutipandit.cardprintsmart.AppDatabase
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionMakerDetailsBinding
-import com.shrutipandit.cardprintsmart.db.QuestionData
+import com.shrutipandit.cardprintsmart.db.PageContent
+import com.shrutipandit.cardprintsmart.db.Question
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -35,23 +36,27 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
 
     private lateinit var binding: FragmentQuestionMakerDetailsBinding
     private var pdfBytes: ByteArray? = null
-    private val questionList = mutableListOf<QuestionData>()
+    private val questionList = mutableListOf<Question>()
     private var title: String? = null
-//    private var description: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             title = it.getString("title")
-//            description = it.getString("description")
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
+
+        val args = QuestionMakerDetailsFragmentArgs.fromBundle(requireArguments())
+        val title = args.title
+        val description = args.description
+
+
+
         checkAndRequestPermissions()
-        // Load questions from the Room database
         loadQuestionsFromDatabase()
 
         binding.pdfBtn.setOnClickListener {
@@ -72,9 +77,12 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private fun loadQuestionsFromDatabase() {
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
-            val questions = db.questionDao().getAllQuestions()
+            val pageContents = db.pageContentDao().getAllPageContents()
+
             questionList.clear()
-            questionList.addAll(questions)
+            pageContents.forEach { content ->
+                questionList.addAll(content.question) // Add all questions from each PageContent
+            }
             updatePdfView()
         }
     }
@@ -101,22 +109,15 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         var page = pdfDocument.startPage(pageInfo)
         var canvas = page.canvas
 
-        // Draw title only once at the beginning
         if (questionList.isNotEmpty()) {
-            val titleText = questionList[0].heading
-            if (titleText.isNotEmpty()) {
-                val titleWidth = headingTextPaint.measureText(titleText)
-                val titleX = (pageWidth - titleWidth) / 2
-                canvas.drawText(titleText, titleX, yPos, headingTextPaint)
-                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f
-            }
+            val titleText = title ?: "Question List"
+            val titleWidth = headingTextPaint.measureText(titleText)
+            val titleX = (pageWidth - titleWidth) / 2
+            canvas.drawText(titleText, titleX, yPos, headingTextPaint)
+            yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f
         }
 
-        // Loop through each question starting from index 1 (to skip the title)
-        for (index in 1 until questionList.size) {
-            val questionData = questionList[index]
-
-            // Function to draw wrapped text
+        questionList.forEachIndexed { index, questionData ->
             fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f, paint: TextPaint): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, textWidth.toInt())
                     .setLineSpacing(0f, 1f)
@@ -145,26 +146,15 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                 return currentYPos + additionalGap
             }
 
-            // Center the heading for each question
-            val headingText = questionData.heading
-            if (headingText.isNotEmpty()) {
-                val headingWidth = headingTextPaint.measureText(headingText)
-                val headingX = (pageWidth - headingWidth) / 2
-                canvas.drawText(headingText, headingX, yPos, headingTextPaint)
-                yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 5f // Adjusted for smaller gap
-            }
-
-            // Draw question text with minimal gap after it
-            val questionText = "Q${index}: ${questionData.question}?"
-            yPos = drawWrappedText(questionText, yPos, 3f, textPaint) // Reduced additionalGap to 3f
-
-            // Draw options with minimal gap after it
-            yPos = drawWrappedText(questionData.option, yPos, 3f, textPaint) // Reduced additionalGap to 3f
+            val headingText = questionData.text
+            val questionText = "Q${index + 1}: ${questionData.text}?"
+            yPos = drawWrappedText(headingText, yPos, 3f, headingTextPaint)
+            yPos = drawWrappedText(questionText, yPos, 3f, textPaint)
+            yPos = drawWrappedText("Options: ${questionData.options}", yPos, 5f, textPaint)
         }
 
         pdfDocument.finishPage(page)
 
-        // Write the document to a byte array
         val stream = ByteArrayOutputStream()
         try {
             pdfDocument.writeTo(stream)
@@ -174,8 +164,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         return stream.toByteArray()
     }
 
-
-    // Show the dialog to add a new question
     private fun showAddQuestionDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_question, null)
         val dialog = android.app.AlertDialog.Builder(requireContext())
@@ -183,26 +171,23 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             .setTitle("Add Question")
             .create()
 
-        val etHeading = dialogView.findViewById<EditText>(R.id.etHeading)
         val etQuestion = dialogView.findViewById<EditText>(R.id.etQuestion)
-        val etOption = dialogView.findViewById<EditText>(R.id.etOption)
+        val etAnswer = dialogView.findViewById<EditText>(R.id.etHeading)
+        val etOptions = dialogView.findViewById<EditText>(R.id.etOption)
         val btnSubmit = dialogView.findViewById<Button>(R.id.btnSubmit)
 
         btnSubmit.setOnClickListener {
-            val heading = etHeading.text.toString().trim()
-            val question = etQuestion.text.toString().trim()
-            val option = etOption.text.toString().trim()
+            val questionText = etQuestion.text.toString().trim()
+            val answer = etAnswer.text.toString().trim()
+            val options = etOptions.text.toString().trim()
 
-            if (question.isNotEmpty() && option.isNotEmpty()) {
-                // Create QuestionData object
-                val newQuestion = QuestionData(heading = heading, question = question, option = option)
+            if (questionText.isNotEmpty() && options.isNotEmpty()) {
+                val newQuestion = Question(text = questionText, answer = answer, options = options)
+                val newPageContent = PageContent(question = listOf(newQuestion))
 
-                // Save to Room Database
                 lifecycleScope.launch {
                     val db = AppDatabase.getDatabase(requireContext())
-                    db.questionDao().insert(newQuestion)
-
-                    // Update local list and PDF view
+                    db.pageContentDao().insertPageContent(newPageContent)
                     questionList.add(newQuestion)
                     updatePdfView()
                 }
@@ -215,11 +200,12 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         dialog.show()
     }
 
-    // Update the PDF view with the current list of questions
     private fun updatePdfView() {
         pdfBytes = generatePdf()
         pdfBytes?.let { bytes ->
-            binding.pdfView.fromBytes(bytes).load()
+            val tempFile = File(requireContext().cacheDir, "temp_pdf_file.pdf")
+            tempFile.writeBytes(bytes)
+            binding.pdfView.fromFile(tempFile).load()
         } ?: showToast("Failed to generate PDF")
     }
 
@@ -257,18 +243,19 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
 
-        val uri = context.contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
-        return if (uri != null) {
-            try {
-                context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+        val resolver = context.contentResolver
+        val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+
+        return try {
+            uri?.let {
+                resolver.openOutputStream(it)?.use { outputStream ->
                     outputStream.write(pdfBytes)
+                    return true
                 }
-                true
-            } catch (e: IOException) {
-                e.printStackTrace()
-                false
             }
-        } else {
+            false
+        } catch (e: IOException) {
+            e.printStackTrace()
             false
         }
     }
@@ -278,8 +265,13 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     }
 
     private fun checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val permissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
+            permissions.forEach { permission ->
+                if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(requireActivity(), permissions, 0)
+                }
+            }
         }
     }
 }

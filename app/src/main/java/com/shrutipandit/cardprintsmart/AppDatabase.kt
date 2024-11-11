@@ -1,14 +1,18 @@
-
 package com.shrutipandit.cardprintsmart
+
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import android.content.Context
-import com.shrutipandit.cardprintsmart.db.QuestionData
+import androidx.room.TypeConverters
+import com.shrutipandit.cardprintsmart.card.Converters
+import com.shrutipandit.cardprintsmart.db.PageContent
+import com.shrutipandit.cardprintsmart.db.Question
 
-@Database(entities = [QuestionData::class], version = 1)
+@Database(entities = [PageContent::class, Question::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun questionDao(): QuestionDao
+    abstract fun pageContentDao(): PageContentDao
 
     companion object {
         @Volatile
@@ -19,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database_question"
+                    "app_database"
                 ).build()
                 INSTANCE = instance
                 instance
