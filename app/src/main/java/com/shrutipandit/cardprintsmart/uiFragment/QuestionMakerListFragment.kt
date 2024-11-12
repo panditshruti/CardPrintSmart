@@ -11,16 +11,22 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.shrutipandit.cardprintsmart.AppDatabase
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.adapter.QuestionListAdapter
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionListBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionMakerListBinding
+import com.shrutipandit.cardprintsmart.db.PageContent
+import com.shrutipandit.cardprintsmart.db.Question
+import kotlinx.coroutines.launch
 
 class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list) {
     private lateinit var binding: FragmentQuestionMakerListBinding
     private val items = mutableListOf<String>() // To hold the titles and descriptions
     private lateinit var adapter: QuestionListAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +35,6 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
         // Setup the adapter for the ListView
         adapter = QuestionListAdapter(requireContext(), items)
         binding.qListView.adapter = adapter
-
         loadData()
 
         binding.addTittleBtn.setOnClickListener {
@@ -43,7 +48,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
 
             // Navigate to the details fragment with arguments
             val action = QuestionMakerListFragmentDirections.actionQuestionMakerListFragmentToQuestionMakerDetailsFragment(
-                title,description
+                title,description,position
             )
             findNavController().navigate(action)
         }
@@ -79,6 +84,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
                 items.add(entry) // Combine title and description
                 adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
                 saveData() // Save the updated list to SharedPreferences
+                addQuestionOnRoomDataBase(emptyList())
                 dialog.dismiss() // Dismiss dialog
             } else {
                 // Show error message (you can add Toast or other UI feedback)
@@ -86,6 +92,15 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
         }
 
         dialog.show()
+    }
+
+    private fun addQuestionOnRoomDataBase(question:List<Question>){
+        val pageContent = PageContent(0,question)
+        lifecycleScope.launch {
+            val db = AppDatabase.getDatabase(requireContext())
+            db.pageContentDao().insertPageContent(pageContent)
+        }
+
     }
 
     private fun showEditDeleteDialog(position: Int) {
