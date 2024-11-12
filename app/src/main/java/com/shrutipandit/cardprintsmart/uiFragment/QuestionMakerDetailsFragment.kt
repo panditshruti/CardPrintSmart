@@ -100,7 +100,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         val headingTextPaint = TextPaint(headingPaint)
 
         var pageNumber = 1
-        var yPos = margin + 30f // Start position for content
+        var yPos = margin + 10f // Start position for content
         var pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
         var page = pdfDocument.startPage(pageInfo)
         var canvas = page.canvas
@@ -115,13 +115,14 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         yPos += headingTextPaint.fontMetrics.bottom - headingTextPaint.fontMetrics.top + 20f // Added space after title
 
         // Define a minimal gap between questions
-        val questionGap = 5f  // Reduce this value to minimize gap
+        val questionGap = 2f  // Reduced gap between questions
 
         // Loop through each question
         questionList.forEachIndexed { index, questionData ->
+
             fun drawWrappedText(text: String, yPos: Float, additionalGap: Float = 0f, paint: TextPaint): Float {
                 val staticLayout = StaticLayout.Builder.obtain(text, 0, text.length, paint, textWidth.toInt())
-                    .setLineSpacing(0f, 1f)  // No additional line spacing
+                    .setLineSpacing(0f, 0.95f)  // Slightly reduced line spacing
                     .setAlignment(android.text.Layout.Alignment.ALIGN_NORMAL)
                     .build()
 
@@ -134,7 +135,7 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                         pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageNumber).create()
                         page = pdfDocument.startPage(pageInfo)
                         canvas = page.canvas
-                        currentYPos = margin + 30f // Reset Y position for new page
+                        currentYPos = margin + 10f // Reset Y position for new page
                     }
                     canvas.drawText(
                         text.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)),
@@ -147,19 +148,24 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
                 return currentYPos + additionalGap
             }
 
-            // Draw the question heading and the question itself
-            val headingText = questionData.text // This should ideally be the heading
-            val questionText = "Q${index + 1}: ${questionData.answer}?" // This should be the main question
+            // Check if heading text is null or empty
+            val headingText = questionData.text
+            val questionText = "Q${index + 1}: ${questionData.answer}?"
 
-            // Center the heading text on the page
-            val headingWidth = headingTextPaint.measureText(headingText) // Measure the width of the heading
-            val headingX = (pageWidth - headingWidth) / 2 // Calculate the X position to center the heading
-            canvas.drawText(headingText, headingX, yPos, headingTextPaint)
-            yPos = drawWrappedText("", yPos, 0f, headingTextPaint)
-            yPos = drawWrappedText(questionText, yPos, 0f, textPaint)
+            if (!headingText.isNullOrEmpty()) {
+                // Center the heading text on the page
+                val headingWidth = headingTextPaint.measureText(headingText) // Measure the width of the heading
+                val headingX = (pageWidth - headingWidth) / 2 // Calculate the X position to center the heading
+                canvas.drawText(headingText, headingX, yPos, headingTextPaint)
+                // Move yPos to the next line with minimal gap and reduced line spacing
+                yPos = drawWrappedText("", yPos, questionGap, headingTextPaint)
+            }
+
+            // Draw the question text in the same position if there's no heading
+            yPos = drawWrappedText(questionText, yPos, questionGap, textPaint)
 
             // Draw options if any
-            yPos = drawWrappedText("Options: ${questionData.options}", yPos, 0f, textPaint)
+            yPos = drawWrappedText("Options: ${questionData.options}", yPos, questionGap, textPaint)
 
             // Add a minimal gap between questions
             yPos += questionGap
