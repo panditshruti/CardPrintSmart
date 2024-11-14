@@ -9,7 +9,7 @@ import com.shrutipandit.cardprintsmart.card.Converters
 import com.shrutipandit.cardprintsmart.db.PageContent
 import com.shrutipandit.cardprintsmart.db.Question
 
-@Database(entities = [PageContent::class, Question::class], version = 1)
+@Database(entities = [PageContent::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun pageContentDao(): PageContentDao

@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.shrutipandit.cardprintsmart.AppDatabase
@@ -19,36 +21,42 @@ import com.shrutipandit.cardprintsmart.adapter.QuestionListAdapter
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionListBinding
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionMakerListBinding
 import com.shrutipandit.cardprintsmart.db.PageContent
+import com.shrutipandit.cardprintsmart.db.PageSummary
 import com.shrutipandit.cardprintsmart.db.Question
+import com.shrutipandit.cardprintsmart.viewModel.PageViewModel
 import kotlinx.coroutines.launch
 
 class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list) {
     private lateinit var binding: FragmentQuestionMakerListBinding
     private val items = mutableListOf<String>() // To hold the titles and descriptions
     private lateinit var adapter: QuestionListAdapter
+    private lateinit var pageViewModel: PageViewModel
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerListBinding.bind(view)
 
-        // Setup the adapter for the ListView
-        adapter = QuestionListAdapter(requireContext(), items)
-        binding.qListView.adapter = adapter
-        loadData()
+        pageViewModel = ViewModelProvider(this)[PageViewModel::class.java]
+
+        pageViewModel.pageSummaries.observe(viewLifecycleOwner) { summaries ->
+            adapter = QuestionListAdapter(requireContext(), summaries)
+            binding.qListView.adapter = adapter
+        }
+
+
 
         binding.addTittleBtn.setOnClickListener {
             showAddTitleDialog()
         }
 
         binding.qListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedItem = items[position]
-            val title = selectedItem.split(": ")[0] // Extract title
-            val description = selectedItem.split(": ")[1] // Extract description
+            val selectedItem = pageViewModel.pageSummaries.value?.get(position)
 
             // Navigate to the details fragment with arguments
             val action = QuestionMakerListFragmentDirections.actionQuestionMakerListFragmentToQuestionMakerDetailsFragment(
-                title,description,position
+                selectedItem?.title.toString(),selectedItem?.description.toString(),selectedItem?.id!!
             )
             findNavController().navigate(action)
         }
@@ -80,11 +88,8 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
             val description = editTextDescription.text.toString()
 
             if (title.isNotEmpty() && description.isNotEmpty()) {
-                val entry = "$title: $description"
-                items.add(entry) // Combine title and description
-                adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
-                saveData() // Save the updated list to SharedPreferences
-                addQuestionOnRoomDataBase(emptyList())
+                addQuestionOnRoomDataBase(title,description,emptyList())
+                adapter.notifyDataSetChanged()
                 dialog.dismiss() // Dismiss dialog
             } else {
                 // Show error message (you can add Toast or other UI feedback)
@@ -94,8 +99,9 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
         dialog.show()
     }
 
-    private fun addQuestionOnRoomDataBase(question:List<Question>){
-        val pageContent = PageContent(0,question)
+
+    private fun addQuestionOnRoomDataBase(title:String, desc:String, question:List<Question>){
+        val pageContent = PageContent(0,title,desc,question)
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
             db.pageContentDao().insertPageContent(pageContent)
@@ -145,7 +151,7 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
             if (title.isNotEmpty() && description.isNotEmpty()) {
                 items[position] = "$title: $description" // Update the entry in the correct position
                 adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
-                saveData() // Save the updated list to SharedPreferences
+
                 dialog.dismiss() // Dismiss dialog
             } else {
                 Toast.makeText(requireContext(), "Both fields must be filled", Toast.LENGTH_SHORT).show()
@@ -162,7 +168,6 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
             .setPositiveButton("Yes") { _, _ ->
                 items.removeAt(position) // Remove the item from the list
                 adapter.notifyDataSetChanged() // Notify adapter to refresh ListView
-                saveData() // Save the updated list to SharedPreferences
                 Toast.makeText(requireContext(), "Item deleted", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("No", null)
@@ -170,17 +175,4 @@ class QuestionMakerListFragment : Fragment(R.layout.fragment_question_maker_list
     }
 
 
-    private fun saveData() {
-        val sharedPreferences = requireContext().getSharedPreferences("MyPres", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putStringSet("items", items.toSet()) // Save as a Set to avoid duplicates
-        editor.apply()
-    }
-
-    private fun loadData() {
-        val sharedPreferences = requireContext().getSharedPreferences("MyPres", Context.MODE_PRIVATE)
-        val savedItems = sharedPreferences.getStringSet("items", emptySet()) ?: emptySet()
-        items.clear()
-        items.addAll(savedItems) // Load saved items into the list
-    }
 }

@@ -8,10 +8,11 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.shrutipandit.cardprintsmart.R
+import com.shrutipandit.cardprintsmart.db.PageSummary
 import com.shrutipandit.cardprintsmart.uiFragment.QuestionListFragment
 
-class QuestionListAdapter(context: Context, private val items: MutableList<String>) :
-    ArrayAdapter<String>(context, R.layout.list_item_question, items) {
+class QuestionListAdapter(context: Context, private val items: List<PageSummary>) :
+    ArrayAdapter<PageSummary>(context, R.layout.list_item_question, items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_item_question, parent, false)
@@ -20,7 +21,8 @@ class QuestionListAdapter(context: Context, private val items: MutableList<Strin
         val imageEdit = view.findViewById<ImageView>(R.id.imageEdit)
         val imageDelete = view.findViewById<ImageView>(R.id.imageDelete)
 
-        textViewItem.text = items[position]
+        textViewItem.text = items[position].title + " "
+        textViewItem.append( items[position].description)
 
         imageEdit.setOnClickListener {
             (context as? QuestionListFragment)?.showEditDialog(position)

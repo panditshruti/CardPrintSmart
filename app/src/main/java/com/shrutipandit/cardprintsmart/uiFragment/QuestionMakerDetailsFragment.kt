@@ -34,13 +34,13 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private var pdfBytes: ByteArray? = null
     private val questionList = mutableListOf<Question>()
     private var title: String? = null
-    private var position = 0
+    private var position = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             title = it.getString("title")
-            position = it.getInt("position")
+            position = it.getLong("position")
 
         }
     }
@@ -48,10 +48,6 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuestionMakerDetailsBinding.bind(view)
-
-        val args = QuestionMakerDetailsFragmentArgs.fromBundle(requireArguments())
-        val title = args.title
-        val description = args.description
 
         checkAndRequestPermissions()
         loadQuestionsFromDatabase()
@@ -74,11 +70,11 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
     private fun loadQuestionsFromDatabase() {
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
-            val pageContents = db.pageContentDao().getPageContentById(position.toLong())
+            val pageContents = db.pageContentDao().getPageContentById(position)
 
             questionList.clear()
             pageContents?.question?.forEach { content ->
-                questionList.add(Question(content.id,content.text,content.answer,content.options)) // Add all questions from each PageContent
+                questionList.add(Question(content.text,content.answer,content.options)) // Add all questions from each PageContent
             }
             updatePdfView()
         }
@@ -224,10 +220,9 @@ class QuestionMakerDetailsFragment : Fragment(R.layout.fragment_question_maker_d
         }
     }
     private fun updateQuestionListInRoomDb(){
-
         lifecycleScope.launch {
             val db = AppDatabase.getDatabase(requireContext())
-            db.pageContentDao().updatePageContentQuestions(position.toLong(),questionList)
+            db.pageContentDao().updatePageContentQuestions(position,questionList)
         }
     }
 

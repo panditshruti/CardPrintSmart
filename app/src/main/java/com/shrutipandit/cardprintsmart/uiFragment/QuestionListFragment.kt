@@ -26,7 +26,7 @@ class QuestionListFragment : Fragment(R.layout.fragment_question_list) {
         binding = FragmentQuestionListBinding.bind(view)
 
         // Setup the adapter for the ListView
-        adapter = QuestionListAdapter(requireContext(), items)
+       // adapter = QuestionListAdapter(requireContext(), items)
         binding.qListView.adapter = adapter
 
         loadData()
