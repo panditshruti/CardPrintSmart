@@ -113,7 +113,7 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/demoIdCardFragment"
+        android:id="@+id/demoIdCardFragment2"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoIdCardFragment"
         android:label="DemoIdCard"
         tools:layout="@layout/fragment_demo_id_card">
@@ -169,7 +169,7 @@
     </fragment>
     <fragment
         android:id="@+id/IDCardFragment"
-        android:name="com.shrutipandit.cardprintsmart.uiFragment.IDCardFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.IeBothCardFragment"
         android:label="fragment_i_d_card"
         tools:layout="@layout/fragment_i_d_card" >
         <action
@@ -186,7 +186,7 @@
         tools:layout="@layout/fragment_student_id_card" >
         <action
             android:id="@+id/action_studentIdCardFragment_to_demoIdCardFragment"
-            app:destination="@id/demoIdCardFragment" />
+            app:destination="@id/demoIdCardFragment2" />
         <argument
             android:name="editTextData"
             app:argType="string" />
@@ -200,7 +200,7 @@
         android:label="fragment_employe_id_card">
         <action
             android:id="@+id/action_employeIdCardFragment_to_demoIdCardFragment"
-            app:destination="@id/demoIdCardFragment" />
+            app:destination="@id/demoIdCardFragment2" />
     </fragment>
 
     <fragment
@@ -220,8 +220,8 @@
     <fragment
         android:id="@+id/questionMakerListFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionMakerListFragment"
-        android:label="fragment_question_maker_list"
-        tools:layout="@layout/fragment_question_maker_list" >
+        android:label="Item List"
+        tools:layout="@layout/fragment_question_maker_list">
         <action
             android:id="@+id/action_questionMakerListFragment_to_questionMakerDetailsFragment"
             app:destination="@id/questionMakerDetailsFragment" />
@@ -229,8 +229,8 @@
     <fragment
         android:id="@+id/questionMakerDetailsFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.QuestionMakerDetailsFragment"
-        android:label="fragment_question_maker_details"
-        tools:layout="@layout/fragment_question_maker_details" >
+        android:label="Item Details"
+        tools:layout="@layout/fragment_question_maker_details">
         <argument
             android:name="title"
             app:argType="string" />

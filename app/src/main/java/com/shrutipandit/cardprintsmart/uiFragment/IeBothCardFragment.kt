@@ -10,7 +10,7 @@ import com.shrutipandit.cardprintsmart.databinding.FragmentIDCardBinding
 
 
 
-class IDCardFragment : Fragment(R.layout.fragment_i_d_card) {
+class IeBothCardFragment : Fragment(R.layout.fragment_i_d_card) {
     private lateinit var binding: FragmentIDCardBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

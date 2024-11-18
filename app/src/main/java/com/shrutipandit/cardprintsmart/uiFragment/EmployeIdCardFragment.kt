@@ -75,8 +75,8 @@ class EmployeIdCardFragment : Fragment(R.layout.fragment_employe_id_card) {
 
                 // Ensure the action ID is correctly referenced in the directions
                 try {
-                    val action = EmployeIdCardFragmentDirections.actionEmployeIdCardFragmentToDemoIdCardFragment(data, imageUriString)
-                    findNavController().navigate(action)
+//                    val action = EmployeIdCardFragmentDirections.actionEmployeIdCardFragmentToDemoIdCardFragment(data, imageUriString)
+//                    findNavController().navigate(action)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Toast.makeText(requireContext(), "Navigation Error: ${e.message}", Toast.LENGTH_SHORT).show()
