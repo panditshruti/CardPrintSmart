@@ -8,75 +8,40 @@ import java.io.ByteArrayOutputStream
 class OMRSheet {
 
     fun generatePdf(context: Context, numberOfQuestions: Int, paperSize: String): ByteArray {
-        val fixedHeaderHeight = 80 // Height reserved for header information
-        val rowHeight = 40 // Height for each row of questions
+        val fixedHeaderHeight = 150 // Height reserved for header information
+        val rowHeight = 50 // Height for each row of questions
         val padding = 20 // Padding around the page
+        val maxColumns = 4 // Number of columns to fit on the page
 
-        // Calculate the number of columns based on the number of questions
-        val maxColumns = 5 // Maximum number of columns to ensure readability
-        val columns = when {
-            numberOfQuestions <= 30 -> 3
-            numberOfQuestions <= 50 -> 4
-            else -> maxColumns
-        }
+        // Define page size (A4 or others can be customized)
+        val pageWidth = 595 // Default width for A4 in points
+        val pageHeight = 842 // Default height for A4 in points
 
-        // Calculate the number of rows needed
-        val rows = Math.ceil(numberOfQuestions / columns.toDouble()).toInt()
-        val contentHeight = rows * rowHeight
-        val pageHeight = fixedHeaderHeight + contentHeight + padding
+        // Calculate questions per page
+        val questionsPerColumn = ((pageHeight - fixedHeaderHeight - padding) / rowHeight).toInt()
+        val questionsPerPage = maxColumns * questionsPerColumn
+        val totalPages = Math.ceil(numberOfQuestions / questionsPerPage.toDouble()).toInt()
 
-        // Create page info with the calculated height
-        val pageInfo = PdfDocument.PageInfo.Builder(595, pageHeight, 1).create() // Default width for A4, custom height
         val myPdfDocument = PdfDocument()
-        val page = myPdfDocument.startPage(pageInfo)
-        val canvas: Canvas = page.canvas
 
-        // Set background color
-        canvas.drawColor(Color.WHITE)
+        for (pageIndex in 0 until totalPages) {
+            val pageInfo = PdfDocument.PageInfo.Builder(pageWidth, pageHeight, pageIndex + 1).create()
+            val page = myPdfDocument.startPage(pageInfo)
+            val canvas: Canvas = page.canvas
 
-        // Paint for fixed text
-        val fixedTextPaint = Paint().apply {
-            color = Color.BLACK
-            textSize = 16f
-            isAntiAlias = true
+            // Set background color
+            canvas.drawColor(Color.WHITE)
+
+            // Draw header on the first page only
+            if (pageIndex == 0) drawHeader(canvas, padding, fixedHeaderHeight)
+
+            // Draw questions
+            val startQuestionIndex = pageIndex * questionsPerPage + 1
+            val endQuestionIndex = minOf(startQuestionIndex + questionsPerPage - 1, numberOfQuestions)
+            drawQuestions(canvas, startQuestionIndex, endQuestionIndex, padding, fixedHeaderHeight, rowHeight, maxColumns)
+
+            myPdfDocument.finishPage(page)
         }
-        val startX = padding.toFloat()
-        val startY = padding.toFloat()
-
-        // Fixed text
-        canvas.drawText("Name:_____________________", startX, startY, fixedTextPaint)
-        canvas.drawText("Class:_____________________", startX, startY + 20, fixedTextPaint)
-        canvas.drawText("Roll Number:_____________________", startX, startY + 40, fixedTextPaint)
-        canvas.drawText("Mobile Number:_____________________", startX, startY + 60, fixedTextPaint)
-
-        // Paint for questions and bubbles
-        val textPaint = Paint().apply {
-            color = Color.BLACK
-            textSize = 14f
-            isAntiAlias = true
-        }
-        val bubblePaint = Paint().apply {
-            color = Color.BLACK
-            style = Paint.Style.STROKE
-            isAntiAlias = true
-        }
-
-        val colWidth = (pageInfo.pageWidth - 2 * padding) / columns // Width for each column
-
-        // Draw the questions on the PDF
-        for (i in 1..numberOfQuestions) {
-            val row = (i - 1) / columns
-            val col = (i - 1) % columns
-
-            val xPos = startX + col * colWidth
-            val yPos = startY + fixedHeaderHeight + row * rowHeight
-
-            canvas.drawText("Q$i:", xPos, yPos.toFloat(), textPaint)
-            // Draw bubbles
-            drawBubbles(canvas, xPos + 30, yPos.toFloat(), bubblePaint) // Adjusted xPos for bubbles
-        }
-
-        myPdfDocument.finishPage(page)
 
         val outputStream = ByteArrayOutputStream()
         myPdfDocument.writeTo(outputStream)
@@ -85,16 +50,79 @@ class OMRSheet {
         return outputStream.toByteArray()
     }
 
+    private fun drawHeader(canvas: Canvas, padding: Int, headerHeight: Int) {
+        val headerPaint = Paint().apply {
+            color = Color.BLACK
+            textSize = 14f
+            isAntiAlias = true
+        }
+        val startX = padding.toFloat()
+        var currentY = padding.toFloat()
+
+        // Draw header fields
+        canvas.drawText("Name: ___________________________", startX, currentY, headerPaint)
+        currentY += 20
+        canvas.drawText("Roll Number: ____________________", startX, currentY, headerPaint)
+        currentY += 20
+        canvas.drawText("Class: __________________________", startX, currentY, headerPaint)
+        currentY += 20
+        canvas.drawText("Mobile Number: __________________", startX, currentY, headerPaint)
+
+        // Separator line
+        currentY += 30
+        canvas.drawLine(startX, currentY, canvas.width - padding.toFloat(), currentY, headerPaint)
+    }
+
+    private fun drawQuestions(
+        canvas: Canvas,
+        startQuestion: Int,
+        endQuestion: Int,
+        padding: Int,
+        headerHeight: Int,
+        rowHeight: Int,
+        maxColumns: Int
+    ) {
+        val textPaint = Paint().apply {
+            color = Color.BLACK
+            textSize = 12f
+            isAntiAlias = true
+        }
+        val bubblePaint = Paint().apply {
+            color = Color.BLACK
+            style = Paint.Style.STROKE
+            isAntiAlias = true
+        }
+
+        val columnWidth = (canvas.width - 2 * padding) / maxColumns
+        var currentQuestion = startQuestion
+
+        for (col in 0 until maxColumns) {
+            var yPos = headerHeight + padding
+            val xPos = padding + col * columnWidth
+
+            while (yPos + rowHeight < canvas.height && currentQuestion <= endQuestion) {
+                // Draw question number
+                canvas.drawText("$currentQuestion.", xPos.toFloat(), yPos.toFloat(), textPaint)
+
+                // Draw bubbles
+                val bubbleStartX = xPos + 30
+                drawBubbles(canvas, bubbleStartX.toFloat(), yPos.toFloat(), bubblePaint)
+
+                currentQuestion++
+                yPos += rowHeight
+            }
+        }
+    }
+
     private fun drawBubbles(canvas: Canvas, startX: Float, yPos: Float, bubblePaint: Paint) {
         val options = listOf("A", "B", "C", "D")
-        val bubbleRadius = 8f
-        val optionGap = 30 // Gap between each bubble option
-        val bubbleYOffset = 0f // Offset to align bubbles properly with the question text
+        val bubbleRadius = 10f // Bubble size
+        val optionGap = 25 // Gap between options
 
         for ((index, option) in options.withIndex()) {
-            val xPos = startX + index * optionGap // Adjusted X position for bubbles
-            canvas.drawCircle(xPos, yPos + bubbleYOffset, bubbleRadius, bubblePaint)
-            canvas.drawText(option, xPos - 5, yPos + bubbleYOffset + 20, bubblePaint)
+            val bubbleX = startX + index * optionGap
+            canvas.drawCircle(bubbleX, yPos - 5, bubbleRadius, bubblePaint) // Bubble
+            canvas.drawText(option, bubbleX - 5, yPos + 15, bubblePaint) // Option text
         }
     }
 }

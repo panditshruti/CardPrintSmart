@@ -31,7 +31,7 @@
             app:destination="@id/examCopyFragment" />
         <action
             android:id="@+id/action_homeFragment_to_IDCardFragment"
-            app:destination="@id/IDCardFragment" />
+            app:destination="@id/iDCardFragment" />
         <action
             android:id="@+id/action_homeFragment_to_questionListFragment"
             app:destination="@id/questionListFragment" />
@@ -168,15 +168,15 @@
             app:argType="integer" />
     </fragment>
     <fragment
-        android:id="@+id/IDCardFragment"
+        android:id="@+id/iDCardFragment"
         android:name="com.shrutipandit.cardprintsmart.uiFragment.IeBothCardFragment"
         android:label="fragment_i_d_card"
         tools:layout="@layout/fragment_i_d_card" >
         <action
-            android:id="@+id/action_IDCardFragment_to_studentIdCardFragment"
+            android:id="@+id/action_iDCardFragment_to_studentIdCardFragment"
             app:destination="@id/studentIdCardFragment" />
         <action
-            android:id="@+id/action_IDCardFragment_to_employeIdCardFragment"
+            android:id="@+id/action_iDCardFragment_to_employeIdCardFragment"
             app:destination="@id/employeIdCardFragment" />
     </fragment>
     <fragment
@@ -184,13 +184,13 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.StudentIdCardFragment"
         android:label="fragment_student_id_card"
         tools:layout="@layout/fragment_student_id_card" >
-        <action
-            android:id="@+id/action_studentIdCardFragment_to_demoIdCardFragment"
-            app:destination="@id/demoIdCardFragment2" />
         <argument
             android:name="editTextData"
             app:argType="string" />
         <argument android:name="image" />
+        <action
+            android:id="@+id/action_studentIdCardFragment_to_demoIdCardFragment22"
+            app:destination="@id/demoIdCardFragment2" />
     </fragment>
 
 
@@ -199,7 +199,7 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.EmployeIdCardFragment"
         android:label="fragment_employe_id_card">
         <action
-            android:id="@+id/action_employeIdCardFragment_to_demoIdCardFragment"
+            android:id="@+id/action_employeIdCardFragment_to_demoIdCardFragment2"
             app:destination="@id/demoIdCardFragment2" />
     </fragment>
 

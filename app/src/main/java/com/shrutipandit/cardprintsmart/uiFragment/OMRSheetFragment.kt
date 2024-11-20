@@ -27,7 +27,7 @@ class OMRSheetFragment : Fragment(R.layout.fragment_o_m_r_sheet) {
             val numberOfQuestions = binding.numberOfQuestionsInput.text.toString().toIntOrNull()
             val paperSize = binding.paperSizeSpinner.selectedItem.toString()
 
-            if (numberOfQuestions != null) {
+            if (numberOfQuestions != null && numberOfQuestions > 0) {
                 val action = OMRSheetFragmentDirections.actionOMRSheetFragmentToDemoOMRSheetFragment(
                     numberOfQuestions,
                     paperSize
