@@ -1,6 +1,8 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -23,11 +25,27 @@ class OMRSheetFragment : Fragment(R.layout.fragment_o_m_r_sheet) {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.paperSizeSpinner.adapter = adapter
 
+        // Show character count for school name input
+        binding.schoolNameInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val charCount = s?.length ?: 0
+                val maxLength = 50
+                // Display character count below the EditText
+                binding.schoolNameCharCount.text = "$charCount/$maxLength"
+            }
+
+            override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        // Handling generate button click
         binding.generateButton.setOnClickListener {
             val numberOfQuestions = binding.numberOfQuestionsInput.text.toString().toIntOrNull()
             val paperSize = binding.paperSizeSpinner.selectedItem.toString()
             val schoolName = binding.schoolNameInput.text.toString().trim()
 
+            // Validate inputs
             if (numberOfQuestions != null && numberOfQuestions > 0 && schoolName.isNotEmpty()) {
                 val action = OMRSheetFragmentDirections.actionOMRSheetFragmentToDemoOMRSheetFragment(
                     numberOfQuestions,
@@ -39,6 +57,5 @@ class OMRSheetFragment : Fragment(R.layout.fragment_o_m_r_sheet) {
                 Toast.makeText(requireContext(), "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
 }

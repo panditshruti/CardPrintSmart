@@ -43,6 +43,7 @@ class OMRSheet {
 
         return outputStream.toByteArray()
     }
+
     private fun drawHeader(canvas: Canvas, padding: Int, schoolName: String): Float {
         // Paint for the school name
         val schoolNamePaint = Paint().apply {
@@ -184,4 +185,4 @@ class OMRSheet {
 
 
 
-}
+} 
