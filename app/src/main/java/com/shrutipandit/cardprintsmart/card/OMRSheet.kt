@@ -33,7 +33,7 @@ class OMRSheet {
             canvas.drawColor(Color.WHITE)
 
             // Draw header on the first page only
-            if (pageIndex == 0) drawHeader(canvas, padding, fixedHeaderHeight)
+            if (pageIndex == 0) drawHeader(canvas, padding)
 
             // Draw questions
             val startQuestionIndex = pageIndex * questionsPerPage + 1
@@ -50,27 +50,43 @@ class OMRSheet {
         return outputStream.toByteArray()
     }
 
-    private fun drawHeader(canvas: Canvas, padding: Int, headerHeight: Int) {
+    private fun drawHeader(canvas: Canvas, padding: Int) {
         val headerPaint = Paint().apply {
             color = Color.BLACK
             textSize = 14f
             isAntiAlias = true
         }
+
         val startX = padding.toFloat()
-        var currentY = padding.toFloat()
+        var currentY = padding.toFloat() + 20 // Initial vertical position
 
-        // Draw header fields
-        canvas.drawText("Name: ___________________________", startX, currentY, headerPaint)
-        currentY += 20
-        canvas.drawText("Roll Number: ____________________", startX, currentY, headerPaint)
-        currentY += 20
-        canvas.drawText("Class: __________________________", startX, currentY, headerPaint)
-        currentY += 20
-        canvas.drawText("Mobile Number: __________________", startX, currentY, headerPaint)
+        // Total width divided equally for two columns
+        val totalWidth = canvas.width - 2 * padding
+        val columnWidth = totalWidth / 2
 
-        // Separator line
-        currentY += 30
-        canvas.drawLine(startX, currentY, canvas.width - padding.toFloat(), currentY, headerPaint)
+        // Row 1: Name and Roll No
+        canvas.drawText("Name: ____________________", startX, currentY, headerPaint)
+        canvas.drawText("Roll No: ____________________", startX + columnWidth, currentY, headerPaint)
+        currentY += 30 // Move down to the next row
+
+        // Row 2: Class and Mobile
+        canvas.drawText("Class: ____________________", startX, currentY, headerPaint)
+        canvas.drawText("Mobile: ____________________", startX + columnWidth, currentY, headerPaint)
+        currentY += 30 // Move down to the next row
+
+        // Row 3: Date and Subject
+        canvas.drawText("Date: ____________________", startX, currentY, headerPaint)
+        canvas.drawText("Sub: ____________________", startX + columnWidth, currentY, headerPaint)
+        currentY += 30 // Space below the header
+
+        // Draw a separator line below the header
+        canvas.drawLine(
+            startX,
+            currentY,
+            canvas.width - padding.toFloat(),
+            currentY,
+            headerPaint
+        )
     }
 
     private fun drawQuestions(
