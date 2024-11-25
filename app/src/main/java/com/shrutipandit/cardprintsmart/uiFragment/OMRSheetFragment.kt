@@ -26,16 +26,19 @@ class OMRSheetFragment : Fragment(R.layout.fragment_o_m_r_sheet) {
         binding.generateButton.setOnClickListener {
             val numberOfQuestions = binding.numberOfQuestionsInput.text.toString().toIntOrNull()
             val paperSize = binding.paperSizeSpinner.selectedItem.toString()
+            val schoolName = binding.schoolNameInput.text.toString().trim()
 
-            if (numberOfQuestions != null && numberOfQuestions > 0) {
+            if (numberOfQuestions != null && numberOfQuestions > 0 && schoolName.isNotEmpty()) {
                 val action = OMRSheetFragmentDirections.actionOMRSheetFragmentToDemoOMRSheetFragment(
                     numberOfQuestions,
-                    paperSize
+                    paperSize,
+                    schoolName // Pass the school name
                 )
                 findNavController().navigate(action)
             } else {
-                Toast.makeText(requireContext(), "Please enter a valid number of questions", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }

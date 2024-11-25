@@ -23,17 +23,17 @@ class DemoOMRSheetFragment : Fragment(R.layout.fragment_demo_o_m_r_sheet) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDemoOMRSheetBinding.bind(view)
 
-        // Retrieve numberOfQuestions and paperSize from arguments
         val numberOfQuestions = args.numberOfQuestions
         val paperSize = args.paperSize
+        val schoolName = args.schoolName // Retrieve school name
 
-        // Generate the OMR sheet PDF
-        val pdfBytes = generatePdf(requireContext(), numberOfQuestions, paperSize)
+        // Generate the OMR sheet with the school name
+        val pdfBytes = generatePdf(requireContext(), numberOfQuestions, paperSize, schoolName)
 
         // Display the generated PDF in the PDFView
         binding.pdfView.fromBytes(pdfBytes).load()
 
-        // Set up the Save button click listener
+        // Save PDF button
         binding.pdfBtn.setOnClickListener {
             savePdf(pdfBytes)
         }
@@ -46,9 +46,14 @@ class DemoOMRSheetFragment : Fragment(R.layout.fragment_demo_o_m_r_sheet) {
      * @param paperSize The desired paper size for the PDF.
      * @return A ByteArray containing the generated PDF data.
      */
-    private fun generatePdf(context: Context, numberOfQuestions: Int, paperSize: String): ByteArray {
+    private fun generatePdf(
+        context: Context,
+        numberOfQuestions: Int,
+        paperSize: String,
+        schoolName: String
+    ): ByteArray {
         val omrSheet = OMRSheet()
-        return omrSheet.generatePdf(context, numberOfQuestions, paperSize)
+        return omrSheet.generatePdf(context, numberOfQuestions, paperSize, schoolName)
     }
 
     /**

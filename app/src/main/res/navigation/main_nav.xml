@@ -81,6 +81,9 @@
         <argument
             android:name="paperSize"
             app:argType="string" />
+        <argument
+            android:name="schoolName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/resumeFragment"
