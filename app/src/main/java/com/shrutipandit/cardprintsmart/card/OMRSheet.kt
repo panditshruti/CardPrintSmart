@@ -28,7 +28,7 @@ class OMRSheet {
 
             canvas.drawColor(Color.WHITE)
 
-            if (pageIndex == 0) drawHeader(canvas, padding, fixedHeaderHeight, schoolName)
+            if (pageIndex == 0) drawHeader(canvas, padding, schoolName)
 
             val startQuestionIndex = pageIndex * questionsPerPage + 1
             val endQuestionIndex = minOf(startQuestionIndex + questionsPerPage - 1, numberOfQuestions)
@@ -43,7 +43,7 @@ class OMRSheet {
 
         return outputStream.toByteArray()
     }
-    private fun drawHeader(canvas: Canvas, padding: Int, headerHeight: Int, schoolName: String): Float {
+    private fun drawHeader(canvas: Canvas, padding: Int, schoolName: String): Float {
         // Paint for the school name
         val schoolNamePaint = Paint().apply {
             color = Color.BLACK
@@ -61,18 +61,16 @@ class OMRSheet {
 
         // Draw the school name centered at the top
         val centerX = (canvas.width / 2).toFloat() // Center X position
-        val schoolNameY = (padding + 40).toFloat() // Initial Y position for the school name
+        var currentY = (padding + 40).toFloat() // Initial Y position for the school name
 
         // Break school name into multiple lines if too long
         val schoolNameLines = wrapText(schoolName, schoolNamePaint, canvas.width - 2 * padding)
-        var currentY = schoolNameY
-
         for (line in schoolNameLines) {
             canvas.drawText(line, centerX, currentY, schoolNamePaint)
             currentY += 30 // Line spacing
         }
 
-        // Adjust Y position after school name (adding extra space before the next fields)
+        // Adjust Y position after school name
         currentY += 10
 
         // Draw Name, Roll Number, etc.
@@ -95,8 +93,8 @@ class OMRSheet {
             headerPaint
         )
 
-        // Return the Y position of the separator line
-        return currentY
+        // Return the Y position of the separator line (below header)
+        return currentY + 10 // Return the position just below the separator line
     }
 
     private fun drawQuestions(
@@ -149,8 +147,6 @@ class OMRSheet {
     }
 
 
-
-
     private fun drawBubbles(canvas: Canvas, startX: Float, yPos: Float, bubblePaint: Paint) {
         val options = listOf("A", "B", "C", "D")
         val bubbleRadius = 10f // Bubble size
@@ -162,22 +158,25 @@ class OMRSheet {
             canvas.drawText(option, bubbleX - 5, yPos + 15, bubblePaint) // Option text
         }
     }
+
     private fun wrapText(text: String, paint: Paint, maxWidth: Int): List<String> {
         val words = text.split(" ")
         val lines = mutableListOf<String>()
-        var currentLine = ""
+        var currentLine = StringBuilder()
 
         for (word in words) {
-            val testLine = if (currentLine.isEmpty()) word else "$currentLine $word"
+            val testLine = if (currentLine.isEmpty()) word else currentLine.toString() + " " + word
             if (paint.measureText(testLine) <= maxWidth) {
-                currentLine = testLine
+                currentLine.append(" ").append(word)
             } else {
-                lines.add(currentLine)
-                currentLine = word
+                lines.add(currentLine.toString())
+                currentLine = StringBuilder(word)
             }
         }
+
+        // Add the last line
         if (currentLine.isNotEmpty()) {
-            lines.add(currentLine)
+            lines.add(currentLine.toString())
         }
 
         return lines
