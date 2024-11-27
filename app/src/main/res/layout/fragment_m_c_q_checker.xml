@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".uiFragment.MCQCheckerFragment">
+
+    <Button
+        android:id="@+id/btn_upload_answer_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload Answer Sheet" />
+
+    <!-- Upload Student OMR Sheet Button -->
+    <Button
+        android:id="@+id/btn_upload_omr_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Upload Student OMR Sheet" />
+
+    <!-- Check Button -->
+    <Button
+        android:id="@+id/btn_check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Check" />
+
+    <!-- Results TextView -->
+    <TextView
+        android:id="@+id/tv_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Results will be shown here"
+        android:textSize="16sp" />
+
+</LinearLayout>

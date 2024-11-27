@@ -271,7 +271,7 @@
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:padding="10dp"
-                    android:id="@+id/qmaker"
+                    android:id="@+id/mcqCheker"
                     android:background="@drawable/common_card"
                     android:orientation="vertical"
                     >
@@ -282,7 +282,7 @@
                         android:padding="10dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
-                        android:src="@drawable/marraige" />
+                        android:src="@drawable/omrsheetchecker" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -290,7 +290,7 @@
                         android:layout_gravity="center"
                         android:layout_marginBottom="10dp"
                         android:gravity="center"
-                        android:text="Question Maker"
+                        android:text="MCQ Cheker"
                         android:textColor="#410051"
                         android:textSize="15dp"
                         android:textStyle="bold" />

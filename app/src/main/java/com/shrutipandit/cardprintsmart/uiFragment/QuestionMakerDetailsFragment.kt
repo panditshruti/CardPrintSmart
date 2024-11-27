@@ -17,10 +17,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.shrutipandit.cardprintsmart.AppDatabase
+import com.shrutipandit.cardprintsmart.room.AppDatabase
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentQuestionMakerDetailsBinding
-import com.shrutipandit.cardprintsmart.db.PageContent
 import com.shrutipandit.cardprintsmart.db.Question
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream

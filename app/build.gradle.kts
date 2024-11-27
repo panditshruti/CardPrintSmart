@@ -59,6 +59,9 @@ dependencies {
     implementation("androidx.room:room-common:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.google.firebase:firebase-crashlytics-buildtools:3.0.2")
+    implementation("com.google.mlkit:vision-common:17.3.0")
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition-common:19.1.0")
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:19.0.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -83,6 +86,8 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     ksp("androidx.room:room-compiler:2.6.1")
     // To use Kotlin Symbol Processing (KSP)
+
+    implementation("org.opencv:opencv-android:4.5.1")
 
     //Gson
     implementation("com.google.code.gson:gson:2.10.1")

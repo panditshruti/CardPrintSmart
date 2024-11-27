@@ -1,7 +1,5 @@
-package com.shrutipandit.cardprintsmart
+package com.shrutipandit.cardprintsmart.room
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy

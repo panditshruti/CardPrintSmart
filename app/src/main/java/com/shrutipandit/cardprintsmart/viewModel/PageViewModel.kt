@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.shrutipandit.cardprintsmart.AppDatabase
+import com.shrutipandit.cardprintsmart.room.AppDatabase
 
 import com.shrutipandit.cardprintsmart.db.PageSummary
 import kotlinx.coroutines.launch

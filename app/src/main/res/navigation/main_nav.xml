@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_homeFragment_to_questionMakerListFragment2"
             app:destination="@id/questionMakerListFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_MCQCheckerFragment"
+            app:destination="@id/MCQCheckerFragment" />
     </fragment>
 
     <fragment
@@ -244,5 +247,10 @@
             android:name="position"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/MCQCheckerFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.MCQCheckerFragment"
+        android:label="fragment_m_c_q_checker"
+        tools:layout="@layout/fragment_m_c_q_checker" />
 
 </navigation>

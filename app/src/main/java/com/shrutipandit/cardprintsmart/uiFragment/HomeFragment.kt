@@ -48,8 +48,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val action = HomeFragmentDirections.actionHomeFragmentToExamCopyFragment()
             findNavController().navigate(action)
         }
-         binding.qmaker.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToQuestionListFragment()
+         binding.mcqCheker.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToMCQCheckerFragment()
             findNavController().navigate(action)
         }
         binding.questionMaker.setOnClickListener {

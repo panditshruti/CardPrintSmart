@@ -1,4 +1,4 @@
-package com.shrutipandit.cardprintsmart
+package com.shrutipandit.cardprintsmart.room
 
 import android.content.Context
 import androidx.room.Database
@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.shrutipandit.cardprintsmart.card.Converters
 import com.shrutipandit.cardprintsmart.db.PageContent
-import com.shrutipandit.cardprintsmart.db.Question
 
 @Database(entities = [PageContent::class], version = 1)
 @TypeConverters(Converters::class)

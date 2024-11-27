@@ -1,7 +1,6 @@
 package com.shrutipandit.cardprintsmart.uiFragment
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.shrutipandit.cardprintsmart.AppDatabase
+import com.shrutipandit.cardprintsmart.room.AppDatabase
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.adapter.QuestionsAdapter
 import com.shrutipandit.cardprintsmart.db.Question
