@@ -87,7 +87,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     // To use Kotlin Symbol Processing (KSP)
 
-    implementation("org.opencv:opencv-android:4.5.1")
 
     //Gson
     implementation("com.google.code.gson:gson:2.10.1")

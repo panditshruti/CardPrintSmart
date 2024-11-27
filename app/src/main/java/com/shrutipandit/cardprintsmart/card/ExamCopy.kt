@@ -52,40 +52,43 @@ class ExamCopy : ViewModel() {
         val headingStartY = borderMargin + 30
         canvas.drawText(headingText, headingStartX, headingStartY.toFloat(), headingPaint)
 
-        // Position for personal information
-        val personalStartX = borderMargin.toFloat() + 10
-        val personalStartY = headingStartY + 40 // Starts below the heading
+        // Call drawHeader to include the name, roll no, etc.
+        val headerStartY = headingStartY + 50 // Adjust to place the header below the main title
+        val currentY = drawHeader(canvas, headerStartY.toInt())
+
+        // Position for additional personal information (below header)
+        val personalStartY = currentY.toInt() + 20
 
         val personalInfoArrayList = arrayListOf(
             "School Name   :",
             "Total Marks    :"
         )
 
-        // Draw the personal information
         drawTextList(
             canvas,
             personalInfoArrayList,
             data.subList(0, personalInfoArrayList.size),
-            personalStartX,
+            borderMargin.toFloat() + 10,
             personalStartY,
             Paint().apply {
                 color = Color.BLACK
                 textSize = 20.5f
-            })
+            }
+        )
 
-        // Draw the image parallel to the personal information with a 10-pixel margin
+        // Draw the image (e.g., passport photo)
         val imageMargin = 10
         val imagePaint = Paint()
         val passportWidth = 132 - 2 * imageMargin
         val passportHeight = 170 - 2 * imageMargin
-        val imageLeft = canvas.width - borderMargin - passportWidth - 2 * imageMargin // Align the image to the right with margin
-        val imageTop = personalStartY + imageMargin // Align with the personal info and margin
+        val imageLeft = canvas.width - borderMargin - passportWidth - 2 * imageMargin
+        val imageTop = personalStartY + imageMargin
         val imageRect = Rect(imageLeft, imageTop, imageLeft + passportWidth, imageTop + passportHeight)
         canvas.drawBitmap(bitmap, null, imageRect, imagePaint)
 
-        // Draw blank lines based on the number of lines user input
-        val lineStartY = personalStartY + personalInfoArrayList.size * 30 + 50 // Position below personal info
-        drawBlankLines(canvas, lineStartY, numberOfLines, borderMargin.toFloat(), canvas.width.toFloat() - borderMargin) // Full-width lines
+        // Draw blank lines (like for an answer sheet)
+        val lineStartY = personalStartY + personalInfoArrayList.size * 30 + 50
+        drawBlankLines(canvas, lineStartY, numberOfLines, borderMargin.toFloat(), canvas.width.toFloat() - borderMargin)
 
         // Draw signature
         val signatureText = "Signature"
@@ -105,6 +108,34 @@ class ExamCopy : ViewModel() {
         myPdfDocument.close()
 
         return outputStream.toByteArray()
+    }
+
+    private fun drawHeader(canvas: Canvas, padding: Int): Float {
+        val headerPaint = Paint().apply {
+            color = Color.BLACK
+            textSize = 18f
+            isAntiAlias = true
+        }
+
+        var currentY = padding + 40f // Starting Y position for the header details
+
+        // Draw Name and Roll No
+        canvas.drawText("Name: ____________________", padding.toFloat(), currentY, headerPaint)
+        canvas.drawText("Roll No: ____________________", (canvas.width / 2 + padding).toFloat(), currentY, headerPaint)
+        currentY += 30f // Move to the next row
+
+        // Draw Class and Mobile
+        canvas.drawText("Class: ____________________", padding.toFloat(), currentY, headerPaint)
+        canvas.drawText("Mobile: ____________________", (canvas.width / 2 + padding).toFloat(), currentY, headerPaint)
+        currentY += 30f // Move to the next row
+
+        // Draw Date and Subject
+        canvas.drawText("Date: ____________________", padding.toFloat(), currentY, headerPaint)
+        canvas.drawText("Sub: ____________________", (canvas.width / 2 + padding).toFloat(), currentY, headerPaint)
+        currentY += 30f // Move to the next row
+
+        // Return the current Y position for further drawing
+        return currentY
     }
 
     private fun drawTextList(canvas: Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Int, paint: Paint) {
