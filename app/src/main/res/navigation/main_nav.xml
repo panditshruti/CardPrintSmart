@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_homeFragment_to_MCQCheckerFragment"
             app:destination="@id/MCQCheckerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_marriagePampletFragment"
+            app:destination="@id/marriagePampletFragment" />
     </fragment>
 
     <fragment
@@ -252,5 +255,30 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.MCQCheckerFragment"
         android:label="fragment_m_c_q_checker"
         tools:layout="@layout/fragment_m_c_q_checker" />
+    <fragment
+        android:id="@+id/marriagePampletFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.MarriagePampletFragment"
+        android:label="fragment_marriage_pamplet"
+        tools:layout="@layout/fragment_marriage_pamplet" >
+        <action
+            android:id="@+id/action_marriagePampletFragment_to_demoMarraigePampletFragment"
+            app:destination="@id/demoMarraigePampletFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoMarraigePampletFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoMarraigePampletFragment"
+        android:label="fragment_demo_marraige_pamplet"
+        tools:layout="@layout/fragment_demo_marraige_pamplet" >
+        <argument
+            android:name="dulhaName"
+            app:argType="string" />
+        <argument
+            android:name="dulhanName"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

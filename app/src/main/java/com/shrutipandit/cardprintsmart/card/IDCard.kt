@@ -52,14 +52,13 @@ class IDCard :ViewModel(){
         val personalStartY = headingStartY + 40 // Starts below the heading
 
         val marriagePersonalInfoArrayList = arrayListOf(
-            "Tittle    :",
             "Name    :",
-            "Description    :",
+            "Father's Name",
+            "Mother's Name",
             "Class    :",
             "Roll NO.    :",
             "DOB    :",
             "Phone no.    :",
-            "Email    :",
             "Address    :",
         )
 

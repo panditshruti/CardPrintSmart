@@ -28,11 +28,9 @@ class EmployeIdCardFragment : Fragment(R.layout.fragment_employe_id_card) {
         val linearLayout = binding.linearLayout
 
         val formFields = arrayListOf(
-            "Title    :",
             "Name    :",
-            "Description    :",
-            "Class    :",
-            "Roll NO.    :",
+            "Work    :",
+            "Work Exprience    :",
             "DOB    :",
             "Phone no.    :",
             "Email    :",

@@ -28,15 +28,14 @@ class StudentIdCardFragment : Fragment(R.layout.fragment_student_id_card) {
         val linearLayout = binding.linearLayout
 
         val formFields = arrayListOf(
-            "Title    :",
             "Name    :",
-            "Description    :",
+            "Father's Name",
+            "Mother's Name",
             "Class    :",
             "Roll NO.    :",
             "DOB    :",
             "Phone no.    :",
-            "Email    :",
-            "Address    :"
+            "Address    :",
         )
 
         val editTexts = mutableListOf<TextInputEditText>()
