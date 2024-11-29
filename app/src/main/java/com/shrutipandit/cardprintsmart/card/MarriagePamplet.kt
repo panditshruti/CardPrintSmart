@@ -18,10 +18,11 @@ class MarriagePamplet : ViewModel() {
     fun setData(data: List<String>) {
         this.data = data.toMutableList()
     }
-
     fun generatePdf(context: Context): ByteArray {
         val myPdfDocument = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
+
+        // Set the page size to landscape (swap width and height)
+        val pageInfo = PdfDocument.PageInfo.Builder(842, 595, 1).create() // 842x595 for A4 landscape
         val page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
 
         val canvas = page.canvas
@@ -31,33 +32,51 @@ class MarriagePamplet : ViewModel() {
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
 
-        // Define Paint for text
-        val textPaint = Paint().apply {
+        // Define Paint for Dulha
+        val dulhaPaint = Paint().apply {
             color = Color.RED
-            textSize = 50.5f
+            textSize = 50.5f // Text size for Dulha
+        }
+
+        // Define Paint for Dulhan
+        val dulhanPaint = Paint().apply {
+            color = Color.RED
+            textSize = 50.0f // Text size for Dulhan
+        }
+
+        // Define Paint for Date
+        val datePaint = Paint().apply {
+            color = Color.YELLOW
+            textSize = 30.0f // Text size for Date
         }
 
         // Static positions for each item
-        val dulhaPositionX = 100f
-        val dulhaPositionY = 200f
+        val dulhaPositionX = 170f
+        val dulhaPositionY = 230f
 
-        val dulhanPositionX = 100f
-        val dulhanPositionY = 300f
+        val dulhanPositionX = 500f
+        val dulhanPositionY = 350f
 
-        val datePositionX = 100f
-        val datePositionY = 400f
+        val datePositionX = 570f
+        val datePositionY = 147f
 
         // Draw Dulha
-        val dulhaText = "dulha: ${data.getOrNull(0) ?: ""}"
-        canvas.drawText(dulhaText, dulhaPositionX, dulhaPositionY, textPaint)
+        val dulhaText = data.getOrNull(0)
+        if (dulhaText != null) {
+            canvas.drawText(dulhaText, dulhaPositionX, dulhaPositionY, dulhaPaint)
+        }
 
         // Draw Dulhan
-        val dulhanText = "dulhan: ${data.getOrNull(1) ?: ""}"
-        canvas.drawText(dulhanText, dulhanPositionX, dulhanPositionY, textPaint)
+        val dulhanText = data.getOrNull(1)
+        if (dulhanText != null) {
+            canvas.drawText(dulhanText, dulhanPositionX, dulhanPositionY, dulhanPaint)
+        }
 
         // Draw Date
-        val dateText = "date: ${data.getOrNull(2) ?: ""}"
-        canvas.drawText(dateText, datePositionX, datePositionY, textPaint)
+        val dateText = data.getOrNull(2)
+        if (dateText != null) {
+            canvas.drawText(dateText, datePositionX, datePositionY, datePaint)
+        }
 
         myPdfDocument.finishPage(page)
 
@@ -67,4 +86,5 @@ class MarriagePamplet : ViewModel() {
 
         return outputStream.toByteArray()
     }
+
 }
