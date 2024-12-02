@@ -25,7 +25,8 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
 
     private lateinit var binding: FragmentDemoMarraigePampletBinding
     private val marriagePamplet = MarriagePamplet()
-    private var pdfBytes: ByteArray? = null
+    private var pdfBytes1: ByteArray? = null
+    private var pdfBytes2: ByteArray? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,45 +39,62 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
         val args = arguments?.let { DemoMarraigePampletFragmentArgs.fromBundle(it) }
         val dulhaName = args?.dulhaName ?: "Dulha Name Missing"
         val dulhanName = args?.dulhanName ?: "Dulhan Name Missing"
-        val date = args?.date ?: "date  Missing"
+        val date = args?.date ?: "Date Missing"
 
-        // Set text in the PDF and UI
-        val editTextData = listOf(dulhaName,dulhanName,date)
+        // Set text in the PDFs
+        val editTextData = listOf(dulhaName, dulhanName, date)
         marriagePamplet.setData(editTextData)
 
-        // Generate the PDF
-        pdfBytes = marriagePamplet.generatePdf(requireContext())
-        pdfBytes?.let { bytes ->
-            binding.pdfView.fromBytes(bytes).load()
-        } ?: showToast("Failed to generate PDF")
+        // Generate the PDFs
+        pdfBytes1 = marriagePamplet.generatePdf(requireContext())
+        pdfBytes2 = marriagePamplet.generatePdf2(requireContext())
 
-        // Handle Save PDF button click
-        binding.pdfBtn.setOnClickListener {
-            pdfBytes?.let { bytes ->
-                if (savePdfToDownloads(requireContext(), bytes)) {
-                    showToast("PDF saved successfully in Downloads")
+        // Load PDFs into the PDF views
+        pdfBytes1?.let { bytes ->
+            binding.pdfView1.fromBytes(bytes).load()
+        } ?: showToast("Failed to generate PDF 1")
+
+        pdfBytes2?.let { bytes ->
+            binding.pdfView2.fromBytes(bytes).load()
+        } ?: showToast("Failed to generate PDF 2")
+
+        // Handle Save PDF buttons
+        binding.pdfBtn1.setOnClickListener {
+            pdfBytes1?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_1.pdf")) {
+                    showToast("PDF 1 saved successfully in Downloads")
                 } else {
-                    showToast("Failed to save PDF")
+                    showToast("Failed to save PDF 1")
                 }
-            } ?: showToast("No PDF to save")
+            } ?: showToast("No PDF 1 to save")
+        }
+
+        binding.pdfBtn2.setOnClickListener {
+            pdfBytes2?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_2.pdf")) {
+                    showToast("PDF 2 saved successfully in Downloads")
+                } else {
+                    showToast("Failed to save PDF 2")
+                }
+            } ?: showToast("No PDF 2 to save")
         }
     }
 
-    private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray): Boolean {
+    private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            savePdfToDownloadsScoped(context, pdfBytes)
+            savePdfToDownloadsScoped(context, pdfBytes, fileName)
         } else {
-            savePdfToDownloadsLegacy(context, pdfBytes)
+            savePdfToDownloadsLegacy(context, pdfBytes, fileName)
         }
     }
 
-    private fun savePdfToDownloadsLegacy(context: Context, pdfBytes: ByteArray): Boolean {
+    private fun savePdfToDownloadsLegacy(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
         val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (!downloadsDir.exists() && !downloadsDir.mkdirs()) {
             return false
         }
 
-        val file = File(downloadsDir, "marriage_pamplet.pdf")
+        val file = File(downloadsDir, fileName)
         return try {
             FileOutputStream(file).use { fos ->
                 fos.write(pdfBytes)
@@ -89,9 +107,9 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun savePdfToDownloadsScoped(context: Context, pdfBytes: ByteArray): Boolean {
+    private fun savePdfToDownloadsScoped(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
         val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "marriage_pamplet.pdf")
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
             put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
