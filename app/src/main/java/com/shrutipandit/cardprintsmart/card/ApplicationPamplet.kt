@@ -31,7 +31,7 @@ class ApplicationPamplet : ViewModel() {
         // Load and draw the background image
         val bgBitmap = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.maragepampletcard
+            R.drawable.applicationpamplets
         ) // Replace 'maragepampletcard' with your actual drawable name
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)

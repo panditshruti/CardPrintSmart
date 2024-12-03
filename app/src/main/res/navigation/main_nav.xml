@@ -289,7 +289,7 @@
         android:label="fragment_application_maker"
         tools:layout="@layout/fragment_application_maker" >
         <action
-            android:id="@+id/action_applicationMakerFragment_to_demoApplicationMakerFragment"
+            android:id="@+id/action_applicationMakerFragment_to_demoApplicationMakerFragment2"
             app:destination="@id/demoApplicationMakerFragment" />
     </fragment>
     <fragment
@@ -298,10 +298,34 @@
         android:label="fragment_demo_application_maker"
         tools:layout="@layout/fragment_demo_application_maker" >
         <argument
-            android:name="dulhaName"
+            android:name="to"
             app:argType="string" />
         <argument
-            android:name="dulhanName"
+            android:name="schoolName"
+            app:argType="string" />
+        <argument
+            android:name="schoolAddress"
+            app:argType="string" />
+        <argument
+            android:name="subject"
+            app:argType="string" />
+        <argument
+            android:name="sirorMam"
+            app:argType="string" />
+        <argument
+            android:name="schoolCI"
+            app:argType="string" />
+        <argument
+            android:name="absentdate"
+            app:argType="string" />
+        <argument
+            android:name="studentName"
+            app:argType="string" />
+        <argument
+            android:name="class"
+            app:argType="string" />
+        <argument
+            android:name="rollno"
             app:argType="string" />
         <argument
             android:name="date"

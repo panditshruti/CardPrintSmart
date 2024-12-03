@@ -22,7 +22,7 @@ class ApplicationMakerFragment : Fragment(R.layout.fragment_application_maker) {
         // Fields to add dynamically
         val marriageArrayList = arrayListOf(
             "Enter To (Principal,ClassTeacher)   :",
-            "Enter Shool Name    :",
+            "Enter School Name    :",
             "Enter School Address    :",
             "Enter Subject full details   :",
             "Enter Sir ya mam",
@@ -52,12 +52,20 @@ class ApplicationMakerFragment : Fragment(R.layout.fragment_application_maker) {
         val submitButton = Button(requireContext())
         submitButton.text = "Submit"
         submitButton.setOnClickListener {
-            val dulhaName = editTexts[0].text.toString()
-            val dulhanName = editTexts[1].text.toString()
-            val date = editTexts[2].text.toString()
+            val to = editTexts[0].text.toString()
+            val shoolName = editTexts[1].text.toString()
+            val schoolAddress = editTexts[2].text.toString()
+            val subject = editTexts[3].text.toString()
+            val sirMam = editTexts[4].text.toString()
+            val sci = editTexts[5].text.toString()
+            val absentDate = editTexts[6].text.toString()
+            val studentName = editTexts[7].text.toString()
+            val sclass = editTexts[8].text.toString()
+            val rollno = editTexts[9].text.toString()
+            val date = editTexts[10].text.toString()
 
-            // Navigate and pass data
-            val action = ApplicationMakerFragmentDirections.actionApplicationMakerFragmentToDemoApplicationMakerFragment(dulhaName, dulhanName,date)
+            val action = ApplicationMakerFragmentDirections.actionApplicationMakerFragmentToDemoApplicationMakerFragment2(to,shoolName,schoolAddress,
+                subject,sirMam,sci,absentDate,studentName,sclass,rollno,date,)
 
             findNavController().navigate(action)
         }
