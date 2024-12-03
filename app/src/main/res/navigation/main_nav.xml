@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_homeFragment_to_marriagePampletFragment"
             app:destination="@id/marriagePampletFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_applicationMakerFragment"
+            app:destination="@id/applicationMakerFragment" />
     </fragment>
 
     <fragment
@@ -279,6 +282,30 @@
             android:name="date"
             app:argType="string" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/applicationMakerFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.ApplicationMakerFragment"
+        android:label="fragment_application_maker"
+        tools:layout="@layout/fragment_application_maker" >
+        <action
+            android:id="@+id/action_applicationMakerFragment_to_demoApplicationMakerFragment"
+            app:destination="@id/demoApplicationMakerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoApplicationMakerFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoApplicationMakerFragment"
+        android:label="fragment_demo_application_maker"
+        tools:layout="@layout/fragment_demo_application_maker" >
+        <argument
+            android:name="dulhaName"
+            app:argType="string" />
+        <argument
+            android:name="dulhanName"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
     </fragment>
 
 </navigation>
