@@ -38,18 +38,26 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         checkAndRequestPermissions()
 
         // Extract arguments passed from MarriagePampletFragment
-        val args = arguments?.let { DemoMarraigePampletFragmentArgs.fromBundle(it) }
-        val dulhaName = args?.dulhaName ?: "Dulha Name Missing"
-        val dulhanName = args?.dulhanName ?: "Dulhan Name Missing"
+        val args = arguments?.let { DemoApplicationMakerFragmentArgs.fromBundle(it) }
+        val to = args?.to ?: "To Missing"
+        val schoolName = args?.schoolName ?: "School Name Missing"
+        val schoolAddress = args?.schoolAddress ?: "School Address Missing"
+        val subject = args?.subject ?: "Subject Missing"
+        val sirMam = args?.sirorMam ?: "Sir/Mam Missing"
+        val sci = args?.schoolCI ?: "School/Institute Missing"
+        val absentDate = args?.absentdate ?: "Absent Date Missing"
+        val studentName = args?.studentName ?: "Student Name Missing"
+        val clask = args?.clask ?: "Class Missing"
+        val rollno = args?.rollno ?: "Roll Number Missing"
         val date = args?.date ?: "Date Missing"
 
         // Set text in the PDFs
-        val editTextData = listOf(dulhaName, dulhanName, date)
+        val editTextData = listOf(to,schoolName,schoolAddress,subject,sirMam,sci,absentDate,studentName,clask,rollno,date)
         applicationPamplet.setData(editTextData)
 
         // Generate the PDFs
         pdfBytes1 = applicationPamplet.generatePdf(requireContext())
-        pdfBytes2 = applicationPamplet.generatePdf2(requireContext())
+//        pdfBytes2 = applicationPamplet.generatePdf2(requireContext())
 
         // Load PDFs into the PDF views
         pdfBytes1?.let { bytes ->

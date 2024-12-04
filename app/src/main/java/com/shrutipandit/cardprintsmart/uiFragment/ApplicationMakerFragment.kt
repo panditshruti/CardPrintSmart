@@ -60,12 +60,12 @@ class ApplicationMakerFragment : Fragment(R.layout.fragment_application_maker) {
             val sci = editTexts[5].text.toString()
             val absentDate = editTexts[6].text.toString()
             val studentName = editTexts[7].text.toString()
-            val sclass = editTexts[8].text.toString()
+            val clask = editTexts[8].text.toString()
             val rollno = editTexts[9].text.toString()
             val date = editTexts[10].text.toString()
 
             val action = ApplicationMakerFragmentDirections.actionApplicationMakerFragmentToDemoApplicationMakerFragment2(to,shoolName,schoolAddress,
-                subject,sirMam,sci,absentDate,studentName,sclass,rollno,date,)
+                subject,sirMam,sci,absentDate,studentName,clask,rollno,date,)
 
             findNavController().navigate(action)
         }

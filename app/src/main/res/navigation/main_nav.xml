@@ -322,7 +322,7 @@
             android:name="studentName"
             app:argType="string" />
         <argument
-            android:name="class"
+            android:name="clask"
             app:argType="string" />
         <argument
             android:name="rollno"
