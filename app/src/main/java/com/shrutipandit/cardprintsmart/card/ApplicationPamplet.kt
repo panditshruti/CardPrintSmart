@@ -31,7 +31,7 @@ class ApplicationPamplet : ViewModel() {
         // Load and draw the background image
         val bgBitmap = BitmapFactory.decodeResource(
             context.resources,
-            R.drawable.skpspp
+            R.drawable.skpappppamplet2
         )
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
@@ -43,18 +43,20 @@ class ApplicationPamplet : ViewModel() {
         }
 
         // Define specific positions for each text (x, y)
+//        x = ---,y=\\
+
         val positions = mapOf(
-            "to" to Pair(130f, 83f),
-            "schoolName" to Pair(95f, 120f),
-            "schoolAddress" to Pair(100f, 200f),
-            "subject" to Pair(100f, 250f),
-            "sirMam" to Pair(100f, 300f),
-            "sci" to Pair(100f, 350f),
-            "absentDate" to Pair(100f, 400f),
-            "studentName" to Pair(100f, 450f),
-            "clask" to Pair(100f, 500f),
-            "rollno" to Pair(100f, 450f),
-            "date" to Pair(100f, 400f)
+            "to" to Pair(125f, 101f),
+            "schoolName" to Pair(95f, 124f),
+            "schoolAddress" to Pair(95f, 144f),
+            "subject" to Pair(155f, 169f),
+            "sirMam" to Pair(97f, 195f),
+            "sci" to Pair(427f, 215f),
+            "absentDate" to Pair(400f, 262f),
+            "studentName" to Pair(150f, 370f),
+            "clask" to Pair(150f, 400f),
+            "rollno" to Pair(169f, 430f),
+            "date" to Pair(148f, 459f)
         )
 
         // Assign keys to the data list
