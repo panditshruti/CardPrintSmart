@@ -289,7 +289,7 @@
         android:label="fragment_application_maker"
         tools:layout="@layout/fragment_application_maker" >
         <action
-            android:id="@+id/action_applicationMakerFragment_to_demoApplicationMakerFragment2"
+            android:id="@+id/action_applicationMakerFragment_to_demoApplicationMakerFragment"
             app:destination="@id/demoApplicationMakerFragment" />
     </fragment>
     <fragment

@@ -52,30 +52,27 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         val date = args?.date ?: "Date Missing"
 
         // Set text in the PDFs
-        val editTextData = listOf(to,schoolName,schoolAddress,subject,sirMam,sci,absentDate,studentName,clask,rollno,date)
+        val editTextData = listOf(to, schoolName, schoolAddress, subject, sirMam, sci, absentDate, studentName, clask, rollno, date)
         applicationPamplet.setData(editTextData)
 
-        // Generate the PDFs
+        // Call generateCollectorApplicationPdf
         pdfBytes1 = applicationPamplet.generateApplicationPdf(requireContext())
-//        pdfBytes2 = applicationPamplet.generatePdf2(requireContext())
 
         // Load PDFs into the PDF views
         pdfBytes1?.let { bytes ->
             binding.pdfView1.fromBytes(bytes).load()
-        } ?: showToast("Failed to generate PDF 1")
-
+        } ?: showToast("Failed to generate Collector Application PDF")
 
         // Handle Save PDF buttons
         binding.pdfBtn1.setOnClickListener {
             pdfBytes1?.let { bytes ->
-                if (savePdfToDownloads(requireContext(), bytes, "application_pamplet_1.pdf")) {
-                    showToast("PDF 1 saved successfully in Downloads")
+                if (savePdfToDownloads(requireContext(), bytes, "collector_application_pamplet.pdf")) {
+                    showToast("Collector Application PDF saved successfully in Downloads")
                 } else {
-                    showToast("Failed to save PDF 1")
+                    showToast("Failed to save Collector Application PDF")
                 }
-            } ?: showToast("No PDF 1 to save")
+            } ?: showToast("No Collector Application PDF to save")
         }
-
     }
 
     private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
