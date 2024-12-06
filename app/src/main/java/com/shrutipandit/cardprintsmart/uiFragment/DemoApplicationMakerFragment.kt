@@ -56,7 +56,7 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         applicationPamplet.setData(editTextData)
 
         // Generate the PDFs
-        pdfBytes1 = applicationPamplet.generatePdf(requireContext())
+        pdfBytes1 = applicationPamplet.generateApplicationPdf(requireContext())
 //        pdfBytes2 = applicationPamplet.generatePdf2(requireContext())
 
         // Load PDFs into the PDF views
@@ -68,7 +68,7 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         // Handle Save PDF buttons
         binding.pdfBtn1.setOnClickListener {
             pdfBytes1?.let { bytes ->
-                if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_1.pdf")) {
+                if (savePdfToDownloads(requireContext(), bytes, "application_pamplet_1.pdf")) {
                     showToast("PDF 1 saved successfully in Downloads")
                 } else {
                     showToast("Failed to save PDF 1")

@@ -18,69 +18,70 @@ class ApplicationPamplet : ViewModel() {
         this.data = data.toMutableList()
     }
 
-    fun generatePdf(context: Context): ByteArray {
+    fun generateApplicationPdf(context: Context): ByteArray {
         val myPdfDocument = PdfDocument()
 
-        // Set the page size to landscape (swap width and height)
-        val pageInfo =
-            PdfDocument.PageInfo.Builder(842, 595, 1).create() // 842x595 for A4 landscape
+        // Set the page size to A4 (portrait)
+        val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create() // 595x842 for A4 portrait
         val page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
 
         val canvas = page.canvas
 
         // Load and draw the background image
-        val bgBitmap = BitmapFactory.decodeResource(
-            context.resources,
-            R.drawable.skpappppamplet2
-        )
-        val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
-        canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
+//        val bgBitmap = BitmapFactory.decodeResource(
+//            context.resources,
+//            R.drawable.skpappppamplet2
+//        )
+//        val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
+//        canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
 
         // Define Paint for text
         val textPaint = Paint().apply {
             color = Color.BLACK
-            textSize = 13.0f // Default text size
+            textSize = 13.0f
         }
 
-        // Define specific positions for each text (x, y)
-//        x = ---,y=\\
+        // Extract data for the application (ensure data size matches keys)
+        val to = data.getOrNull(0) ?: "Recipient Name"
+        val schoolName = data.getOrNull(1) ?: "School Name"
+        val schoolAddress = data.getOrNull(2) ?: "School Address"
+        val subject = data.getOrNull(3) ?: "Subject"
+        val sirmam = data.getOrNull(4) ?: "Subject"
+        val absentDate = data.getOrNull(6) ?: "Date of Absence"
+        val studentName = data.getOrNull(7) ?: "Student Name"
+        val rollNo = data.getOrNull(9) ?: "Roll Number"
+        val date = data.getOrNull(10) ?: "Current Date"
 
-        val positions = mapOf(
-            "to" to Pair(125f, 101f),
-            "schoolName" to Pair(95f, 124f),
-            "schoolAddress" to Pair(95f, 144f),
-            "subject" to Pair(155f, 169f),
-            "sirMam" to Pair(97f, 195f),
-            "sci" to Pair(427f, 215f),
-            "absentDate" to Pair(400f, 262f),
-            "studentName" to Pair(150f, 370f),
-            "clask" to Pair(150f, 400f),
-            "rollno" to Pair(169f, 430f),
-            "date" to Pair(148f, 459f)
-        )
+        // Format the application content
+        val applicationText = """
+        To,
+        The $to
+        $schoolName
+        $schoolAddress
+        Subject: $subject
+        
+        Respected $sirmam,
+        
+        I am $studentName a student of your class, humbly request your permission for leave. I was
+        unable to attend school on $absentDate due to unforeseen circumstances. My roll
+        number is $rollNo. Kindly grant me leave for the mentioned date.
+       
+        Thank you for your understanding and consideration.
+        
+        Yours obedient student,
+        Name- $studentName
+        Date- $date
+    """.trimIndent()
 
-        // Assign keys to the data list
-        val keys = listOf(
-            "to",
-            "schoolName",
-            "schoolAddress",
-            "subject",
-            "sirMam",
-            "sci",
-            "absentDate",
-            "studentName",
-            "clask",
-            "rollno",
-            "date"
-        )
+        // Define the starting position for the text
+        val startX = 50f
+        var startY = 100f
+        val lineSpacing = 20f
 
-        // Draw text dynamically based on its position
-        keys.forEachIndexed { index, key ->
-            val position = positions[key]
-            val text = data.getOrNull(index)
-            if (position != null && text != null) {
-                canvas.drawText(text, position.first, position.second, textPaint)
-            }
+        // Split the text into lines and draw each line
+        applicationText.split("\n").forEach { line ->
+            canvas.drawText(line, startX, startY, textPaint)
+            startY += lineSpacing
         }
 
         myPdfDocument.finishPage(page)
@@ -91,6 +92,7 @@ class ApplicationPamplet : ViewModel() {
 
         return outputStream.toByteArray()
     }
+
 }
 //
 //
