@@ -297,14 +297,12 @@
         android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoApplicationMakerFragment"
         android:label="fragment_demo_application_maker"
         tools:layout="@layout/fragment_demo_application_maker" >
+
         <argument
             android:name="to"
             app:argType="string" />
         <argument
-            android:name="schoolName"
-            app:argType="string" />
-        <argument
-            android:name="schoolAddress"
+            android:name="officeAddress"
             app:argType="string" />
         <argument
             android:name="subject"
@@ -313,19 +311,10 @@
             android:name="sirorMam"
             app:argType="string" />
         <argument
-            android:name="schoolCI"
+            android:name="body"
             app:argType="string" />
         <argument
-            android:name="absentdate"
-            app:argType="string" />
-        <argument
-            android:name="studentName"
-            app:argType="string" />
-        <argument
-            android:name="clask"
-            app:argType="string" />
-        <argument
-            android:name="rollno"
+            android:name="applicantName"
             app:argType="string" />
         <argument
             android:name="date"

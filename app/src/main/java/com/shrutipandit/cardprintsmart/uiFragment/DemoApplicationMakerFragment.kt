@@ -16,9 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.card.ApplicationPamplet
-import com.shrutipandit.cardprintsmart.card.MarriagePamplet
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoApplicationMakerBinding
-import com.shrutipandit.cardprintsmart.databinding.FragmentDemoMarraigePampletBinding
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -28,7 +26,6 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
     private lateinit var binding: FragmentDemoApplicationMakerBinding
     private val applicationPamplet = ApplicationPamplet()
     private var pdfBytes1: ByteArray? = null
-    private var pdfBytes2: ByteArray? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,42 +34,36 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         // Check and request permissions
         checkAndRequestPermissions()
 
-        // Extract arguments passed from MarriagePampletFragment
+        // Extract arguments passed from previous fragment
         val args = arguments?.let { DemoApplicationMakerFragmentArgs.fromBundle(it) }
-        val to = args?.to ?: "To Missing"
-        val schoolName = args?.schoolName ?: "School Name Missing"
-        val schoolAddress = args?.schoolAddress ?: "School Address Missing"
-        val subject = args?.subject ?: "Subject Missing"
-        val sirMam = args?.sirorMam ?: "Sir/Mam Missing"
-        val sci = args?.schoolCI ?: "School/Institute Missing"
-        val absentDate = args?.absentdate ?: "Absent Date Missing"
-        val studentName = args?.studentName ?: "Student Name Missing"
-        val clask = args?.clask ?: "Class Missing"
-        val rollno = args?.rollno ?: "Roll Number Missing"
-        val date = args?.date ?: "Date Missing"
 
-        // Set text in the PDFs
-        val editTextData = listOf(to, schoolName, schoolAddress, subject, sirMam, sci, absentDate, studentName, clask, rollno, date)
-        applicationPamplet.setData(editTextData)
+        // Extract school data
+        val schoolData = listOf(
+            args?.to ?: "To Missing",
+            args?.officeAddress ?: "School Address Missing",
+            args?.subject ?: "Subject Missing",
+            args?.sirorMam ?: "Sir/Mam Missing",
+            args?.body ?: "Sir/Mam Missing",
+            args?.applicantName ?: "Student Name Missing",
+            args?.date ?: "Date Missing"
+        )
 
-        // Call generateCollectorApplicationPdf
-        pdfBytes1 = applicationPamplet.generateApplicationPdf(requireContext())
+        // Call the function to generate PDF for School Application
+        generateSchoolApplicationPdf(schoolData)
 
-        // Load PDFs into the PDF views
+        // Set the button click to save the generated PDF
+        binding.pdfBtn1.setOnClickListener {
+            pdfBytes1?.let { pdfBytes ->
+                savePdfToDownloads(requireContext(), pdfBytes, "School_Application.pdf")
+            }
+        }
+    }
+
+    private fun generateSchoolApplicationPdf(schoolData: List<String>) {
+        pdfBytes1 = applicationPamplet.generateApplicationPdf(requireContext(), schoolData)
         pdfBytes1?.let { bytes ->
             binding.pdfView1.fromBytes(bytes).load()
-        } ?: showToast("Failed to generate Collector Application PDF")
-
-        // Handle Save PDF buttons
-        binding.pdfBtn1.setOnClickListener {
-            pdfBytes1?.let { bytes ->
-                if (savePdfToDownloads(requireContext(), bytes, "collector_application_pamplet.pdf")) {
-                    showToast("Collector Application PDF saved successfully in Downloads")
-                } else {
-                    showToast("Failed to save Collector Application PDF")
-                }
-            } ?: showToast("No Collector Application PDF to save")
-        }
+        } ?: showToast("Failed to generate School Application PDF")
     }
 
     private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
@@ -91,12 +82,12 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
 
         val file = File(downloadsDir, fileName)
         return try {
-            FileOutputStream(file).use { fos ->
-                fos.write(pdfBytes)
-            }
+            FileOutputStream(file).use { fos -> fos.write(pdfBytes) }
+            showToast("PDF saved to Downloads!")
             true
         } catch (e: IOException) {
             e.printStackTrace()
+            showToast("Error saving PDF")
             false
         }
     }
@@ -115,11 +106,12 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
             return try {
                 resolver.openOutputStream(it)?.use { outputStream ->
                     outputStream.write(pdfBytes)
-                    outputStream.close()
+                    showToast("PDF saved to Downloads!")
                     true
                 } ?: false
             } catch (e: IOException) {
                 e.printStackTrace()
+                showToast("Error saving PDF")
                 false
             }
         }
