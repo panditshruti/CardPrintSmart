@@ -15,21 +15,25 @@ class ApplicationPamplet : ViewModel() {
         this.data = data.toMutableList()
     }
 
-    fun generateApplicationPdf(context: Context, schoolData: List<String>): ByteArray {
+    fun generateApplicationPdf(
+        context: Context,
+        schoolData: List<String>,
+        inputLanguage: String = "en" // Default input language
+    ): ByteArray {
         val myPdfDocument = PdfDocument()
 
-        // Set the page size to A4 (portrait)
+        // Page size: A4 (portrait)
         val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
         var page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
         val canvas = page.canvas
 
-        // Define Paint for text
+        // Text Paint with Unicode Font
         val textPaint = Paint().apply {
             color = Color.BLACK
             textSize = 13.0f
         }
 
-        // Extract data for the application
+        // Extract Data
         val to = schoolData.getOrNull(0) ?: "To Missing"
         val schoolAddress = schoolData.getOrNull(1) ?: "School Address Missing"
         val subject = schoolData.getOrNull(2) ?: "Subject Missing"
@@ -38,8 +42,23 @@ class ApplicationPamplet : ViewModel() {
         val applicantName = schoolData.getOrNull(5) ?: "Applicant Name Missing"
         val date = schoolData.getOrNull(6) ?: "Date Missing"
 
-        // Format the application content
-        val applicationText = """
+        // Translate to Hindi if needed (e.g., using Google Translate API or hardcoded templates)
+        val hindiTranslation = """
+        को,
+        $to
+        $schoolAddress
+        विषय: $subject
+
+        मान्यवर $sirMam,
+
+        $body
+
+        आपका विश्वासी,
+        नाम: $applicantName
+        दिनांक: $date
+    """.trimIndent()
+
+        val englishText = """
         To,
         The $to
         $schoolAddress
@@ -54,37 +73,23 @@ class ApplicationPamplet : ViewModel() {
         Date: $date
     """.trimIndent()
 
-        // Define the starting position and page dimensions
+        // Define Text and Draw Both Versions
+        val textsToWrite = listOf("Hindi Version:", hindiTranslation, "English Version:", englishText)
         val startX = 50f
         var startY = 100f
         val lineSpacing = 20f
-        val pageHeight = 842 - 100 // Adjust for margins at the bottom
+        val pageHeight = 842 - 100
 
-        // Split the content into lines and handle text wrapping
-        val lines = applicationText.split("\n")
-        val wrappedLines = mutableListOf<String>()
-
-        val maxWidth = 495f // Adjust for horizontal margins
-        for (line in lines) {
-            var currentLine = line
-            while (textPaint.measureText(currentLine) > maxWidth) {
-                val cutIndex = textPaint.breakText(currentLine, true, maxWidth, null)
-                wrappedLines.add(currentLine.substring(0, cutIndex))
-                currentLine = currentLine.substring(cutIndex)
+        for (text in textsToWrite) {
+            for (line in text.split("\n")) {
+                if (startY + lineSpacing > pageHeight) {
+                    myPdfDocument.finishPage(page)
+                    page = myPdfDocument.startPage(pageInfo)
+                    startY = 100f
+                }
+                canvas.drawText(line, startX, startY, textPaint)
+                startY += lineSpacing
             }
-            wrappedLines.add(currentLine)
-        }
-
-        // Draw text, handling page overflow
-        for (line in wrappedLines) {
-            if (startY + lineSpacing > pageHeight) {
-                myPdfDocument.finishPage(page)
-                page = myPdfDocument.startPage(pageInfo)
-                canvas.drawColor(Color.WHITE) // Clear the canvas for the new page
-                startY = 100f // Reset startY for the new page
-            }
-            canvas.drawText(line, startX, startY, textPaint)
-            startY += lineSpacing
         }
 
         myPdfDocument.finishPage(page)

@@ -18,14 +18,15 @@
             android:id="@+id/pdfView1"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginBottom="16dp"
             android:adjustViewBounds="true" />
 
-        <Button
+        <ImageView
+            android:src="@drawable/baseline_cloud_download_24"
             android:id="@+id/pdfBtn1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_gravity="end"
+
             android:text="Download PDF 1" />
 
         <!-- PDF 2 Viewer -->
@@ -33,14 +34,28 @@
             android:id="@+id/pdfView2"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginBottom="16dp"
             android:adjustViewBounds="true" />
 
-        <Button
+        <ImageView
+            android:src="@drawable/baseline_cloud_download_24"
             android:id="@+id/pdfBtn2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_gravity="end"
+            android:text="Download PDF 2" />
+
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/pdfView3"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:src="@drawable/baseline_cloud_download_24"
+            android:id="@+id/pdfBtn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:text="Download PDF 2" />
 
     </LinearLayout>

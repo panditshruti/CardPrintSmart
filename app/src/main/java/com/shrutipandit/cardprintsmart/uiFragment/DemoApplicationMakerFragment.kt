@@ -48,13 +48,18 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
             args?.date ?: "Date Missing"
         )
 
-        // Call the function to generate PDF for School Application
+        // Generate the PDF for school application
         generateSchoolApplicationPdf(schoolData)
 
-        // Set the button click to save the generated PDF
+        // Set the save button functionality
         binding.pdfBtn1.setOnClickListener {
-            pdfBytes1?.let { pdfBytes ->
-                savePdfToDownloads(requireContext(), pdfBytes, "School_Application.pdf")
+            val fileName = "School_Application.pdf"
+            pdfBytes1?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes, fileName)) {
+                    showToast("PDF saved as $fileName")
+                } else {
+                    showToast("Failed to save PDF")
+                }
             }
         }
     }
@@ -62,7 +67,9 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
     private fun generateSchoolApplicationPdf(schoolData: List<String>) {
         pdfBytes1 = applicationPamplet.generateApplicationPdf(requireContext(), schoolData)
         pdfBytes1?.let { bytes ->
-            binding.pdfView1.fromBytes(bytes).load()
+            binding.pdfView1.fromBytes(bytes)
+                .swipeHorizontal(false)
+                .load()
         } ?: showToast("Failed to generate School Application PDF")
     }
 
@@ -83,11 +90,9 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         val file = File(downloadsDir, fileName)
         return try {
             FileOutputStream(file).use { fos -> fos.write(pdfBytes) }
-            showToast("PDF saved to Downloads!")
             true
         } catch (e: IOException) {
             e.printStackTrace()
-            showToast("Error saving PDF")
             false
         }
     }
@@ -106,20 +111,13 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
             return try {
                 resolver.openOutputStream(it)?.use { outputStream ->
                     outputStream.write(pdfBytes)
-                    showToast("PDF saved to Downloads!")
-                    true
-                } ?: false
+                } != null
             } catch (e: IOException) {
                 e.printStackTrace()
-                showToast("Error saving PDF")
                 false
             }
         }
         return false
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun checkAndRequestPermissions() {
@@ -127,7 +125,6 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
 
-        // Add WRITE_EXTERNAL_STORAGE permission for versions below Android Q
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
@@ -139,6 +136,10 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), REQUEST_CODE_PERMISSIONS)
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

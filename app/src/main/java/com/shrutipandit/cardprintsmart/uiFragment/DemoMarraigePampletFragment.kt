@@ -27,6 +27,7 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
     private val marriagePamplet = MarriagePamplet()
     private var pdfBytes1: ByteArray? = null
     private var pdfBytes2: ByteArray? = null
+    private var pdfBytes3: ByteArray? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,6 +49,7 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
         // Generate the PDFs
         pdfBytes1 = marriagePamplet.generatePdf(requireContext())
         pdfBytes2 = marriagePamplet.generatePdf2(requireContext())
+        pdfBytes3 = marriagePamplet.generatePdf3(requireContext())
 
         // Load PDFs into the PDF views
         pdfBytes1?.let { bytes ->
@@ -56,6 +58,10 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
 
         pdfBytes2?.let { bytes ->
             binding.pdfView2.fromBytes(bytes).load()
+        } ?: showToast("Failed to generate PDF 2")
+
+        pdfBytes3?.let { bytes ->
+            binding.pdfView3.fromBytes(bytes).load()
         } ?: showToast("Failed to generate PDF 2")
 
         // Handle Save PDF buttons
@@ -78,9 +84,24 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
                 }
             } ?: showToast("No PDF 2 to save")
         }
+        binding.pdfBtn3.setOnClickListener {
+            pdfBytes3?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_2.pdf")) {
+                    showToast("PDF 2 saved successfully in Downloads")
+                } else {
+                    showToast("Failed to save PDF 2")
+                }
+            } ?: showToast("No PDF 2 to save")
+        }
+
+
     }
 
-    private fun savePdfToDownloads(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
+    private fun savePdfToDownloads(
+        context: Context,
+        pdfBytes: ByteArray,
+        fileName: String
+    ): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             savePdfToDownloadsScoped(context, pdfBytes, fileName)
         } else {
@@ -88,8 +109,13 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
         }
     }
 
-    private fun savePdfToDownloadsLegacy(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
-        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    private fun savePdfToDownloadsLegacy(
+        context: Context,
+        pdfBytes: ByteArray,
+        fileName: String
+    ): Boolean {
+        val downloadsDir =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         if (!downloadsDir.exists() && !downloadsDir.mkdirs()) {
             return false
         }
@@ -107,7 +133,11 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun savePdfToDownloadsScoped(context: Context, pdfBytes: ByteArray, fileName: String): Boolean {
+    private fun savePdfToDownloadsScoped(
+        context: Context,
+        pdfBytes: ByteArray,
+        fileName: String
+    ): Boolean {
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
             put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
@@ -146,11 +176,18 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
         }
 
         val permissionsToRequest = permissions.filter {
-            ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                it
+            ) != PackageManager.PERMISSION_GRANTED
         }
 
         if (permissionsToRequest.isNotEmpty()) {
-            ActivityCompat.requestPermissions(requireActivity(), permissionsToRequest.toTypedArray(), REQUEST_CODE_PERMISSIONS)
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                permissionsToRequest.toTypedArray(),
+                REQUEST_CODE_PERMISSIONS
+            )
         }
     }
 

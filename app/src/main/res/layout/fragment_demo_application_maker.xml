@@ -1,32 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".uiFragment.DemoApplicationMakerFragment">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <RadioGroup
+        android:id="@+id/languageSelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="horizontal">
 
-        <com.github.barteksc.pdfviewer.PDFView
-            android:id="@+id/pdfView1"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginBottom="16dp"
-            android:adjustViewBounds="true" />
-
-        <Button
-            android:id="@+id/pdfBtn1"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/radio_english"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Download PDF 1" />
+            android:text="English"
+            android:checked="true" />
 
-    </LinearLayout>
+        <RadioButton
+            android:id="@+id/radio_hindi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hindi" />
+    </RadioGroup>
 
-    </ScrollView>
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView1"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
 
+    <Button
+        android:id="@+id/pdfBtn1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save PDF" />
+</LinearLayout>

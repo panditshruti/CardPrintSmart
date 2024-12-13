@@ -3,7 +3,7 @@ package com.shrutipandit.cardprintsmart.uiFragment
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -19,8 +19,8 @@ class ApplicationMakerFragment : Fragment(R.layout.fragment_application_maker) {
 
         val linearLayout = binding.linearLayout
 
-        // School fields
-        val schoolFields = arrayListOf(
+        // Fields for application input
+        val inputFields = listOf(
             "Enter To (Officer's Name):",
             "Enter Office Address:",
             "Enter Subject full details:",
@@ -30,38 +30,34 @@ class ApplicationMakerFragment : Fragment(R.layout.fragment_application_maker) {
             "Enter Date:"
         )
 
-        val schoolEditTexts = mutableListOf<TextInputEditText>()
+        val inputEditTexts = mutableListOf<TextInputEditText>()
 
-        // Function to create EditTexts dynamically
-        fun createEditTexts(fields: List<String>, targetList: MutableList<TextInputEditText>) {
-            for (label in fields) {
-                val editText = TextInputEditText(requireContext())
-                editText.hint = label
-                editText.layoutParams = ViewGroup.LayoutParams(
+        // Dynamically create EditTexts
+        inputFields.forEach { label ->
+            val editText = TextInputEditText(requireContext()).apply {
+                hint = label
+                layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                targetList.add(editText)
-                linearLayout.addView(editText) // Add EditText to the layout
+            }
+            inputEditTexts.add(editText)
+            linearLayout.addView(editText)
+        }
+
+        // Add Submit button
+        val submitButton = Button(requireContext()).apply {
+            text = "Submit"
+            setOnClickListener {
+                val inputData = inputEditTexts.map { it.text.toString() }
+                val action = ApplicationMakerFragmentDirections.actionApplicationMakerFragmentToDemoApplicationMakerFragment(
+                    inputData[0], inputData[1], inputData[2], inputData[3],
+                    inputData[4], inputData[5], inputData[6]
+                )
+                findNavController().navigate(action)
             }
         }
 
-        // Create School EditTexts
-        createEditTexts(schoolFields, schoolEditTexts)
-
-        // Add Submit button
-        val submitButton = Button(requireContext())
-        submitButton.text = "Submit"
-        submitButton.setOnClickListener{
-            val schoolData = schoolEditTexts.map { it.text.toString() }
-            // Navigate to DemoApplicationMakerFragment with the entered data
-            val action = ApplicationMakerFragmentDirections.actionApplicationMakerFragmentToDemoApplicationMakerFragment(
-                schoolData[0], schoolData[1], schoolData[2], schoolData[3],
-                schoolData[4],schoolData[5], schoolData[6]
-            )
-            findNavController().navigate(action)
-        }
-
-        linearLayout.addView(submitButton) // Add Submit button to the layout
+        linearLayout.addView(submitButton)
     }
 }
