@@ -28,6 +28,8 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
     private var pdfBytes1: ByteArray? = null
     private var pdfBytes2: ByteArray? = null
     private var pdfBytes3: ByteArray? = null
+    private var pdfBytes4: ByteArray? = null
+    private var pdfBytes5: ByteArray? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +52,8 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
         pdfBytes1 = marriagePamplet.generatePdf(requireContext())
         pdfBytes2 = marriagePamplet.generatePdf2(requireContext())
         pdfBytes3 = marriagePamplet.generatePdf3(requireContext())
+        pdfBytes4 = marriagePamplet.generatePdf4(requireContext())
+        pdfBytes5 = marriagePamplet.generatePdf5(requireContext())
 
         // Load PDFs into the PDF views
         pdfBytes1?.let { bytes ->
@@ -62,6 +66,14 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
 
         pdfBytes3?.let { bytes ->
             binding.pdfView3.fromBytes(bytes).load()
+        } ?: showToast("Failed to generate PDF 2")
+
+        pdfBytes4?.let { bytes ->
+            binding.pdfView4.fromBytes(bytes).load()
+        } ?: showToast("Failed to generate PDF 2")
+
+        pdfBytes5?.let { bytes ->
+            binding.pdfView5.fromBytes(bytes).load()
         } ?: showToast("Failed to generate PDF 2")
 
         // Handle Save PDF buttons
@@ -86,6 +98,25 @@ class DemoMarraigePampletFragment : Fragment(R.layout.fragment_demo_marraige_pam
         }
         binding.pdfBtn3.setOnClickListener {
             pdfBytes3?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_2.pdf")) {
+                    showToast("PDF 2 saved successfully in Downloads")
+                } else {
+                    showToast("Failed to save PDF 2")
+                }
+            } ?: showToast("No PDF 2 to save")
+        }
+
+        binding.pdfBtn4.setOnClickListener {
+            pdfBytes4?.let { bytes ->
+                if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_2.pdf")) {
+                    showToast("PDF 2 saved successfully in Downloads")
+                } else {
+                    showToast("Failed to save PDF 2")
+                }
+            } ?: showToast("No PDF 2 to save")
+        }
+        binding.pdfBtn5.setOnClickListener {
+            pdfBytes5?.let { bytes ->
                 if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_2.pdf")) {
                     showToast("PDF 2 saved successfully in Downloads")
                 } else {

@@ -100,7 +100,7 @@ class MCQCheckerFragment : Fragment(R.layout.fragment_m_c_q_checker) {
             3 to 'C',
             4 to 'D',
             5 to 'A'
-        ) // Replace this dummy data with actual detection logic
+        )
     }
 
     // Parse OCR Text from Answer Sheet into a Map
