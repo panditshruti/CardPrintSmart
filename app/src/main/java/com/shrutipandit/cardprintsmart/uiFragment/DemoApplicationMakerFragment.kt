@@ -43,13 +43,25 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
             args?.officeAddress ?: "School Address Missing",
             args?.subject ?: "Subject Missing",
             args?.sirorMam ?: "Sir/Mam Missing",
-            args?.body ?: "Sir/Mam Missing",
-            args?.applicantName ?: "Student Name Missing",
+            args?.body ?: "Body Missing",
+            args?.applicantName ?: "Applicant Name Missing",
             args?.date ?: "Date Missing"
         )
 
-        // Generate the PDF for school application
-        generateSchoolApplicationPdf(schoolData)
+        // Generate the initial PDF (English by default)
+        generateSchoolApplicationPdf(schoolData, "en")
+
+        // Set listener for radio button changes
+        binding.languageSelector.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.radio_english -> {
+                    generateSchoolApplicationPdf(schoolData, "en")
+                }
+                R.id.radio_hindi -> {
+                    generateSchoolApplicationPdf(schoolData, "hi")
+                }
+            }
+        }
 
         // Set the save button functionality
         binding.pdfBtn1.setOnClickListener {
@@ -64,8 +76,15 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         }
     }
 
-    private fun generateSchoolApplicationPdf(schoolData: List<String>) {
-        pdfBytes1 = applicationPamplet.generateApplicationPdfEnglish(requireContext(), schoolData)
+    private fun generateSchoolApplicationPdf(schoolData: List<String>, language: String) {
+        // Generate PDF based on selected language
+        pdfBytes1 = when (language) {
+            "en" -> applicationPamplet.generateApplicationPdfEnglish(requireContext(), schoolData)
+            "hi" -> applicationPamplet.generateApplicationPdfHindi(requireContext(), schoolData)
+            else -> null
+        }
+
+        // Display the generated PDF
         pdfBytes1?.let { bytes ->
             binding.pdfView1.fromBytes(bytes)
                 .swipeHorizontal(false)
