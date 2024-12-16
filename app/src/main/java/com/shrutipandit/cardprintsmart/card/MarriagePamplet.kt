@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModel
 import com.shrutipandit.cardprintsmart.R
 import java.io.ByteArrayOutputStream
@@ -37,18 +38,21 @@ class MarriagePamplet : ViewModel() {
         val dulhaPaint = Paint().apply {
             color = Color.RED
             textSize = 60.5f // Text size for Dulha
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
         }
 
         // Define Paint for Dulhan
         val dulhanPaint = Paint().apply {
             color = Color.RED
             textSize = 60.0f // Text size for Dulhan
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
         }
 
         // Define Paint for Date
         val datePaint = Paint().apply {
             color = Color.YELLOW
             textSize = 30.0f // Text size for Date
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
         }
 
         // Static positions for each item
@@ -106,12 +110,14 @@ class MarriagePamplet : ViewModel() {
         val dulhaPaint = Paint().apply {
             color = Color.BLACK
             textSize = 60.5f // Text size for Dulha
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
         }
 
         // Define Paint for Dulhan
         val dulhanPaint = Paint().apply {
             color = Color.BLACK
             textSize = 60.0f // Text size for Dulhan
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
         }
 
         // Static positions for each item
@@ -161,6 +167,7 @@ class MarriagePamplet : ViewModel() {
             color = Color.WHITE
             textSize = 60.5f // Text size for Dulha
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) // Set bold style
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
 
         }
 
@@ -169,6 +176,7 @@ class MarriagePamplet : ViewModel() {
             color = Color.WHITE
             textSize = 60.5f // Text size for Dulha
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) // Set bold style
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
 
         }
 
@@ -219,6 +227,7 @@ class MarriagePamplet : ViewModel() {
             color = Color.YELLOW
             textSize = 60.5f // Text size for Dulha
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) // Set bold style
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
 
         }
 
@@ -227,6 +236,7 @@ class MarriagePamplet : ViewModel() {
             color = Color.YELLOW
             textSize = 60.5f // Text size for Dulha
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) // Set bold style
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
 
         }
 
@@ -269,14 +279,16 @@ class MarriagePamplet : ViewModel() {
         val canvas = page.canvas
 
         // Load and draw the background image
-        val bgBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.mp4) // Replace 'maragepampletcard' with your actual drawable name
+        val bgBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.mp6) // Replace 'maragepampletcard' with your actual drawable name
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
 
         val dulhaPaint = Paint().apply {
             color = Color.YELLOW
             textSize = 60.5f // Text size for Dulha
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) // Set bold style
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
+        // Set bold style
 
         }
 
@@ -285,6 +297,7 @@ class MarriagePamplet : ViewModel() {
             color = Color.YELLOW
             textSize = 60.5f // Text size for Dulha
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD) // Set bold style
+            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
 
         }
 
