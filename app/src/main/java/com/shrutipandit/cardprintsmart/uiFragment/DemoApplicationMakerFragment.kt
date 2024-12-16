@@ -65,7 +65,7 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
     }
 
     private fun generateSchoolApplicationPdf(schoolData: List<String>) {
-        pdfBytes1 = applicationPamplet.generateApplicationPdf(requireContext(), schoolData)
+        pdfBytes1 = applicationPamplet.generateApplicationPdfEnglish(requireContext(), schoolData)
         pdfBytes1?.let { bytes ->
             binding.pdfView1.fromBytes(bytes)
                 .swipeHorizontal(false)
