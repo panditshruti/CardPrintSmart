@@ -64,8 +64,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             val action = HomeFragmentDirections.actionHomeFragmentToApplicationMakerFragment()
             findNavController().navigate(action)
         }
-
-
+        binding.aayPramanPatra.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToAayPramanPatraFragment()
+            findNavController().navigate(action)
+        }
 
     }
 }

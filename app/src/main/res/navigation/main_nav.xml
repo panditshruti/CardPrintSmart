@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_homeFragment_to_applicationMakerFragment"
             app:destination="@id/applicationMakerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_aayPramanPatraFragment"
+            app:destination="@id/aayPramanPatraFragment" />
     </fragment>
 
     <fragment
@@ -320,5 +323,10 @@
             android:name="date"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/aayPramanPatraFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.AayPramanPatraFragment"
+        android:label="fragment_aay_praman_patra"
+        tools:layout="@layout/fragment_aay_praman_patra" />
 
 </navigation>
