@@ -7,5 +7,21 @@
     tools:context=".uiFragment.AayPramanPatraFragment">
 
 
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!-- EditTexts and other views will be added programmatically -->
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
