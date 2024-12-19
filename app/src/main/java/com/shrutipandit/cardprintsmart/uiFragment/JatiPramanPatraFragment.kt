@@ -9,9 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.databinding.FragmentAayPramanPatraBinding
-import com.shrutipandit.cardprintsmart.databinding.FragmentMarriagePampletBinding
 
-class AayPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
+class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
     private lateinit var binding: FragmentAayPramanPatraBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,7 +20,7 @@ class AayPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
         val linearLayout = binding.linearLayout
 
         // Fields to add dynamically
-        val marriageArrayList = arrayListOf(
+        val jatipramnPatraList = arrayListOf(
             "Form Number   :",
             "District    :",
             "Anumandal    :",
@@ -47,7 +46,7 @@ class AayPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
         val editTexts = mutableListOf<TextInputEditText>()
 
         // Add TextInputEditTexts for each item in the marriageArrayList
-        for (label in marriageArrayList) {
+        for (label in jatipramnPatraList) {
             val textInputEditText = TextInputEditText(requireContext())
             textInputEditText.hint = label
             linearLayout.addView(
@@ -62,13 +61,29 @@ class AayPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
         val submitButton = Button(requireContext())
         submitButton.text = "Submit"
         submitButton.setOnClickListener {
-            val dulhaName = editTexts[0].text.toString()
-            val dulhanName = editTexts[1].text.toString()
-            val date = editTexts[2].text.toString()
+            val formNumber = editTexts[0].text.toString()
+            val district = editTexts[1].text.toString()
+            val anumandal = editTexts[2].text.toString()
+            val circle = editTexts[3].text.toString()
+            val pramanPatranumber = editTexts[4].text.toString()
+            val date = editTexts[5].text.toString()
+            val name = editTexts[6].text.toString()
+            val fatherName = editTexts[7].text.toString()
+            val motherName = editTexts[8].text.toString()
+            val village = editTexts[9].text.toString()
+            val postOffice = editTexts[10].text.toString()
+            val policeStation = editTexts[11].text.toString()
+            val prakhanad = editTexts[12].text.toString()
+            val anumnadal = editTexts[13].text.toString()
+            val caste = editTexts[14].text.toString()
+            val anusuchi = editTexts[15].text.toString()
+            val anukramank = editTexts[16].text.toString()
+            val digitallySignedBy = editTexts[17].text.toString()
+            val dateandtime = editTexts[18].text.toString()
 
             // Navigate and pass data
-            val action = MarriagePampletFragmentDirections.actionMarriagePampletFragmentToDemoMarraigePampletFragment(
-                dulhaName, dulhanName,date)
+            val action = JatiPramanPatraFragmentDirections.actionAayPramanPatraFragmentToDemoJatiPramanPatraFragment(
+               formNumber,district,anumandal,circle,pramanPatranumber,date,name,fatherName,motherName,village,postOffice,policeStation,prakhanad,anumnadal,caste,anusuchi,anukramank,digitallySignedBy,dateandtime )
             findNavController().navigate(action)
         }
 

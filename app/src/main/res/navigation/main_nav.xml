@@ -325,8 +325,78 @@
     </fragment>
     <fragment
         android:id="@+id/aayPramanPatraFragment"
-        android:name="com.shrutipandit.cardprintsmart.uiFragment.AayPramanPatraFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.JatiPramanPatraFragment"
         android:label="fragment_aay_praman_patra"
-        tools:layout="@layout/fragment_aay_praman_patra" />
+        tools:layout="@layout/fragment_aay_praman_patra" >
+        <action
+            android:id="@+id/action_aayPramanPatraFragment_to_demoJatiPramanPatraFragment"
+            app:destination="@id/demoJatiPramanPatraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/demoJatiPramanPatraFragment"
+        android:name="com.shrutipandit.cardprintsmart.uiFragment.DemoJatiPramanPatraFragment"
+        android:label="fragment_demo_jati_praman_patra"
+        tools:layout="@layout/fragment_demo_jati_praman_patra" >
+        <argument
+            android:name="formNumber"
+            app:argType="string" />
+
+        <argument
+            android:name="district"
+            app:argType="string" />
+        <argument
+            android:name="anumandal"
+            app:argType="string" />
+        <argument
+            android:name="circle"
+            app:argType="string" />
+        <argument
+            android:name="pramanPatraNnumber"
+            app:argType="string" />
+        <argument
+            android:name="date"
+            app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="Father Name"
+            app:argType="string" />
+        <argument
+            android:name="Mother Name"
+            app:argType="string" />
+        <argument
+            android:name="Village"
+            app:argType="string" />
+        <argument
+            android:name="postOffice"
+            app:argType="string" />
+        <argument
+            android:name="PoliceStation"
+            app:argType="string" />
+        <argument
+            android:name="Prakhanad"
+            app:argType="string" />
+        <argument
+            android:name="Anumnadal"
+            app:argType="string" />
+        <argument
+            android:name="caste"
+            app:argType="string" />
+
+        <argument
+            android:name="anusuchi"
+            app:argType="string" />
+        <argument
+            android:name="anukramank"
+            app:argType="string" />
+        <argument
+            android:name="DigitallySignedBy"
+            app:argType="string" />
+        <argument
+            android:name="DateandTime"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>
