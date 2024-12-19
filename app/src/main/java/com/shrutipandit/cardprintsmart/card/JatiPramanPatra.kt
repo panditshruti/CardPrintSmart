@@ -3,17 +3,15 @@ package com.shrutipandit.cardprintsmart.card
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModel
 import com.shrutipandit.cardprintsmart.R
 import java.io.ByteArrayOutputStream
 
-class AayPramanPatra : ViewModel() {
+class JatiPramanPatra : ViewModel() {
 
     private var data: MutableList<String> = mutableListOf()
 

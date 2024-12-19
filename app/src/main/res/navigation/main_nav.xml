@@ -360,10 +360,10 @@
             android:name="name"
             app:argType="string" />
         <argument
-            android:name="Father Name"
+            android:name="FatherName"
             app:argType="string" />
         <argument
-            android:name="Mother Name"
+            android:name="MotherName"
             app:argType="string" />
         <argument
             android:name="Village"
