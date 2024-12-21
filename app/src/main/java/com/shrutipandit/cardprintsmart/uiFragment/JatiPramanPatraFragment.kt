@@ -71,7 +71,7 @@ class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
             val fatherName = editTexts[7].text.toString()
             val motherName = editTexts[8].text.toString()
             val village = editTexts[9].text.toString()
-            val postOffice = editTexts[10].text.toString()
+            val postoffice = editTexts[11].text.toString()
             val policeStation = editTexts[11].text.toString()
             val prakhanad = editTexts[12].text.toString()
             val anumnadal = editTexts[13].text.toString()
@@ -83,7 +83,8 @@ class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
 
             // Navigate and pass data
             val action = JatiPramanPatraFragmentDirections.actionAayPramanPatraFragmentToDemoJatiPramanPatraFragment(
-               formNumber,district,anumandal,circle,pramanPatranumber,date,name,fatherName,motherName,village,postOffice,policeStation,prakhanad,anumnadal,caste,anusuchi,anukramank,digitallySignedBy,dateandtime )
+            formNumber,district,anumandal,circle,pramanPatranumber,date,name, fatherName, motherName,village,postoffice,policeStation,prakhanad,anumnadal,caste,
+                anusuchi,anukramank,digitallySignedBy,dateandtime)
             findNavController().navigate(action)
         }
 

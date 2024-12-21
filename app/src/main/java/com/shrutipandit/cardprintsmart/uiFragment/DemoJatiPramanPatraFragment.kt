@@ -16,9 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.shrutipandit.cardprintsmart.R
 import com.shrutipandit.cardprintsmart.card.JatiPramanPatra
-import com.shrutipandit.cardprintsmart.card.MarriagePamplet
 import com.shrutipandit.cardprintsmart.databinding.FragmentDemoJatiPramanPatraBinding
-import com.shrutipandit.cardprintsmart.databinding.FragmentDemoMarraigePampletBinding
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -29,7 +27,6 @@ class DemoJatiPramanPatraFragment : Fragment(R.layout.fragment_demo_jati_praman_
    private val jatiPramPatra = JatiPramanPatra()
    private var pdfBytes1: ByteArray? = null
 
-
    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
       super.onViewCreated(view, savedInstanceState)
       binding = FragmentDemoJatiPramanPatraBinding.bind(view)
@@ -37,55 +34,48 @@ class DemoJatiPramanPatraFragment : Fragment(R.layout.fragment_demo_jati_praman_
       // Check and request permissions
       checkAndRequestPermissions()
 
-      // Extract arguments passed from MarriagePampletFragment
+      // Extract arguments passed from the previous fragment
       val args = arguments?.let { DemoJatiPramanPatraFragmentArgs.fromBundle(it) }
-      val formNumber = args?.formNumber ?: "Dulha Name Missing"
-      val district = args?.district ?: "Dulhan Name Missing"
-      val anumandal = args?.anumandal ?: "Date Missing"
-      val circle = args?.circle ?: "Dulha Name Missing"
-      val pramanPatranumber = args?.pramanPatraNnumber ?: "Dulhan Name Missing"
-      val date = args?.date ?: "Date Missing"
-      val name = args?.name ?: "Dulha Name Missing"
-      val fatherName = args?.fatherName ?: "Dulhan Name Missing"
-      val motherName = args?.motherName ?: "Date Missing"
-      val village = args?.village ?: "Dulha Name Missing"
-      val postOffice = args?.postOffice ?: "Dulhan Name Missing"
-      val policeStation = args?.policeStation ?: "Date Missing"
-      val prakhanad = args?.prakhanad ?: "Date Missing"
-      val anumnadal = args?.anumnadal ?: "Dulha Name Missing"
-      val caste = args?.caste ?: "Dulhan Name Missing"
-      val anusuchi = args?.anusuchi ?: "Date Missing"
-      val anukramank = args?.anukramank ?: "Dulha Name Missing"
-      val digitallySignedBy = args?.digitallySignedBy ?: "Dulhan Name Missing"
-      val dateandtime = args?.dateandTime ?: "Date Missing"
+      val editTextData = listOf(
+         args?.formNumber ?: "Form Number Missing",
+         args?.district ?: "District Missing",
+         args?.anumandal ?: "Anumandal Missing",
+         args?.circle ?: "Circle Missing",
+         args?.pramanPatraNnumber ?: "Certificate Number Missing",
+         args?.date ?: "Date Missing",
+         args?.name ?: "Name Missing",
+         args?.fatherName ?: "Father Name Missing",
+         args?.motherName ?: "Mother Name Missing",
+         args?.village ?: "Village Missing",
+         args?.postOffice ?: "Post Office Missing",
+         args?.policeStation ?: "Police Station Missing",
+         args?.prakhanad ?: "Prakhand Missing",
+         args?.anumnadal ?: "Anumandal Missing",
+         args?.caste ?: "Caste Missing",
+         args?.anusuchi ?: "Anusuchi Missing",
+         args?.anukramank ?: "Anukramank Missing",
+         args?.digitallySignedBy ?: "Signed By Missing",
+         args?.dateandTime ?: "Date and Time Missing"
+      )
 
-      // Set text in the PDFs
-      val editTextData = listOf(formNumber,district,anumandal,circle,pramanPatranumber,date,name,fatherName,motherName
-      ,village ,postOffice,policeStation,prakhanad,anumnadal,caste,anusuchi,anukramank,digitallySignedBy,dateandtime)
-      jatiPramPatra.setData(editTextData)
+      // Generate the PDF
+      pdfBytes1 = jatiPramPatra.generateCasteCertificatePdf(requireContext(), editTextData)
 
-      // Generate the PDFs
-      pdfBytes1 = jatiPramPatra.generatePdf(requireContext())
-
-
-      // Load PDFs into the PDF views
+      // Load PDF into the PDF view
       pdfBytes1?.let { bytes ->
          binding.pdfView1.fromBytes(bytes).load()
-      } ?: showToast("Failed to generate PDF 1")
+      } ?: showToast("Failed to generate PDF")
 
-
-      // Handle Save PDF buttons
+      // Handle Save PDF button
       binding.pdfBtn1.setOnClickListener {
          pdfBytes1?.let { bytes ->
-            if (savePdfToDownloads(requireContext(), bytes, "marriage_pamplet_1.pdf")) {
-               showToast("PDF 1 saved successfully in Downloads")
+            if (savePdfToDownloads(requireContext(), bytes, "jati_praman_patra.pdf")) {
+               showToast("PDF saved successfully in Downloads")
             } else {
-               showToast("Failed to save PDF 1")
+               showToast("Failed to save PDF")
             }
-         } ?: showToast("No PDF 1 to save")
+         } ?: showToast("No PDF to save")
       }
-
-
    }
 
    private fun savePdfToDownloads(
@@ -141,9 +131,8 @@ class DemoJatiPramanPatraFragment : Fragment(R.layout.fragment_demo_jati_praman_
          return try {
             resolver.openOutputStream(it)?.use { outputStream ->
                outputStream.write(pdfBytes)
-               outputStream.close()
-               true
-            } ?: false
+            }
+            true
          } catch (e: IOException) {
             e.printStackTrace()
             false
@@ -157,9 +146,7 @@ class DemoJatiPramanPatraFragment : Fragment(R.layout.fragment_demo_jati_praman_
    }
 
    private fun checkAndRequestPermissions() {
-      val permissions = mutableListOf(
-         Manifest.permission.READ_EXTERNAL_STORAGE
-      )
+      val permissions = mutableListOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
       // Add WRITE_EXTERNAL_STORAGE permission for versions below Android Q
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
@@ -167,10 +154,7 @@ class DemoJatiPramanPatraFragment : Fragment(R.layout.fragment_demo_jati_praman_
       }
 
       val permissionsToRequest = permissions.filter {
-         ContextCompat.checkSelfPermission(
-            requireContext(),
-            it
-         ) != PackageManager.PERMISSION_GRANTED
+         ContextCompat.checkSelfPermission(requireContext(), it) != PackageManager.PERMISSION_GRANTED
       }
 
       if (permissionsToRequest.isNotEmpty()) {
