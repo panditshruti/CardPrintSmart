@@ -94,39 +94,49 @@ class JatiPramanPatra : ViewModel() {
         val digitallySignedBy = schoolData.getOrNull(17) ?: "Body Missing"
         val dateAndTime = schoolData.getOrNull(18) ?: "Applicant Name Missing"
 
+//        val pageWidths = pageInfo.pageWidth.toFloat()
+//        val startXs = 350f
+//        var startYs = 450f
+//        val lineSpacings = 20f
+//
+//        val forms = pageInfo.pageWidth.toFloat()
+//        val startXforms = 290f
+//        var startYforms = 140f
+//        val lineSpacingsss = 20f
+//        canvas.drawText("जिला / District: $district\", \"अनुमंडल/Sub-Division:$district\",\"अंचल/Circle:$circle", pageWidths / 2, 50f, headerPaint)
+//        canvas.drawText("अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC", pageWidths / 2, 70f, headerPaint)
+//        canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", startXforms, startYforms, boldTextPaint)
 
         // Body content with dynamic placeholders
         val lines = listOf(
-            "जिला / District: $district", "अनुमंडल/Sub-Division:$district","अंचल/Circle:$circle",
-            "अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
-            "(बिहार सरकार के प्रयोजनार्थ)",
+                           "जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle",
+                                      "अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
+                                                        "(बिहार सरकार के प्रयोजनार्थ)",
             "",
-            "प्रमाण-पत्र संख्या: $pramanPatranumber                                                दिनांक: $date",
+            "प्रमाण-पत्र संख्या: $pramanPatranumber                                                    दिनांक: $date",
             "",
-            "        प्रमाणित किया जाता है कि $name($name), पिता (Father) $fatherName($fatherName), माता (Mother)" +
-                    "$motherName($motherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -" +
-                    "$district,जिला - $district,राज्य - बिहार के प्रजाति($caste)समुदाय के सदस्य है, जो बिहार पदों एवं सेवाओं की रिक्तियों में आरक्छन",
-            "(अनुसूचित जातियों, अनुसूचित जनजातियों एवं अन्य पिछडे वर्षों के लिए) अधिनियम, 1991 समय-समय पर यथासंशोधित अधिनियम"+
-                    " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-1) में अनुक्रमांक 97 पर अंकित है। अतः $name($name), पिता"+
-                    "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-1) के हैं।"+
-                    ""+
+            "        प्रमाणित किया जाता है कि $name($name), पिता (Father) $fatherName($fatherName), माता (Mother)",
+            "$motherName($motherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -",
+            "$district,जिला - $district,राज्य - बिहार के प्रजाति($caste)समुदाय के सदस्य है, जो बिहार पदों एवं सेवाओं की रिक्तियों में आरक्छन",
+            "(अनुसूचित जातियों, अनुसूचित जनजातियों एवं अन्य पिछडे वर्षों के लिए) अधिनियम, 1991 समय-समय पर यथासंशोधित अधिनियम",
+            " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-1) में अनुक्रमांक 97 पर अंकित है। अतः $name($name), पिता",
+            "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-1) के हैं।",
+                    "",
+                    "$name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
+            " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
 
-                    "$name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation," +
-                    " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।"+
+                                                                             "Digitally signed by $digitallySignedBy",
+                                                                             "Date:$dateAndTime",
 
-                    "Digitally signed by $digitallySignedBy"+
-                    "Date:$dateAndTime"+
-
-                    "स्थान: $prakhanad",                                    "(हस्ताक्षर राजस्व अधिकारी / Signature",
+            "स्थान: $prakhanad",                                    "(हस्ताक्षर राजस्व अधिकारी / Signature",
             "दिनांक: $date",                                                         "Revenue Officer)",
 
             "",
-            "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus"+
-                    "Mobile App से करें।"+
-                    "वैधताः कोई समय सीमा नहीं।"+
+            "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
+            "Mobile App से करें।",
+            "वैधताः कोई समय सीमा नहीं।",
 
-
-                    "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
+            "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
 
         )
 
@@ -134,6 +144,10 @@ class JatiPramanPatra : ViewModel() {
             canvas.drawText(line, startX, startY, textPaint)
             startY += lineSpacing
         }
+//        for (lines in lines) {
+//            canvas.drawText(lines, startXs, startYs, textPaint)
+//            startY += lineSpacing
+//        }
 
         // Finish the page
         pdfDocument.finishPage(page)
