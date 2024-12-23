@@ -24,140 +24,6 @@ class JatiPramanPatra : ViewModel() {
         this.data = data.toMutableList()
     }
 
-    fun generateJatiPramanPatra(
-        context: Context,
-        schoolData: List<String>,
-        inputLanguage: String = "en" // Default input language
-    ): ByteArray {
-        val myPdfDocument = PdfDocument()
-
-        // Page size: A4 (portrait)
-        val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
-        var page: PdfDocument.Page = myPdfDocument.startPage(pageInfo)
-        var canvas = page.canvas
-
-        // Load and draw the background image
-        val bgBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.aaypartapagepamplet) // Replace 'maragepampletcard' with your actual drawable name
-        val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
-        canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
-
-
-        // Text Paint
-        val textPaint = Paint().apply {
-            color = Color.BLACK
-            textSize = 13.0f
-        }
-
-        // Extract Data
-        val formName = schoolData.getOrNull(0) ?: "To Missing"
-        val district = schoolData.getOrNull(1) ?: "School Address Missing"
-        val anumandal = schoolData.getOrNull(2) ?: "Subject Missing"
-        val circle = schoolData.getOrNull(3) ?: "Sir/Mam Missing"
-        val pramanPatranumber = schoolData.getOrNull(4) ?: "Body Missing"
-        val date = schoolData.getOrNull(5) ?: "Applicant Name Missing"
-        val name = schoolData.getOrNull(6) ?: "Date Missing"
-        val fatherName = schoolData.getOrNull(7) ?: "To Missing"
-        val motherName = schoolData.getOrNull(8) ?: "School Address Missing"
-        val village = schoolData.getOrNull(9) ?: "Subject Missing"
-        val policeStation = schoolData.getOrNull(10) ?: "Sir/Mam Missing"
-        val prakhanad = schoolData.getOrNull(11) ?: "Body Missing"
-        val anumnadal = schoolData.getOrNull(12) ?: "Applicant Name Missing"
-        val caste = schoolData.getOrNull(13) ?: "Date Missing"
-       val anusuchi = schoolData.getOrNull(14) ?: "Subject Missing"
-        val anukramank = schoolData.getOrNull(15) ?: "Sir/Mam Missing"
-        val digitallySignedBy = schoolData.getOrNull(16) ?: "Body Missing"
-        val dateAndTime = schoolData.getOrNull(17) ?: "Applicant Name Missing"
-
-        val englishText = """
-        To,
-    """.trimIndent()
-
-        // Constants for positioning
-        val startX = 50f
-        var startY = 100f
-        val lineSpacing = 20f
-        val pageHeight = 842 - 100 // Leave bottom margin
-        val pageWidth = 595 - 100 // Leave side margins
-
-        // Split English text into lines
-        val lines = englishText.split("\n")
-
-        // Process each line and ensure correct formatting
-        for (line in lines) {
-            // Check if the line fits in the remaining width or wrap it
-            val words = line.split(" ")
-            var currentLine = ""
-
-            for (word in words) {
-                val testLine = if (currentLine.isEmpty()) word else "$currentLine $word"
-                val textWidth = textPaint.measureText(testLine)
-
-                if (textWidth > pageWidth) { // Line exceeds page width, wrap it
-                    if (startY + lineSpacing > pageHeight) {
-                        // Finish the current page and create a new one
-                        myPdfDocument.finishPage(page)
-                        page = myPdfDocument.startPage(pageInfo)
-                        canvas = page.canvas
-                        startY = 100f // Reset start position for new page
-                    }
-                    // Draw the current line
-                    canvas.drawText(currentLine, startX, startY, textPaint)
-                    currentLine = word // Start a new line with the current word
-                    startY += lineSpacing
-                } else {
-                    currentLine = testLine
-                }
-            }
-
-            // Draw any remaining text in the current line
-            if (currentLine.isNotEmpty()) {
-                if (startY + lineSpacing > pageHeight) {
-                    // Finish the current page and create a new one
-                    myPdfDocument.finishPage(page)
-                    page = myPdfDocument.startPage(pageInfo)
-                    canvas = page.canvas
-                    startY = 100f // Reset start position for new page
-                }
-                canvas.drawText(currentLine, startX, startY, textPaint)
-                startY += lineSpacing
-            }
-
-            // Add additional spacing for empty lines (if any)
-            if (line.isBlank()) {
-                startY += lineSpacing
-            }
-        }
-
-        myPdfDocument.finishPage(page)
-
-        // Write PDF to output
-        val outputStream = ByteArrayOutputStream()
-        myPdfDocument.writeTo(outputStream)
-        myPdfDocument.close()
-
-        return outputStream.toByteArray()
-    }
-
-
-//    private fun generateQrCode(content: String): Bitmap {
-//        val size = 200 // Width and height of the QR code
-//        val hints = mapOf(EncodeHintType.MARGIN to 1) // Reduce white margin
-//        val bitMatrix = MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, size, size, hints)
-//        val width = bitMatrix.width
-//        val height = bitMatrix.height
-//        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
-//
-//        for (x in 0 until width) {
-//            for (y in 0 until height) {
-//                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
-//            }
-//        }
-//        return bitmap
-//    }
-
-    /**
-     * Generate and save the caste certificate as a PDF file.
-     */
     fun generateCasteCertificatePdf(context: Context, schoolData: List<String>): ByteArray? {
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create() // A4 size
@@ -208,33 +74,60 @@ class JatiPramanPatra : ViewModel() {
         startY += 1 * lineSpacing
 
         // Example dynamic data from schoolData list
-        val district = schoolData.getOrNull(1) ?: "District Missing"
-        val pramanPatraNumber = schoolData.getOrNull(4) ?: "Certificate No Missing"
-        val date = schoolData.getOrNull(5) ?: "Date Missing"
-        val name = schoolData.getOrNull(6) ?: "Name Missing"
-        val fatherName = schoolData.getOrNull(7) ?: "Father Missing"
-        val motherName = schoolData.getOrNull(8) ?: "Mother Missing"
+        val formName = schoolData.getOrNull(0) ?: "To Missing"
+        val district = schoolData.getOrNull(1) ?: "School Address Missing"
+        val anumandal = schoolData.getOrNull(2) ?: "Subject Missing"
+        val circle = schoolData.getOrNull(3) ?: "Sir/Mam Missing"
+        val pramanPatranumber = schoolData.getOrNull(4) ?: "Body Missing"
+        val date = schoolData.getOrNull(5) ?: "Applicant Name Missing"
+        val name = schoolData.getOrNull(6) ?: "Date Missing"
+        val fatherName = schoolData.getOrNull(7) ?: "To Missing"
+        val motherName = schoolData.getOrNull(8) ?: "School Address Missing"
+        val village = schoolData.getOrNull(9) ?: "Subject Missing"
+        val policeStation = schoolData.getOrNull(10) ?: "Sir/Mam Missing"
+        val postoffice = schoolData.getOrNull(11) ?: "Sir/Mam Missing"
+        val prakhanad = schoolData.getOrNull(12) ?: "Body Missing"
+        val anumnadal = schoolData.getOrNull(13) ?: "Applicant Name Missing"
+        val caste = schoolData.getOrNull(14) ?: "Date Missing"
+        val anusuchi = schoolData.getOrNull(15) ?: "Subject Missing"
+        val anukramank = schoolData.getOrNull(16) ?: "Sir/Mam Missing"
+        val digitallySignedBy = schoolData.getOrNull(17) ?: "Body Missing"
+        val dateAndTime = schoolData.getOrNull(18) ?: "Applicant Name Missing"
+
 
         // Body content with dynamic placeholders
         val lines = listOf(
-            "जिला / District: $district",
+            "जिला / District: $district", "अनुमंडल/Sub-Division:$district","अंचल/Circle:$circle",
             "अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
             "(बिहार सरकार के प्रयोजनार्थ)",
             "",
-            "प्रमाण-पत्र संख्या: $pramanPatraNumber                  दिनांक: $date",
+            "प्रमाण-पत्र संख्या: $pramanPatranumber                                                दिनांक: $date",
             "",
-            "        प्रमाणित किया जाता है कि $name, पिता (Father) $fatherName, माता (Mother) $motherName,",
-            "जाति - कानु / साहू, उपजाति - साहु, बथनाहा, सीतामढ़ी, राज्य - बिहार में निवास करता है।",
+            "        प्रमाणित किया जाता है कि $name($name), पिता (Father) $fatherName($fatherName), माता (Mother)" +
+                    "$motherName($motherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -" +
+                    "$district,जिला - $district,राज्य - बिहार के प्रजाति($caste)समुदाय के सदस्य है, जो बिहार पदों एवं सेवाओं की रिक्तियों में आरक्छन",
+            "(अनुसूचित जातियों, अनुसूचित जनजातियों एवं अन्य पिछडे वर्षों के लिए) अधिनियम, 1991 समय-समय पर यथासंशोधित अधिनियम"+
+                    " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-1) में अनुक्रमांक 97 पर अंकित है। अतः $name($name), पिता"+
+                    "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-1) के हैं।"+
+                    ""+
+
+                    "$name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation," +
+                    " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।"+
+
+                    "Digitally signed by $digitallySignedBy"+
+                    "Date:$dateAndTime"+
+
+                    "स्थान: $prakhanad",                                    "(हस्ताक्षर राजस्व अधिकारी / Signature",
+            "दिनांक: $date",                                                         "Revenue Officer)",
+
             "",
-            "        यह प्रमाण-पत्र उक्त $name के माता-पिता द्वारा प्रदान किए गए साक्ष्य और",
-            "वर्तमान सरकारी प्रलेखों के आधार पर सत्यापित किया गया है। यह प्रमाण-पत्र राज्य सरकार के",
-            "दस्तावेजों में मान्य होगा।",
-            "",
-            "स्थान: बथनाहा",
-            "दिनांक: $date",
-            "",
-            "डिजिटल हस्ताक्षर: गीता लाल प्रसाद",
-            "Revenue Officer"
+            "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus"+
+                    "Mobile App से करें।"+
+                    "वैधताः कोई समय सीमा नहीं।"+
+
+
+                    "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
+
         )
 
         for (line in lines) {
