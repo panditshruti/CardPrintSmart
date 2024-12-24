@@ -66,15 +66,10 @@ class JatiPramanPatra : ViewModel() {
         var startYform = 90f
         val lineSpacingss = 20f
 
-        // Centered Header
-        canvas.drawText("बिहार सरकार", pageWidth / 2, 50f, headerPaint)
-        canvas.drawText("Government of Bihar", pageWidth / 2, 70f, headerPaint)
-        canvas.drawText("फॉर्म / Form-IV", startXform, startYform, boldTextPaint)
 
-        startY += 1 * lineSpacing
 
         // Example dynamic data from schoolData list
-        val formName = schoolData.getOrNull(0) ?: "To Missing"
+        val formNumber = schoolData.getOrNull(0) ?: "To Missing"
         val district = schoolData.getOrNull(1) ?: "School Address Missing"
         val anumandal = schoolData.getOrNull(2) ?: "Subject Missing"
         val circle = schoolData.getOrNull(3) ?: "Sir/Mam Missing"
@@ -93,6 +88,14 @@ class JatiPramanPatra : ViewModel() {
         val anukramank = schoolData.getOrNull(16) ?: "Sir/Mam Missing"
         val digitallySignedBy = schoolData.getOrNull(17) ?: "Body Missing"
         val dateAndTime = schoolData.getOrNull(18) ?: "Applicant Name Missing"
+
+
+        // Centered Header
+        canvas.drawText("बिहार सरकार", pageWidth / 2, 50f, headerPaint)
+        canvas.drawText("Government of Bihar", pageWidth / 2, 70f, headerPaint)
+        canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
+
+        startY += 1 * lineSpacing
 
 //        val pageWidths = pageInfo.pageWidth.toFloat()
 //        val startXs = 350f
@@ -122,20 +125,30 @@ class JatiPramanPatra : ViewModel() {
             " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-1) में अनुक्रमांक 97 पर अंकित है। अतः $name($name), पिता",
             "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-1) के हैं।",
                     "",
-                    "$name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
+            "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
 
-                                                                             "Digitally signed by $digitallySignedBy",
-                                                                             "Date:$dateAndTime",
+            "                                                                 Digitally signed by $digitallySignedBy",
+            "                                                                 Date:$dateAndTime",
 
-            "स्थान: $prakhanad",                                    "(हस्ताक्षर राजस्व अधिकारी / Signature",
-            "दिनांक: $date",                                                         "Revenue Officer)",
+            "स्थान: $prakhanad                                          (हस्ताक्षर राजस्व अधिकारी / Signature",
+            "दिनांक: $date                                                            Revenue Officer)",
 
+            "",
+            "",
+            "",
             "",
             "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
             "Mobile App से करें।",
             "वैधताः कोई समय सीमा नहीं।",
-
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
             "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
 
         )
