@@ -63,7 +63,7 @@ class DemoJatiPramanPatraFragment : Fragment(R.layout.fragment_demo_jati_praman_
 
       // Load PDF into the PDF view
       pdfBytes1?.let { bytes ->
-         binding.pdfView1.fromBytes(bytes).load()
+         binding.pdfView.fromBytes(bytes).load()
       } ?: showToast("Failed to generate PDF")
 
       // Handle Save PDF button

@@ -41,7 +41,7 @@ class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
             "Digitally Signed By    :",
             "Date and time   :",
 
-        )
+            )
 
         val editTexts = mutableListOf<TextInputEditText>()
 
@@ -83,7 +83,7 @@ class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
 
             // Navigate and pass data
             val action = JatiPramanPatraFragmentDirections.actionAayPramanPatraFragmentToDemoJatiPramanPatraFragment(
-            formNumber,district,anumandal,circle,pramanPatranumber,date,name, fatherName, motherName,village,postoffice,policeStation,prakhanad,anumnadal,caste,
+                formNumber,district,anumandal,circle,pramanPatranumber,date,name, fatherName, motherName,village,postoffice,policeStation,prakhanad,anumnadal,caste,
                 anusuchi,anukramank,digitallySignedBy,dateandtime)
             findNavController().navigate(action)
         }

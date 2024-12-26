@@ -50,7 +50,7 @@ class DemoExamCopyFragment : Fragment(R.layout.fragment_demo_exam_copy) {
             val bitmap = BitmapFactory.decodeStream(inputStream)
             pdfBytes = examCopy.generatePdf(requireContext(), bitmap)
             pdfBytes?.let { bytes ->
-                binding.pdfView.fromBytes(bytes).load()
+//                binding.pdfView.fromBytes(bytes).load()
             } ?: showToast("Failed to generate PDF")
         }
 

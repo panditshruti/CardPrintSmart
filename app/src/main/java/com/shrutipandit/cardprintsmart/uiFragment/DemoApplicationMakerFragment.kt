@@ -87,7 +87,6 @@ class DemoApplicationMakerFragment : Fragment(R.layout.fragment_demo_application
         // Display the generated PDF
         pdfBytes1?.let { bytes ->
             binding.pdfView1.fromBytes(bytes)
-                .swipeHorizontal(false)
                 .load()
         } ?: showToast("Failed to generate School Application PDF")
     }

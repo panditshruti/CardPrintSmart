@@ -112,9 +112,9 @@ class JatiPramanPatra : ViewModel() {
 
         // Body content with dynamic placeholders
         val lines = listOf(
-                           "जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle",
-                                      "अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
-                                                        "(बिहार सरकार के प्रयोजनार्थ)",
+            "जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle",
+            "अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
+            "(बिहार सरकार के प्रयोजनार्थ)",
             "",
             "प्रमाण-पत्र संख्या: $pramanPatranumber                                                    दिनांक: $date",
             "",
@@ -124,7 +124,7 @@ class JatiPramanPatra : ViewModel() {
             "(अनुसूचित जातियों, अनुसूचित जनजातियों एवं अन्य पिछडे वर्षों के लिए) अधिनियम, 1991 समय-समय पर यथासंशोधित अधिनियम",
             " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-1) में अनुक्रमांक 97 पर अंकित है। अतः $name($name), पिता",
             "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-1) के हैं।",
-                    "",
+            "",
             "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
 
