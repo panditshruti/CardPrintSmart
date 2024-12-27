@@ -31,7 +31,8 @@ class JatiPramanPatra : ViewModel() {
         val canvas = page.canvas
 
         // Background setup
-        val bgBitmap = BitmapFactory.decodeResource(context.resources, R.drawable.aaypartapagepamplet)
+        val bgBitmap =
+            BitmapFactory.decodeResource(context.resources, R.drawable.aaypartapagepamplet)
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
 
@@ -67,7 +68,6 @@ class JatiPramanPatra : ViewModel() {
         val lineSpacingss = 20f
 
 
-
         // Example dynamic data from schoolData list
         val formNumber = schoolData.getOrNull(0) ?: "To Missing"
         val district = schoolData.getOrNull(1) ?: "School Address Missing"
@@ -95,26 +95,11 @@ class JatiPramanPatra : ViewModel() {
         canvas.drawText("Government of Bihar", pageWidth / 2, 70f, headerPaint)
         canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
 
-        startY += 1 * lineSpacing
-
-//        val pageWidths = pageInfo.pageWidth.toFloat()
-//        val startXs = 350f
-//        var startYs = 450f
-//        val lineSpacings = 20f
-//
-//        val forms = pageInfo.pageWidth.toFloat()
-//        val startXforms = 290f
-//        var startYforms = 140f
-//        val lineSpacingsss = 20f
-//        canvas.drawText("जिला / District: $district\", \"अनुमंडल/Sub-Division:$district\",\"अंचल/Circle:$circle", pageWidths / 2, 50f, headerPaint)
-//        canvas.drawText("अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC", pageWidths / 2, 70f, headerPaint)
-//        canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", startXforms, startYforms, boldTextPaint)
-
-        // Body content with dynamic placeholders
         val lines = listOf(
-            "जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle",
-            "अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
-            "(बिहार सरकार के प्रयोजनार्थ)",
+
+            "             जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle$pageWidth",
+            "                               अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
+            "                                               (बिहार सरकार के प्रयोजनार्थ)",
             "",
             "प्रमाण-पत्र संख्या: $pramanPatranumber                                                    दिनांक: $date",
             "",
@@ -135,20 +120,14 @@ class JatiPramanPatra : ViewModel() {
             "दिनांक: $date                                                            Revenue Officer)",
 
             "",
-            "",
-            "",
-            "",
+
             "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
             "Mobile App से करें।",
             "वैधताः कोई समय सीमा नहीं।",
             "",
             "",
             "",
-            "",
-            "",
-            "",
-            "",
-            "",
+
             "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
 
         )
