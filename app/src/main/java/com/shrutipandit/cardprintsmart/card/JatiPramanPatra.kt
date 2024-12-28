@@ -32,7 +32,7 @@ class JatiPramanPatra : ViewModel() {
 
         // Background setup
         val bgBitmap =
-            BitmapFactory.decodeResource(context.resources, R.drawable.aaypartapagepamplet)
+            BitmapFactory.decodeResource(context.resources, R.drawable.pm3)
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
 
@@ -58,13 +58,13 @@ class JatiPramanPatra : ViewModel() {
 
         // Constants for positioning
         val pageWidth = pageInfo.pageWidth.toFloat()
-        val startX = 50f
+        val startX = 100f
         var startY = 200f
         val lineSpacing = 20f
 
         val form = pageInfo.pageWidth.toFloat()
         val startXform = 260f
-        var startYform = 90f
+        var startYform = 150f
         val lineSpacingss = 20f
 
 
@@ -91,8 +91,8 @@ class JatiPramanPatra : ViewModel() {
 
 
         // Centered Header
-        canvas.drawText("बिहार सरकार", pageWidth / 2, 50f, headerPaint)
-        canvas.drawText("Government of Bihar", pageWidth / 2, 70f, headerPaint)
+        canvas.drawText("बिहार सरकार", pageWidth / 2, 110f, headerPaint)
+        canvas.drawText("Government of Bihar", pageWidth / 2, 130f, headerPaint)
         canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
 
         val lines = listOf(
