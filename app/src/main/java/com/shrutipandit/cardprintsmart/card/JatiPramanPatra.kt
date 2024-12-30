@@ -58,7 +58,7 @@ class JatiPramanPatra : ViewModel() {
 
         // Constants for positioning
         val pageWidth = pageInfo.pageWidth.toFloat()
-        val startX = 100f
+        val startX = 40f
         var startY = 200f
         val lineSpacing = 20f
 
@@ -82,13 +82,17 @@ class JatiPramanPatra : ViewModel() {
         val policeStation = schoolData.getOrNull(10) ?: "Sir/Mam Missing"
         val postoffice = schoolData.getOrNull(11) ?: "Sir/Mam Missing"
         val prakhanad = schoolData.getOrNull(12) ?: "Body Missing"
-        val anumnadal = schoolData.getOrNull(13) ?: "Applicant Name Missing"
         val caste = schoolData.getOrNull(14) ?: "Date Missing"
         val anusuchi = schoolData.getOrNull(15) ?: "Subject Missing"
         val anukramank = schoolData.getOrNull(16) ?: "Sir/Mam Missing"
         val digitallySignedBy = schoolData.getOrNull(17) ?: "Body Missing"
         val dateAndTime = schoolData.getOrNull(18) ?: "Applicant Name Missing"
 
+        val qrCodeContent = "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in"
+        val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
+        val qrCodeX =0f // Adjust X position
+        val qrCodeY =0f// Adjust Y position
+        canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY, null)
 
         // Centered Header
         canvas.drawText("बिहार सरकार", pageWidth / 2, 110f, headerPaint)
@@ -107,8 +111,8 @@ class JatiPramanPatra : ViewModel() {
             "$motherName($motherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -",
             "$district,जिला - $district,राज्य - बिहार के प्रजाति($caste)समुदाय के सदस्य है, जो बिहार पदों एवं सेवाओं की रिक्तियों में आरक्छन",
             "(अनुसूचित जातियों, अनुसूचित जनजातियों एवं अन्य पिछडे वर्षों के लिए) अधिनियम, 1991 समय-समय पर यथासंशोधित अधिनियम",
-            " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-1) में अनुक्रमांक 97 पर अंकित है। अतः $name($name), पिता",
-            "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-1) के हैं।",
+            " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-$anusuchi) में अनुक्रमांक $anukramank पर अंकित है। अतः $name($name), पिता",
+            "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-$anusuchi) के हैं।",
             "",
             "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
@@ -119,7 +123,7 @@ class JatiPramanPatra : ViewModel() {
             "स्थान: $prakhanad                                          (हस्ताक्षर राजस्व अधिकारी / Signature",
             "दिनांक: $date                                                            Revenue Officer)",
 
-            "",
+            "$qrCodeContent",
 
             "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
             "Mobile App से करें।",
@@ -133,13 +137,21 @@ class JatiPramanPatra : ViewModel() {
         )
 
         for (line in lines) {
-            canvas.drawText(line, startX, startY, textPaint)
+            if (line == "$qrCodeContent") {
+                // Draw the QR code image at the current position
+                val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
+                val qrCodeX = startX // Same starting X position as the text
+                val qrCodeY = startY // Current Y position of the text
+                canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY - 140f, null) // Adjust Y to align the QR code properly
+            } else {
+                // Draw text for other lines
+                canvas.drawText(line, startX, startY, textPaint)
+            }
+            // Increment Y-coordinate for the next line
             startY += lineSpacing
         }
-//        for (lines in lines) {
-//            canvas.drawText(lines, startXs, startYs, textPaint)
-//            startY += lineSpacing
-//        }
+
+        // Add QR Code
 
         // Finish the page
         pdfDocument.finishPage(page)
@@ -155,6 +167,25 @@ class JatiPramanPatra : ViewModel() {
             println("Error saving PDF: ${e.message}")
             null
         }
+    }
+
+    fun generateQRCode(content: String, size: Int): Bitmap {
+        val bitMatrix = com.google.zxing.MultiFormatWriter().encode(
+            content,
+            com.google.zxing.BarcodeFormat.QR_CODE,
+            size,
+            size,
+            mapOf(com.google.zxing.EncodeHintType.MARGIN to 1)
+        )
+        val width = bitMatrix.width
+        val height = bitMatrix.height
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 
 
