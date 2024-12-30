@@ -90,9 +90,7 @@ class JatiPramanPatra : ViewModel() {
 
         val qrCodeContent = "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in"
         val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
-        val qrCodeX =0f // Adjust X position
-        val qrCodeY =0f// Adjust Y position
-        canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY, null)
+//        canvas.drawBitmap(qrCodeBitmap, 0f, 0f, null)
 
         // Centered Header
         canvas.drawText("बिहार सरकार", pageWidth / 2, 110f, headerPaint)
@@ -138,18 +136,20 @@ class JatiPramanPatra : ViewModel() {
 
         for (line in lines) {
             if (line == "$qrCodeContent") {
-                // Draw the QR code image at the current position
+                // Draw the QR code image at the designated position
                 val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
                 val qrCodeX = startX // Same starting X position as the text
-                val qrCodeY = startY // Current Y position of the text
-                canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY - 140f, null) // Adjust Y to align the QR code properly
+                val qrCodeY = startY // Use current Y position for the QR code
+                canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY - 150f, null) // Adjust to place QR code properly
+
+                // Do not increment `startY` for QR code since it's fixed
             } else {
-                // Draw text for other lines
+                // Draw text for all other lines
                 canvas.drawText(line, startX, startY, textPaint)
+                startY += lineSpacing // Increment Y-coordinate for the next line
             }
-            // Increment Y-coordinate for the next line
-            startY += lineSpacing
         }
+
 
         // Add QR Code
 
