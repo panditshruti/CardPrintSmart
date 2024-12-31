@@ -31,61 +31,95 @@ class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
             "Father Name    :",
             "Mother Name    :",
             "Village    :",
-            "postOffice    :",
-            "PoliceStation    :",
+            "Post Office    :",
+            "Police Station    :",
             "Prakhanad    :",
             "Anumnadal    :",
-            "caste    :",
-            "anusuchi    :",
-            "anukramank    :",
+            "Caste    :",
+            "Anusuchi    :",
+            "Anukramank    :",
             "Digitally Signed By    :",
-            "Date and time   :",
-
-            )
+            "Date and Time   :"
+        )
 
         val editTexts = mutableListOf<TextInputEditText>()
 
-        // Add TextInputEditTexts for each item in the marriageArrayList
+        // Add TextInputEditTexts dynamically
         for (label in jatipramnPatraList) {
-            val textInputEditText = TextInputEditText(requireContext())
-            textInputEditText.hint = label
-            linearLayout.addView(
-                textInputEditText,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            editTexts.add(textInputEditText)
+            if (label == "Name    :" || label == "Father Name    :" || label == "Mother Name    :") {
+                // Add English input field
+                val englishEditText = TextInputEditText(requireContext()).apply {
+                    hint = "$label (English)"
+                }
+                linearLayout.addView(
+                    englishEditText,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                editTexts.add(englishEditText)
+
+                // Add Hindi input field
+                val hindiEditText = TextInputEditText(requireContext()).apply {
+                    hint = "$label (Hindi)"
+                }
+                linearLayout.addView(
+                    hindiEditText,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                editTexts.add(hindiEditText)
+            } else {
+                // Add other fields as usual
+                val textInputEditText = TextInputEditText(requireContext()).apply {
+                    hint = label
+                }
+                linearLayout.addView(
+                    textInputEditText,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                editTexts.add(textInputEditText)
+            }
         }
 
         // Add the submit button
-        val submitButton = Button(requireContext())
-        submitButton.text = "Submit"
-        submitButton.setOnClickListener {
-            val formNumber = editTexts[0].text.toString()
-            val district = editTexts[1].text.toString()
-            val anumandal = editTexts[2].text.toString()
-            val circle = editTexts[3].text.toString()
-            val pramanPatranumber = editTexts[4].text.toString()
-            val date = editTexts[5].text.toString()
-            val name = editTexts[6].text.toString()
-            val fatherName = editTexts[7].text.toString()
-            val motherName = editTexts[8].text.toString()
-            val village = editTexts[9].text.toString()
-            val postoffice = editTexts[11].text.toString()
-            val policeStation = editTexts[11].text.toString()
-            val prakhanad = editTexts[12].text.toString()
-            val anumnadal = editTexts[13].text.toString()
-            val caste = editTexts[14].text.toString()
-            val anusuchi = editTexts[15].text.toString()
-            val anukramank = editTexts[16].text.toString()
-            val digitallySignedBy = editTexts[17].text.toString()
-            val dateandtime = editTexts[18].text.toString()
+        val submitButton = Button(requireContext()).apply {
+            text = "Submit"
+            setOnClickListener {
+                val formNumber = editTexts[0].text.toString()
+                val district = editTexts[1].text.toString()
+                val anumandal = editTexts[2].text.toString()
+                val circle = editTexts[3].text.toString()
+                val pramanPatranumber = editTexts[4].text.toString()
+                val date = editTexts[5].text.toString()
+                val nameEnglish = editTexts[6].text.toString() // Name (English)
+                val nameHindi = editTexts[7].text.toString()   // Name (Hindi)
+                val fatherNameEnglish = editTexts[8].text.toString() // Father Name (English)
+                val fatherNameHindi = editTexts[9].text.toString()   // Father Name (Hindi)
+                val motherNameEnglish = editTexts[10].text.toString() // Mother Name (English)
+                val motherNameHindi = editTexts[11].text.toString()   // Mother Name (Hindi)
+                val village = editTexts[12].text.toString()
+                val postOffice = editTexts[13].text.toString()
+                val policeStation = editTexts[14].text.toString()
+                val prakhanad = editTexts[15].text.toString()
+                val anumnadal = editTexts[16].text.toString()
+                val caste = editTexts[17].text.toString()
+                val anusuchi = editTexts[18].text.toString()
+                val anukramank = editTexts[19].text.toString()
+                val digitallySignedBy = editTexts[20].text.toString()
+                val dateAndTime = editTexts[21].text.toString()
 
-            // Navigate and pass data
-            val action = JatiPramanPatraFragmentDirections.actionAayPramanPatraFragmentToDemoJatiPramanPatraFragment(
-                formNumber,district,anumandal,circle,pramanPatranumber,date,name, fatherName, motherName,village,postoffice,policeStation,prakhanad,anumnadal,caste,
-                anusuchi,anukramank,digitallySignedBy,dateandtime)
-            findNavController().navigate(action)
+                // Navigate and pass data
+                val action = JatiPramanPatraFragmentDirections.actionAayPramanPatraFragmentToDemoJatiPramanPatraFragment(
+                    formNumber, district, anumandal, circle, pramanPatranumber, date,
+                    "$nameEnglish / $nameHindi", // Combined Name
+                    "$fatherNameEnglish / $fatherNameHindi", // Combined Father Name
+                    "$motherNameEnglish / $motherNameHindi", // Combined Mother Name
+                    village, postOffice, policeStation, prakhanad, anumnadal, caste,
+                    anusuchi, anukramank, digitallySignedBy, dateAndTime
+                )
+                findNavController().navigate(action)
+            }
         }
 
         linearLayout.addView(
