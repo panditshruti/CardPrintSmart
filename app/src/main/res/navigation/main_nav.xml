@@ -360,10 +360,19 @@
             android:name="name"
             app:argType="string" />
         <argument
+            android:name="hindiName"
+            app:argType="string" />
+        <argument
             android:name="FatherName"
             app:argType="string" />
         <argument
+            android:name="hindiFatherName"
+            app:argType="string" />
+        <argument
             android:name="MotherName"
+            app:argType="string" />
+        <argument
+            android:name="hindiMotherName"
             app:argType="string" />
         <argument
             android:name="Village"
@@ -376,9 +385,6 @@
             app:argType="string" />
         <argument
             android:name="Prakhanad"
-            app:argType="string" />
-        <argument
-            android:name="Anumnadal"
             app:argType="string" />
         <argument
             android:name="caste"

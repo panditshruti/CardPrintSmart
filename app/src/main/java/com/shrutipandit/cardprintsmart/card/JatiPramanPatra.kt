@@ -32,7 +32,7 @@ class JatiPramanPatra : ViewModel() {
 
         // Background setup
         val bgBitmap =
-            BitmapFactory.decodeResource(context.resources, R.drawable.pm3)
+            BitmapFactory.decodeResource(context.resources, R.drawable.jatip4)
         val scaledBgBitmap = Bitmap.createScaledBitmap(bgBitmap, canvas.width, canvas.height, true)
         canvas.drawBitmap(scaledBgBitmap, 0f, 0f, null)
 
@@ -65,7 +65,7 @@ class JatiPramanPatra : ViewModel() {
         val form = pageInfo.pageWidth.toFloat()
         val startXform = 260f
         var startYform = 150f
-        val lineSpacingss = 20f
+
 
 
         // Example dynamic data from schoolData list
@@ -73,22 +73,25 @@ class JatiPramanPatra : ViewModel() {
         val district = schoolData.getOrNull(1) ?: "School Address Missing"
         val anumandal = schoolData.getOrNull(2) ?: "Subject Missing"
         val circle = schoolData.getOrNull(3) ?: "Sir/Mam Missing"
-        val pramanPatranumber = schoolData.getOrNull(4) ?: "Body Missing"
+        val pramanPatraNumber = schoolData.getOrNull(4) ?: "Body Missing"
         val date = schoolData.getOrNull(5) ?: "Applicant Name Missing"
         val name = schoolData.getOrNull(6) ?: "Date Missing"
-        val fatherName = schoolData.getOrNull(7) ?: "To Missing"
-        val motherName = schoolData.getOrNull(8) ?: "School Address Missing"
-        val village = schoolData.getOrNull(9) ?: "Subject Missing"
-        val policeStation = schoolData.getOrNull(10) ?: "Sir/Mam Missing"
-        val postoffice = schoolData.getOrNull(11) ?: "Sir/Mam Missing"
-        val prakhanad = schoolData.getOrNull(12) ?: "Body Missing"
-        val caste = schoolData.getOrNull(14) ?: "Date Missing"
-        val anusuchi = schoolData.getOrNull(15) ?: "Subject Missing"
-        val anukramank = schoolData.getOrNull(16) ?: "Sir/Mam Missing"
-        val digitallySignedBy = schoolData.getOrNull(17) ?: "Body Missing"
-        val dateAndTime = schoolData.getOrNull(18) ?: "Applicant Name Missing"
+        val hindiName = schoolData.getOrNull(7) ?: "Date Missing"
+        val fatherName = schoolData.getOrNull(8) ?: "To Missing"
+        val hindiFatherName = schoolData.getOrNull(9) ?: "To Missing"
+        val motherName = schoolData.getOrNull(10) ?: "School Address Missing"
+        val hindiMotherName = schoolData.getOrNull(11) ?: "School Address Missing"
+        val village = schoolData.getOrNull(12) ?: "Subject Missing"
+        val policeStation = schoolData.getOrNull(13) ?: "Sir/Mam Missing"
+        val postoffice = schoolData.getOrNull(14) ?: "Sir/Mam Missing"
+        val prakhanad = schoolData.getOrNull(15) ?: "Body Missing"
+        val caste = schoolData.getOrNull(16) ?: "Date Missing"
+        val anusuchi = schoolData.getOrNull(17) ?: "Subject Missing"
+        val anukramank = schoolData.getOrNull(18) ?: "Sir/Mam Missing"
+        val digitallySignedBy = schoolData.getOrNull(19) ?: "Body Missing"
+        val dateAndTime = schoolData.getOrNull(20) ?: "Applicant Name Missing"
 
-        val qrCodeContent = "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in"
+        val qrCodeContent = "Reference No: $pramanPatraNumber To View: https://serviceonline.bihar.gov.in"
         val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
 //        canvas.drawBitmap(qrCodeBitmap, 0f, 0f, null)
 
@@ -99,18 +102,18 @@ class JatiPramanPatra : ViewModel() {
 
         val lines = listOf(
 
-            "             जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle$pageWidth",
-            "                               अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
-            "                                               (बिहार सरकार के प्रयोजनार्थ)",
+            "             जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle",
+            "                              अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
+            "                                             (बिहार सरकार के प्रयोजनार्थ)",
             "",
-            "प्रमाण-पत्र संख्या: $pramanPatranumber                                                    दिनांक: $date",
+            "प्रमाण-पत्र संख्या: $pramanPatraNumber                                                    दिनांक: $date",
             "",
-            "        प्रमाणित किया जाता है कि $name($name), पिता (Father) $fatherName($fatherName), माता (Mother)",
-            "$motherName($motherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -",
-            "$district,जिला - $district,राज्य - बिहार के प्रजाति($caste)समुदाय के सदस्य है, जो बिहार पदों एवं सेवाओं की रिक्तियों में आरक्छन",
+            "        प्रमाणित किया जाता है कि $name($hindiName), पिता (Father) $fatherName($hindiFatherName),",
+            " माता (Mother)$motherName($hindiMotherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -$anumandal",
+            "जिला - $district,राज्य - बिहार के प्रजाति($caste)समुदाय के सदस्य है, जो बिहार पदों एवं सेवाओं की रिक्तियों में आरक्छन",
             "(अनुसूचित जातियों, अनुसूचित जनजातियों एवं अन्य पिछडे वर्षों के लिए) अधिनियम, 1991 समय-समय पर यथासंशोधित अधिनियम",
-            " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-$anusuchi) में अनुक्रमांक $anukramank पर अंकित है। अतः $name($name), पिता",
-            "(Father)$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-$anusuchi) के हैं।",
+            " के अंतर्गत बिहार राज्य की अत्यंत पिछड़ा वर्ग (अनुसूची-$anusuchi) में अनुक्रमांक $anukramank पर अंकित है। अतः $name($name), पिता(Father)",
+            "$fatherName($fatherName), अत्यंत पिछडा वर्ग (अनुसूची-$anusuchi) के हैं।",
             "",
             "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
@@ -121,7 +124,7 @@ class JatiPramanPatra : ViewModel() {
             "स्थान: $prakhanad                                          (हस्ताक्षर राजस्व अधिकारी / Signature",
             "दिनांक: $date                                                            Revenue Officer)",
 
-            "$qrCodeContent",
+//            "$qrCodeContent",
 
             "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
             "Mobile App से करें।",
@@ -130,7 +133,7 @@ class JatiPramanPatra : ViewModel() {
             "",
             "",
 
-            "Reference No: $pramanPatranumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
+            "Reference No: $pramanPatraNumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
 
         )
 
@@ -149,10 +152,7 @@ class JatiPramanPatra : ViewModel() {
                 startY += lineSpacing // Increment Y-coordinate for the next line
             }
         }
-
-
         // Add QR Code
-
         // Finish the page
         pdfDocument.finishPage(page)
 
@@ -187,6 +187,5 @@ class JatiPramanPatra : ViewModel() {
         }
         return bitmap
     }
-
 
 }
