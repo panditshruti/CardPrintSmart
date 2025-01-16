@@ -9,8 +9,8 @@ class OMRSheet {
 
     fun generatePdf(context: Context, numberOfQuestions: Int, paperSize: String, schoolName: String): ByteArray {
         val fixedHeaderHeight = 150
-        val rowHeight = 50
-        val padding = 20
+        val rowHeight = 70
+        val padding = 10
         val maxColumns = 4
         val pageWidth = 595
         val pageHeight = 842
@@ -185,4 +185,4 @@ class OMRSheet {
 
 
 
-} 
+}

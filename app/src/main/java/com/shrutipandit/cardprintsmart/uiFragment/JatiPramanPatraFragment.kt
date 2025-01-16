@@ -52,6 +52,7 @@ class JatiPramanPatraFragment : Fragment(R.layout.fragment_aay_praman_patra) {
             }
             linearLayout.addView(
                 textInputEditText,
+
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
