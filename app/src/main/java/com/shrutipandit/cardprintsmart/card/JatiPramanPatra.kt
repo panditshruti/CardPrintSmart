@@ -123,8 +123,13 @@ class JatiPramanPatra : ViewModel() {
 
             "स्थान: $prakhanad                                          (हस्ताक्षर राजस्व अधिकारी / Signature",
             "दिनांक: $date                                                            Revenue Officer)",
-
-//            "$qrCodeContent",
+            "",
+            "",
+            "",
+            "$qrCodeContent",
+            "",
+            "",
+            "",
 
             "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
             "Mobile App से करें।",
@@ -140,10 +145,10 @@ class JatiPramanPatra : ViewModel() {
         for (line in lines) {
             if (line == "$qrCodeContent") {
                 // Draw the QR code image at the designated position
-                val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
+                val qrCodeBitmap = generateQRCode(qrCodeContent, 100) // QR Code size: 150x150
                 val qrCodeX = startX // Same starting X position as the text
                 val qrCodeY = startY // Use current Y position for the QR code
-                canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY - 150f, null) // Adjust to place QR code properly
+                canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY - 100f, null) // Adjust to place QR code properly
 
                 // Do not increment `startY` for QR code since it's fixed
             } else {
