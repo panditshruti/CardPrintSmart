@@ -101,12 +101,11 @@ class JatiPramanPatra : ViewModel() {
         canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
 
         val lines = listOf(
-
-            "             जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle",
-            "                              अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC",
-            "                                             (बिहार सरकार के प्रयोजनार्थ)",
+            "                 जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle                          ",
+            "                              अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC                                  ",
+            "                                             (बिहार सरकार के प्रयोजनार्थ)                                                     ",
             "",
-            "प्रमाण-पत्र संख्या: $pramanPatraNumber                                                    दिनांक: $date",
+            "प्रमाण-पत्र संख्या: $pramanPatraNumber                                                                            दिनांक: $date",
             "",
             "        प्रमाणित किया जाता है कि $name($hindiName), पिता (Father) $fatherName($hindiFatherName),",
             " माता (Mother)$motherName($hindiMotherName),ग्राम / मोहला - $village,थाना - $policeStation,प्रखंड - $prakhanad,अनुमंडल -$anumandal",
@@ -118,19 +117,17 @@ class JatiPramanPatra : ViewModel() {
             "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
 
-            "                                                                 Digitally signed by $digitallySignedBy",
-            "                                                                 Date:$dateAndTime",
+            "                                                                               Digitally signed by $digitallySignedBy",
+            "                                                                               Date:$dateAndTime",
 
-            "स्थान: $prakhanad                                          (हस्ताक्षर राजस्व अधिकारी / Signature",
-            "दिनांक: $date                                                            Revenue Officer)",
+            "स्थान: $prakhanad                                                                                                 ",
+            "दिनांक: $date                                                      (हस्ताक्षर राजस्व अधिकारी / Signature Revenue Officer)",
+            "",
             "",
             "",
             "",
             "$qrCodeContent",
             "",
-            "",
-            "",
-
             "OR Code की जाँच https://servicsonline.bihar.gov.in पोर्टल एवं Play Store पर उपलब्ध ServicePlus",
             "Mobile App से करें।",
             "वैधताः कोई समय सीमा नहीं।",

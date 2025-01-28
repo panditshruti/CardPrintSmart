@@ -73,7 +73,7 @@ class StudentIdCardFragment : Fragment(R.layout.fragment_student_id_card) {
                 val imageUriString = selectedImageUri?.toString() ?: ""
 
                 // Ensure the navigation action is defined in your navigation graph
-                val action = StudentIdCardFragmentDirections.actionStudentIdCardFragmentToDemoIdCardFragment22(data, imageUriString)
+                val action = StudentIdCardFragmentDirections.actionStudentIdCardFragmentToDemoIdCardFragment2(data,imageUriString)
                 findNavController().navigate(action)
             }
         }
