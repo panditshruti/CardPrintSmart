@@ -58,8 +58,8 @@ class JatiPramanPatra : ViewModel() {
 
         // Constants for positioning
         val pageWidth = pageInfo.pageWidth.toFloat()
-        val startX = 40f
-        var startY = 200f
+        val startX = 20f
+        var startY = 198f
         val lineSpacing = 20f
 
         val form = pageInfo.pageWidth.toFloat()
@@ -91,6 +91,7 @@ class JatiPramanPatra : ViewModel() {
         val digitallySignedBy = schoolData.getOrNull(19) ?: "Body Missing"
         val dateAndTime = schoolData.getOrNull(20) ?: "Applicant Name Missing"
 
+
         val qrCodeContent = "Reference No: $pramanPatraNumber To View: https://serviceonline.bihar.gov.in"
         val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
 //        canvas.drawBitmap(qrCodeBitmap, 0f, 0f, null)
@@ -100,10 +101,15 @@ class JatiPramanPatra : ViewModel() {
         canvas.drawText("Government of Bihar", pageWidth / 2, 130f, headerPaint)
         canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
 
+        canvas.drawText("जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle", pageWidth / 2, 170f, headerPaint)
+        canvas.drawText("अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC", pageWidth / 2, 190f, headerPaint)
+        canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", pageWidth / 2, 210f, headerPaint)
+
+
         val lines = listOf(
-            "                 जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle                          ",
-            "                              अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC                                  ",
-            "                                             (बिहार सरकार के प्रयोजनार्थ)                                                     ",
+//            "                 जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle                          ",
+//            "                              अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC                                  ",
+//            "                                             (बिहार सरकार के प्रयोजनार्थ)                                                     ",
             "",
             "प्रमाण-पत्र संख्या: $pramanPatraNumber                                                                            दिनांक: $date",
             "",
@@ -117,7 +123,7 @@ class JatiPramanPatra : ViewModel() {
             "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
 
-            "                                                                               Digitally signed by $digitallySignedBy",
+             "                                                                              Digitally signed by $digitallySignedBy",
             "                                                                               Date:$dateAndTime",
 
             "स्थान: $prakhanad                                                                                                 ",
