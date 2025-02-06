@@ -97,12 +97,12 @@ class JatiPramanPatra : ViewModel() {
 
 
         val qrCodeContent = "Reference No: $pramanPatraNumber To View: https://serviceonline.bihar.gov.in"
-        val qrCodeBitmap = generateQRCode(qrCodeContent, 150) // QR Code size: 150x150
+        val qrCodeBitmap = generateQRCode(qrCodeContent, 20,0,130) // QR Code size: 150x150
 //        canvas.drawBitmap(qrCodeBitmap, 0f, 0f, null)
 
         // Centered Header
         canvas.drawText("बिहार सरकार", pageWidth / 2, 110f, headerPaint)
-        canvas.drawText("Government of Bihar", pageWidth / 2, 130f, headerPaint)
+        canvas.drawText("Government of Bihar", pageWidth / 2, 100f, headerPaint)
         canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
 
         canvas.drawText("जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle", pageWidth / 2, 170f, headerPaint)
@@ -110,12 +110,21 @@ class JatiPramanPatra : ViewModel() {
         canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", pageWidth / 2, 210f, headerPaint)
 
         // Left side text (Start of the page)
-        canvas.drawText("प्रमाण-पत्र संख्या: $pramanPatraNumber", 70f, 230f, headerPaint)
+        // Left Side: प्रमाण-पत्र संख्या (Fixed Position)
+        val pramanPatraLabel = "प्रमाण-पत्र संख्या:"
+        val pramanPatraValue = pramanPatraNumber
+        val pramanPatraX = 70f
+        canvas.drawText(pramanPatraLabel, pramanPatraX, 230f, headerPaint)
 
-// Right side text (End of the page)
+// प्रमाण-पत्र संख्या value ko label ke baad likhna
+        val pramanPatraLabelWidth = headerPaint.measureText(pramanPatraLabel)
+        canvas.drawText(pramanPatraValue, pramanPatraX + pramanPatraLabelWidth + 10f, 230f, headerPaint)
+
+// Right Side: दिनांक (Fixed at End of Page)
         val dateText = "दिनांक: $date"
-        val textWidth = headerPaint.measureText(dateText)
-        canvas.drawText(dateText, pageWidtha - textWidth - startXa, 230f, headerPaint)
+        val dateTextWidth = headerPaint.measureText(dateText)
+        val dateX = pageWidtha - dateTextWidth - startXa
+        canvas.drawText(dateText, dateX, 230f, headerPaint)
 
 
         val lines = listOf(
@@ -157,14 +166,14 @@ class JatiPramanPatra : ViewModel() {
             "",
             "",
 
-            "Reference No: $pramanPatraNumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
+            "Reference No:$pramanPatraNumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
 
         )
 
         for (line in lines) {
             if (line == "$qrCodeContent") {
                 // Draw the QR code image at the designated position
-                val qrCodeBitmap = generateQRCode(qrCodeContent, 100) // QR Code size: 150x150
+                val qrCodeBitmap = generateQRCode(qrCodeContent, 20,0,100) // QR Code size: 150x150
                 val qrCodeX = startX // Same starting X position as the text
                 val qrCodeY = startY // Use current Y position for the QR code
                 canvas.drawBitmap(qrCodeBitmap, qrCodeX, qrCodeY - 100f, null) // Adjust to place QR code properly
@@ -193,7 +202,7 @@ class JatiPramanPatra : ViewModel() {
         }
     }
 
-    fun generateQRCode(content: String, size: Int): Bitmap {
+    fun generateQRCode(content: String, x:Int,y:Int,size: Int): Bitmap {
         val bitMatrix = com.google.zxing.MultiFormatWriter().encode(
             content,
             com.google.zxing.BarcodeFormat.QR_CODE,
