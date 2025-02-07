@@ -63,9 +63,6 @@ class JatiPramanPatra : ViewModel() {
         val lineSpacing = 20f
      val pageWidtha = pageInfo.pageWidth.toFloat()
         val startXa= 40f
-        var startYa = 210f
-        val lineSpacinga = 20f
-
         val form = pageInfo.pageWidth.toFloat()
         val startXform = 260f
         var startYform = 150f
@@ -101,13 +98,13 @@ class JatiPramanPatra : ViewModel() {
 //        canvas.drawBitmap(qrCodeBitmap, 0f, 0f, null)
 
         // Centered Header
-        canvas.drawText("बिहार सरकार", pageWidth / 2, 110f, headerPaint)
-        canvas.drawText("Government of Bihar", pageWidth / 2, 100f, headerPaint)
-        canvas.drawText("फॉर्म / Form-$formNumber", startXform, startYform, boldTextPaint)
+        canvas.drawText("बिहार सरकार", pageWidth / 2, 100f, headerPaint)
+        canvas.drawText("Government of Bihar", pageWidth / 2, 115f, headerPaint)
+        canvas.drawText("फॉर्म / Form-$formNumber", startXform, 130f, boldTextPaint)
 
-        canvas.drawText("जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle", pageWidth / 2, 170f, headerPaint)
-        canvas.drawText("अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC", pageWidth / 2, 190f, headerPaint)
-        canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", pageWidth / 2, 210f, headerPaint)
+        canvas.drawText("जिला / District: $district,अनुमंडल/Sub-Division:$district,अंचल/Circle:$circle", pageWidth / 2, 165f, headerPaint)
+        canvas.drawText("अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC", pageWidth / 2, 185f, headerPaint)
+        canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", pageWidth / 2, 205f, headerPaint)
 
         // Left side text (Start of the page)
         // Left Side: प्रमाण-पत्र संख्या (Fixed Position)
