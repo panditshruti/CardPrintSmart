@@ -106,22 +106,27 @@ class JatiPramanPatra : ViewModel() {
         canvas.drawText("अत्यंत पिछड़ा वर्ग का जाति प्रमाण-पत्र / Caste Certificate of EBC", pageWidth / 2, 185f, headerPaint)
         canvas.drawText("(बिहार सरकार के प्रयोजनार्थ)", pageWidth / 2, 205f, headerPaint)
 
-        // Left side text (Start of the page)
         // Left Side: प्रमाण-पत्र संख्या (Fixed Position)
         val pramanPatraLabel = "प्रमाण-पत्र संख्या:"
         val pramanPatraValue = pramanPatraNumber
         val pramanPatraX = 70f
         canvas.drawText(pramanPatraLabel, pramanPatraX, 230f, headerPaint)
 
-// प्रमाण-पत्र संख्या value ko label ke baad likhna
+// प्रमाण-पत्र संख्या value ko bilkul just baad likhna (extra gap hata diya)
         val pramanPatraLabelWidth = headerPaint.measureText(pramanPatraLabel)
-        canvas.drawText(pramanPatraValue, pramanPatraX + pramanPatraLabelWidth + 10f, 230f, headerPaint)
+        val pramanPatraValueX = pramanPatraX + pramanPatraLabelWidth + 2f  // Sirf 5px ka gap
+        canvas.drawText(pramanPatraValue, pramanPatraValueX, 230f, headerPaint)
+        val rightPadding = 0f // Pehle se jo gap tha, usko maintain karega
 
 // Right Side: दिनांक (Fixed at End of Page)
         val dateText = "दिनांक: $date"
         val dateTextWidth = headerPaint.measureText(dateText)
-        val dateX = pageWidtha - dateTextWidth - startXa
+
+// Ensure date is right-aligned with fixed padding
+        val dateX = pageWidth - dateTextWidth - rightPadding
         canvas.drawText(dateText, dateX, 230f, headerPaint)
+
+
 
 
         val lines = listOf(
