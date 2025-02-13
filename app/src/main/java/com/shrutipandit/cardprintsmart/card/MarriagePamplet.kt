@@ -52,7 +52,7 @@ class MarriagePamplet : ViewModel() {
         val datePaint = Paint().apply {
             color = Color.YELLOW
             textSize = 30.0f // Text size for Date
-            typeface = ResourcesCompat.getFont(context, R.font.fonttext)
+
         }
 
         // Static positions for each item

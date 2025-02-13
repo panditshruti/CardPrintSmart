@@ -168,7 +168,8 @@ class JatiPramanPatra : ViewModel() {
             "",
             "",
 
-            "Reference No:$pramanPatraNumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 Tokan No: 22141203"
+            "Reference No:$pramanPatraNumber To View: https://serviceonline.bihar.gov.in/officials/it/NKDrf/22141203 ",
+                    "Tokan No: 22141203"
 
         )
 

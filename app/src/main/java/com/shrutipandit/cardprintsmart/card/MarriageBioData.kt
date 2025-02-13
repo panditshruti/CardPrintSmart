@@ -85,7 +85,7 @@ class MarriageBioData : ViewModel() {
             "Brother          :"
         )
 
-        val lineHeight = 26
+        val lineHeight = 25
 
         // Draw Personal Information
         drawTextList(
