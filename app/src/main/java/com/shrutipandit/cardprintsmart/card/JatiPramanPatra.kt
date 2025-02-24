@@ -127,6 +127,18 @@ class JatiPramanPatra : ViewModel() {
         canvas.drawText(dateText, dateX, 230f, headerPaint)
 
 
+// Right Align "Digitally signed by"
+        val signedText = "Digitally signed by $digitallySignedBy"
+        val signedTextWidth = textPaint.measureText(signedText)
+        val signedTextX = pageWidth - signedTextWidth - 5f  // Only 5px gap from right
+        canvas.drawText(signedText, signedTextX, 440f, textPaint) // Adjust Y position as needed
+
+// Right Align "Date:"
+        val dateAndTimeText = "Date: $dateAndTime"
+        val dateAndTimeWidth = textPaint.measureText(dateAndTimeText)
+        val dateAndTimeX = pageWidth - dateAndTimeWidth - 5f  // Only 5px gap from right
+        canvas.drawText(dateAndTimeText, dateAndTimeX, 460f, textPaint) // Adjust Y position as needed
+
 
 
         val lines = listOf(
@@ -146,8 +158,8 @@ class JatiPramanPatra : ViewModel() {
             "        $name ($name) एवं उनका परिवार वर्तमान में ग्राम / मोहला -$village, डाकघर - $postoffice, थाना - $policeStation,",
             " प्रखंड - $prakhanad, अनुमंडल - $anumandal, जिला- $district, राज्य - BIHAR में निवास करता हैं।",
 
-             "                                                                              Digitally signed by $digitallySignedBy",
-            "                                                                               Date:$dateAndTime",
+            "",
+            "",
 
             "स्थान: $prakhanad                                                                                                 ",
             "दिनांक: $date                                                      (हस्ताक्षर राजस्व अधिकारी / Signature Revenue Officer)",
