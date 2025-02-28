@@ -23,20 +23,26 @@ class MarriageBioDataFragment : Fragment(R.layout.fragment_marriage_bio_data) {
 
         val marriageArrayList = arrayListOf(
             "Name             :",
-            "Father's Name    :",
-            "Date Of Birth    :",
-            "Birth Place      :",
-            "Religion         :",
-            "Caste            :",
-            "Height           :",
-            "Blood Group      :",
-            "Complexion       :",
-            "Education        :",
-            "10 Marks         :",
-            "12 Marks         :",
+            "Father's Name             :",
+            "Date Of Birth             :",
+            "Birth Place             :",
+            "Religion             :",
+            "Caste             ",
+            "Height             :",
+            "Blood Group             :",
+            "Complexion             :",
+            "Education             :",
+            "10 Marks             :",
+            "12 Marks             :",
             "Post             :",
-            "District         :",
-            "State            :"
+            "District             :",
+            "State             :",
+            "Father Occupation             :",
+            "Mother Occupation             :",
+            "Sister             :",
+            "Brother             :",
+            "Address             :",
+            "Contact No-             :"
         )
 
         val editTexts = mutableListOf<TextInputEditText>()

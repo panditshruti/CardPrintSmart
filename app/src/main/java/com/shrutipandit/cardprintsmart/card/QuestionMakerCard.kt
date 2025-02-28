@@ -55,10 +55,9 @@ class QuestionMakerCard {
         return outputStream.toByteArray()
     }
 
-
     private fun drawTextList(canvas: Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Int, paint: Paint) {
         val lineHeight = 26
-        val maxWidth = canvas.width - 2 * (x + 20) // Adjust for margins
+        val maxWidth = canvas.width - 2 * (x + 20)
         var yPoint = y
 
         for (i in labelList.indices) {
@@ -68,6 +67,7 @@ class QuestionMakerCard {
             val words = text.split(" ")
 
             var line = ""
+
             for (word in words) {
                 val testLine = if (line.isEmpty()) word else "$line $word"
                 val textWidth = paint.measureText(testLine)

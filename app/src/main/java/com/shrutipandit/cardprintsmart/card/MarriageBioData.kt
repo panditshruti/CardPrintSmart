@@ -61,28 +61,26 @@ class MarriageBioData : ViewModel() {
         // Define personal and family information lists
         val marriagePersonalInfoArrayList = arrayListOf(
             "Name             :",
-            "Father's Name    :",
-            "Date Of Birth    :",
-            "Birth Place      :",
-            "Religion         :",
-            "Caste            :",
-            "Height           :",
-            "Blood Group      :",
-            "Complexion       :",
-            "Education        :",
-            "10 Marks         :",
-            "12 Marks         :",
+            "Father's Name             :",
+            "Date Of Birth             :",
+            "Birth Place             :",
+            "Religion             :",
+            "Caste             ",
+            "Height             :",
+            "Blood Group             :",
+            "Complexion             :",
+            "Education             :",
+            "10 Marks             :",
+            "12 Marks             :",
             "Post             :",
-            "District         :",
-            "State            :"
+            "District             :",
+            "State             :"
         )
         val marriageFamilyInfoArrayList = arrayListOf(
-            "Father Name      :",
-            "Occupation       :",
-            "Mother Name      :",
-            "Occupation       :",
-            "Sister           :",
-            "Brother          :"
+            "Father Occupation             :",
+            "Mother Occupation             :",
+            "Sister             :",
+            "Brother             :"
         )
 
         val lineHeight = 25
@@ -141,8 +139,8 @@ class MarriageBioData : ViewModel() {
 
         // Draw Contact Information
         val marriageContactInfoArrayList = arrayListOf(
-            "Address          :",
-            "Contact No-      :"
+            "Address             :",
+            "Contact No-             :"
         )
         if (data.size >= marriagePersonalInfoArrayList.size + marriageFamilyInfoArrayList.size + marriageContactInfoArrayList.size) {
             drawTextList(
@@ -175,13 +173,43 @@ class MarriageBioData : ViewModel() {
     }
 
 
-    private fun drawTextList(canvas: android.graphics.Canvas, labelList: List<String>, dataList: List<String>, x: Float, y: Float, paint: Paint) {
+    private fun drawTextList(
+        canvas: android.graphics.Canvas,
+        labelList: List<String>,
+        dataList: List<String>,
+        x: Float,
+        y: Float,
+        paint: Paint,
+        maxWidth: Float = 400f, // Adjust based on your page width
+        lineSpacing: Float = 25f // Space between lines
+    ) {
         var yPoint = y
+
         for (i in labelList.indices) {
-            val text = "${labelList[i]} ${dataList.getOrNull(i) ?: ""}"
-            canvas.drawText(text, x, yPoint, paint)
-            yPoint += 25 // Adjust line height
+            val fullText = "${labelList[i]} ${dataList.getOrNull(i) ?: ""}"
+            val words = fullText.split(Regex("(?<=,)|(?=,)|\\s+")) // Correctly splits at spaces but keeps commas
+            val lines = mutableListOf<String>()
+            var currentLine = ""
+
+            for (word in words) {
+                val testLine = if (currentLine.isEmpty()) word else "$currentLine$word" // Removed extra space before commas
+                if (paint.measureText(testLine) <= maxWidth) {
+                    currentLine = testLine
+                } else {
+                    lines.add(currentLine)
+                    currentLine = word.trimStart() // Remove unwanted leading spaces after splitting
+                }
+            }
+            if (currentLine.isNotEmpty()) {
+                lines.add(currentLine)
+            }
+
+            for (line in lines) {
+                canvas.drawText(line, x, yPoint, paint)
+                yPoint += lineSpacing // Move to next line
+            }
         }
     }
+
 
 }
