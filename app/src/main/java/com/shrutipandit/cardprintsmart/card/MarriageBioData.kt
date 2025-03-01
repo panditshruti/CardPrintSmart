@@ -60,7 +60,7 @@ class MarriageBioData : ViewModel() {
 
         // Define personal and family information lists
         val marriagePersonalInfoArrayList = arrayListOf(
-            "Name             :",
+            "Name            :",
             "Father's Name             :",
             "Date Of Birth             :",
             "Birth Place             :",
@@ -197,7 +197,7 @@ class MarriageBioData : ViewModel() {
                     currentLine = testLine
                 } else {
                     lines.add(currentLine)
-                    currentLine = word.trimStart() // Remove unwanted leading spaces after splitting
+//                    currentLine = word.trimStart() // Remove unwanted leading spaces after splitting
                 }
             }
             if (currentLine.isNotEmpty()) {

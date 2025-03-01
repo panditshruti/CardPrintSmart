@@ -42,7 +42,7 @@ class ResumeCard:ViewModel() {
             isFakeBoldText = true
             textSize = 30.0f
         }
-        val headingText = "BIO DATA"
+        val headingText = "Resume"
         val textWidth = headingPaint.measureText(headingText)
         val headingStartX = (canvas.width - textWidth) / 2
         val headingStartY = borderMargin + 30
@@ -53,22 +53,22 @@ class ResumeCard:ViewModel() {
         val personalStartY = headingStartY + 40 // Starts below the heading
 
         val marriagePersonalInfoArrayList = arrayListOf(
-            "Name    :",
-            "Father's Name    :",
-            "Gender    :",
-            "Caste    :",
-            "Date Of Birth    :",
-            "Mobile No-    :",
-            "Marital Status    :",
-            "Email Id    :",
-            "Religion    :",
-            "Nationality    :",
-            "Address    :",
-            "Languages Knows    :",
-            "Education    :",
-            "Computer Knowledge    :",
-            "Work    :",
-            "Work Experience    :"
+            "Name-    ",
+            "Father's Name-    ",
+            "Gender-    ",
+            "Caste-    ",
+            "Date Of Birth-    ",
+            "Mobile No-    ",
+            "Marital Status-    ",
+            "Email Id-    ",
+            "Religion-    ",
+            "Nationality-    ",
+            "Address-    ",
+            "Languages Knows-    ",
+            "Education-    ",
+            "Computer Knowledge-    ",
+            "Work-    ",
+            "Work Experience-    "
         )
 
         // Ensure that the data list is large enough to cover all elements
@@ -104,9 +104,9 @@ class ResumeCard:ViewModel() {
         canvas.drawText(familyHeading, personalStartX, familyHeadingStartY.toFloat(), familyHeadingPaint)
 
         val marriageFamilyInfoArrayList = arrayListOf(
-            "Declaration     :",
-            "Place    :",
-            "Date    :"
+            "Declaration-    ",
+            "Place-    ",
+            "Date-    "
         )
 
         // Ensure that the family data list is large enough
